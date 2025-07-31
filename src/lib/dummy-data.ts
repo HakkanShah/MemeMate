@@ -50,6 +50,9 @@ const defaultUsers: User[] = [
     status: 'Single AF',
     bio: 'My life is a meme. You are welcome.',
     quizResult: 'Certified Troll',
+    gender: 'Male',
+    relationshipStatus: 'Single AF',
+    lookingFor: 'My meme-mate'
   },
   {
     id: 'user2',
@@ -61,6 +64,9 @@ const defaultUsers: User[] = [
     status: 'Meme-ing Around',
     bio: 'My memes are more sanskari than your thoughts.',
     quizResult: 'Wholesome Queen',
+    gender: 'Female',
+    relationshipStatus: 'Meme-ing Around',
+    lookingFor: 'Someone who gets my jokes'
   },
   {
     id: 'user3',
@@ -72,6 +78,9 @@ const defaultUsers: User[] = [
     status: 'Single AF',
     bio: 'Problem? Mere paas meme hai!',
     quizResult: 'Silent Shitposter',
+    gender: 'Male',
+    relationshipStatus: 'Single AF',
+    lookingFor: 'A partner in cringe'
   },
   {
     id: 'user4',
@@ -83,6 +92,9 @@ const defaultUsers: User[] = [
     status: 'Taken But Still Posting',
     bio: 'Dil mein aata hoon, samajh mein nahi. Same with my memes.',
     quizResult: 'Roast Master',
+    gender: 'Male',
+    relationshipStatus: 'Taken But Still Posting',
+    lookingFor: 'Friends'
   },
   {
     id: 'user5',
@@ -94,6 +106,9 @@ const defaultUsers: User[] = [
     status: 'Single AF',
     bio: 'I am not insulting you. I am describing you.',
     quizResult: 'Roast Master',
+    gender: 'Female',
+    relationshipStatus: "It's Complicated",
+    lookingFor: 'A worthy opponent'
   },
   {
     id: 'user6',
@@ -105,6 +120,9 @@ const defaultUsers: User[] = [
     status: 'Meme-ing Around',
     bio: 'I have a degree in mechanical engineering. Do you know what that means? It means I am an expert in memes.',
     quizResult: 'Certified Troll',
+    gender: 'Male',
+    relationshipStatus: 'Single AF',
+    lookingFor: 'A stable connection (and Wi-Fi)'
   },
   {
     id: 'user7',
@@ -116,6 +134,9 @@ const defaultUsers: User[] = [
     status: 'Taken But Still Posting',
     bio: 'My life is a Karan Johar movie, but with more memes.',
     quizResult: 'Wholesome King',
+    gender: 'Male',
+    relationshipStatus: 'Taken But Still Posting',
+    lookingFor: 'My Simran'
   },
   {
     id: 'user8',
@@ -127,6 +148,9 @@ const defaultUsers: User[] = [
     status: 'Meme-ing Around',
     bio: 'Making you cringe is my passion.',
     quizResult: 'Cringe King',
+    gender: 'Non-binary',
+    relationshipStatus: 'Meme-ing Around',
+    lookingFor: 'Collaborators'
   },
   {
     id: 'user9',
@@ -138,6 +162,9 @@ const defaultUsers: User[] = [
     status: 'Single AF',
     bio: 'Spreading positivity, one meme at a time.',
     quizResult: 'Wholesome Queen',
+    gender: 'Female',
+    relationshipStatus: 'Single AF',
+    lookingFor: 'A kind soul'
   },
   {
     id: 'user10',
@@ -149,6 +176,9 @@ const defaultUsers: User[] = [
     status: 'Taken But Still Posting',
     bio: 'If you are not outraged, you are not paying attention. Or looking at my memes.',
     quizResult: 'Roast Master',
+    gender: 'Male',
+    relationshipStatus: 'Taken But Still Posting',
+    lookingFor: 'A debate partner'
   },
   {
     id: 'user11',
@@ -160,6 +190,9 @@ const defaultUsers: User[] = [
     status: 'Meme-ing Around',
     bio: 'Good morning messages and memes are my specialty.',
     quizResult: 'Wholesome Queen',
+    gender: 'Female',
+    relationshipStatus: 'Meme-ing Around',
+    lookingFor: 'Good vibes'
   },
   {
     id: 'user12',
@@ -171,6 +204,9 @@ const defaultUsers: User[] = [
     status: 'Single AF',
     bio: 'I don\'t make jokes. I make puns. There\'s a difference.',
     quizResult: 'Roast Master',
+    gender: 'Male',
+    relationshipStatus: 'Single AF',
+    lookingFor: 'Pun-intended relationships'
   },
 ];
 

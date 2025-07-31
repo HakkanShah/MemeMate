@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { MemeCard } from "@/components/meme-card";
 import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
 import { ProfileSettings } from "@/components/profile-settings";
+import { Users, Heart, Briefcase } from "lucide-react";
 
 export default function ProfilePage() {
   const params = useParams();
@@ -67,10 +68,22 @@ export default function ProfilePage() {
             <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
           </Avatar>
           <h1 className="font-headline text-4xl sm:text-5xl mt-4">{user.username}</h1>
-          <p className="text-lg text-muted-foreground mt-1">{user.status}</p>
+          <p className="text-lg text-muted-foreground mt-1">{user.gender}</p>
           <p className="mt-4 text-xl italic">"{user.bio}"</p>
           <div className="mt-4">
             <Badge className="font-headline text-lg p-2 rounded-md comic-border !border-2 tracking-wider">{user.quizResult}</Badge>
+          </div>
+           <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm text-muted-foreground">
+            {user.relationshipStatus && 
+              <span className="flex items-center gap-1">
+                <Heart className="w-4 h-4 text-primary" /> {user.relationshipStatus}
+              </span>
+            }
+            {user.lookingFor &&
+              <span className="flex items-center gap-1">
+                <Users className="w-4 h-4 text-primary" /> Looking for: {user.lookingFor}
+              </span>
+            }
           </div>
           <div className="flex flex-wrap justify-center gap-2 mt-4">
             {user.humorTags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}

@@ -7,6 +7,9 @@ export interface User {
   bannerUrl: string;
   humorTags: string[];
   memeGenres: string[];
+  gender?: string;
+  relationshipStatus?: 'Single AF' | 'Meme-ing Around' | 'Taken But Still Posting' | "It's Complicated";
+  lookingFor?: string;
   status: 'Single AF' | 'Meme-ing Around' | 'Taken But Still Posting';
   bio: string;
   quizResult: string;

@@ -16,6 +16,13 @@ import {
   SheetFooter,
   SheetClose
 } from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,7 +41,10 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
   const [formData, setFormData] = useState<Partial<User>>({
     username: user.username,
     bio: user.bio,
-    status: user.status,
+    gender: user.gender,
+    relationshipStatus: user.relationshipStatus,
+    lookingFor: user.lookingFor,
+    status: user.status
   });
   const [profilePicPreview, setProfilePicPreview] = useState<string | null>(user.profilePicUrl);
   const [bannerPreview, setBannerPreview] = useState<string | null>(user.bannerUrl || null);
@@ -44,6 +54,10 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
+  const handleSelectChange = (name: keyof User, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, imageType: 'profile' | 'banner') => {
     const file = e.target.files?.[0];
     if (file) {
@@ -133,8 +147,26 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
             <Textarea id="bio" name="bio" value={formData.bio} onChange={handleInputChange} className="comic-border !border-2" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <Input id="status" name="status" value={formData.status} onChange={handleInputChange} className="comic-border !border-2" />
+            <Label htmlFor="gender">Gender</Label>
+            <Input id="gender" name="gender" value={formData.gender} onChange={handleInputChange} className="comic-border !border-2" placeholder="Male, Female, Non-binary..."/>
+          </div>
+           <div className="space-y-2">
+            <Label htmlFor="relationshipStatus">Relationship Status</Label>
+             <Select onValueChange={(value) => handleSelectChange('relationshipStatus', value)} defaultValue={formData.relationshipStatus}>
+                <SelectTrigger className="comic-border !border-2">
+                    <SelectValue placeholder="Select your status" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="Single AF">Single AF</SelectItem>
+                    <SelectItem value="Meme-ing Around">Meme-ing Around</SelectItem>
+                    <SelectItem value="Taken But Still Posting">Taken But Still Posting</SelectItem>
+                    <SelectItem value="It's Complicated">It's Complicated</SelectItem>
+                </SelectContent>
+            </Select>
+          </div>
+           <div className="space-y-2">
+            <Label htmlFor="lookingFor">Looking For</Label>
+            <Input id="lookingFor" name="lookingFor" value={formData.lookingFor} onChange={handleInputChange} className="comic-border !border-2" placeholder="My meme-mate..." />
           </div>
         </div>
         <SheetFooter className="flex-col sm:flex-col sm:space-x-0 gap-2 mt-4">
