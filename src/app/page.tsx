@@ -148,6 +148,9 @@ export default function AuthPage() {
           </Card>
         </TabsContent>
       </Tabs>
+      <footer className="text-center text-sm text-muted-foreground mt-8">
+        Project by <a href="https://github.com/HakkanShah" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Hakkan Shah</a>
+      </footer>
     </main>
   );
 }
