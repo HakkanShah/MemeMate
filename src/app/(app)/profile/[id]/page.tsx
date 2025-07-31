@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import Image from "next/image";
 import { dummyUsers, getMemesByAuthor } from "@/lib/dummy-data";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,8 +11,10 @@ import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
 import { ProfileSettings } from "@/components/profile-settings";
 
 
-export default function ProfilePage({ params }: { params: { id: string } }) {
-  const user = dummyUsers.find(u => u.id === params.id);
+export default function ProfilePage() {
+  const params = useParams();
+  const userId = params.id as string;
+  const user = dummyUsers.find(u => u.id === userId);
 
   if (!user) {
     notFound();
