@@ -16,35 +16,44 @@ export default function AuthPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [loginEmail, setLoginEmail] = useState('');
+  const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [signupUsername, setSignupUsername] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
 
   const handleLogin = () => {
     const users = getStoredData<User[]>('dummyUsers', []);
-    const user = users.find(u => u.username === loginEmail); // Using username as email for demo
+    const user = users.find(u => u.username === loginUsername);
 
     if (user) {
-      // In a real app, you'd check the password. Here we just log in.
+      // In a real app, you'd check the hashed password. Here we just log in.
       localStorage.setItem('loggedInUser', user.id);
       router.push("/feed");
     } else {
       toast({
         variant: 'destructive',
         title: "Login Failed",
-        description: "User not found. Please sign up.",
+        description: "User not found or password incorrect. Please try again.",
       });
     }
   };
 
   const handleSignUp = () => {
+    if (!signupUsername || !signupEmail || !signupPassword) {
+       toast({
+        variant: 'destructive',
+        title: "Signup Failed",
+        description: "Please fill out all fields.",
+      });
+      return;
+    }
     const users = getStoredData<User[]>('dummyUsers', []);
-    if (users.find(u => u.username === signupEmail)) {
+    if (users.find(u => u.username === signupUsername)) {
       toast({
         variant: 'destructive',
         title: "Signup Failed",
-        description: "A user with this email already exists.",
+        description: "A user with this username already exists.",
       });
       return;
     }
@@ -52,7 +61,7 @@ export default function AuthPage() {
     const newUserId = `user${Date.now()}`;
     const newUser: User = {
       id: newUserId,
-      username: signupEmail, // Using email as username for demo
+      username: signupUsername,
       profilePicUrl: 'https://placehold.co/200x200.png',
       bannerUrl: 'https://placehold.co/800x200.png',
       humorTags: [],
@@ -66,6 +75,7 @@ export default function AuthPage() {
     setStoredData('dummyUsers', updatedUsers);
     localStorage.setItem('loggedInUser', newUserId);
     
+    // In a real app, you might want to redirect to a profile setup or quiz page.
     router.push("/quiz");
   };
 
@@ -90,13 +100,13 @@ export default function AuthPage() {
             <CardHeader>
               <CardTitle className="font-headline text-3xl">Wapis Aaye, MemeLover!</CardTitle>
               <CardDescription>
-                Apna password daalo aur meme-verse mein enter karo.
+                Apna username aur password daalo aur meme-verse mein enter karo.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email-login">Email</Label>
-                <Input id="email-login" type="email" placeholder="sharmaji@beta.com" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} />
+                <Label htmlFor="username-login">Username</Label>
+                <Input id="username-login" type="text" placeholder="RajuMemer69" value={loginUsername} onChange={e => setLoginUsername(e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password-login">Password</Label>
@@ -115,6 +125,10 @@ export default function AuthPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+               <div className="space-y-2">
+                <Label htmlFor="username-signup">Username</Label>
+                <Input id="username-signup" type="text" placeholder="MemeKaBadshah" value={signupUsername} onChange={e => setSignupUsername(e.target.value)} />
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="email-signup">Email</Label>
                 <Input id="email-signup" type="email" placeholder="pappu@passhogaya.com" value={signupEmail} onChange={e => setSignupEmail(e.target.value)} />
@@ -128,12 +142,6 @@ export default function AuthPage() {
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="mt-4 w-full max-w-sm sm:max-w-md">
-        <Button variant="outline" className="w-full comic-border" onClick={handleLogin}>
-          <svg className="mr-2 h-4 w-4" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C42.021,35.596,44,30.138,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
-          Google Se Sign In Karo (Dummy)
-        </Button>
-      </div>
     </main>
   );
 }
