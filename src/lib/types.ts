@@ -13,6 +13,7 @@ export interface User {
   status: 'Single AF' | 'Meme-ing Around' | 'Taken But Still Posting';
   bio: string;
   quizResult: string;
+  isVerified?: boolean;
 }
 
 export interface MemeComment {

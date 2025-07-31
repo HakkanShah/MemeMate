@@ -41,6 +41,21 @@ export function setStoredData<T>(key: string, value: T): void {
 
 const defaultUsers: User[] = [
   {
+    id: 'user_hakkan',
+    username: 'Hakkan',
+    profilePicUrl: 'https://media.licdn.com/dms/image/D4D03AQFH465NCDJNEw/profile-displayphoto-shrink_400_400/0/1721308420349?e=1726704000&v=beta&t=9f4G-oB1g_qCQ8R0s6Z_jA8J6Z_J0X3jG2bY6M0nJ1c',
+    bannerUrl: 'https://placehold.co/800x200.png',
+    humorTags: ['Engineer AF', 'Roast', 'Troll', 'Dark'],
+    memeGenres: ['Political', 'Engineering'],
+    status: 'Meme-ing Around',
+    bio: 'The developer of this platform. Bow down to your Meme King. I build, I break, I meme.',
+    quizResult: 'Meme God',
+    gender: 'Male',
+    relationshipStatus: 'Married to my keyboard',
+    lookingFor: 'A bug-free life',
+    isVerified: true,
+  },
+  {
     id: 'user1',
     username: 'RajuMemer69',
     profilePicUrl: 'https://placehold.co/200x200.png',
@@ -211,6 +226,26 @@ const defaultUsers: User[] = [
 ];
 
 const defaultMemes: Meme[] = [
+  {
+    id: 'meme_hakkan_1',
+    imageUrl: 'https://i.imgflip.com/1h7in.jpg',
+    aiHint: 'roll safe',
+    caption: 'You can\'t have bugs in your code if you don\'t write any code.',
+    authorId: 'user_hakkan',
+    reactions: { '😂': 999, '🙏': 500, '💀': 250, '😭': 10, '💘': 300 },
+    comments: [],
+    timestamp: new Date('2024-07-31T10:00:00Z'),
+  },
+  {
+    id: 'meme_hakkan_2',
+    imageUrl: 'https://i.imgflip.com/2/30b1gx.jpg',
+    aiHint: 'change my mind',
+    caption: 'Semicolons are optional. Change my mind.',
+    authorId: 'user_hakkan',
+    reactions: { '😂': 850, '🙏': 100, '💀': 500, '😭': 50, '💘': 100 },
+    comments: [],
+    timestamp: new Date('2024-07-30T10:00:00Z'),
+  },
   {
     id: 'meme1',
     imageUrl: 'https://i.imgflip.com/1g8my4.jpg',

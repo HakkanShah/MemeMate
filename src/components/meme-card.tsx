@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import type { Meme, MemeComment } from "@/lib/types";
 import { getUserById, updateMeme } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
-import { MessageSquare, Send, ArrowUp, ArrowDown } from "lucide-react";
+import { MessageSquare, Send, ArrowUp, ArrowDown, CheckCircle } from "lucide-react";
 import { Input } from "./ui/input";
 
 interface MemeCardProps {
@@ -88,9 +88,12 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
               <AvatarFallback>{author.username.charAt(0)}</AvatarFallback>
             </Avatar>
           </Link>
-          <Link href={`/profile/${author.id}`}>
-            <CardTitle className="text-lg font-bold hover:underline">{author.username}</CardTitle>
-          </Link>
+          <div className="flex items-center gap-1">
+            <Link href={`/profile/${author.id}`}>
+              <CardTitle className="text-lg font-bold hover:underline">{author.username}</CardTitle>
+            </Link>
+            {author.isVerified && <CheckCircle className="w-4 h-4 text-blue-500" />}
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           <div className="relative aspect-[4/5] w-full">

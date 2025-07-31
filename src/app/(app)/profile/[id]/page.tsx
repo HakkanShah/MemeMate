@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { MemeCard } from "@/components/meme-card";
 import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
 import { ProfileSettings } from "@/components/profile-settings";
-import { Users, Heart, Briefcase } from "lucide-react";
+import { Users, Heart, CheckCircle } from "lucide-react";
 
 export default function ProfilePage() {
   const params = useParams();
@@ -67,7 +67,10 @@ export default function ProfilePage() {
             <AvatarImage src={user.profilePicUrl} alt={user.username} data-ai-hint="meme avatar" />
             <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
           </Avatar>
-          <h1 className="font-headline text-4xl sm:text-5xl mt-4">{user.username}</h1>
+           <div className="flex items-center justify-center gap-2 mt-4">
+            <h1 className="font-headline text-4xl sm:text-5xl">{user.username}</h1>
+            {user.isVerified && <CheckCircle className="w-8 h-8 text-blue-500" />}
+          </div>
           <p className="text-lg text-muted-foreground mt-1">{user.gender}</p>
           <p className="mt-4 text-xl italic">"{user.bio}"</p>
           <div className="mt-4">

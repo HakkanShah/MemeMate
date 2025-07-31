@@ -10,7 +10,18 @@ export default function FeedPage() {
 
   const loadMemes = useCallback(() => {
     const allMemes = getStoredData<Meme[]>('dummyMemes', []);
-    setMemes(allMemes);
+    // Sort memes to show verified user's posts first, then by timestamp
+    const sortedMemes = allMemes.sort((a, b) => {
+        if (a.authorId === 'user_hakkan' && b.authorId !== 'user_hakkan') {
+            return -1; // a comes first
+        }
+        if (a.authorId !== 'user_hakkan' && b.authorId === 'user_hakkan') {
+            return 1; // b comes first
+        }
+        // If both are/aren't Hakkan, sort by time
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    });
+    setMemes(sortedMemes);
   }, []);
 
   useEffect(() => {
