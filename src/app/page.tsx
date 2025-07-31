@@ -24,10 +24,10 @@ export default function AuthPage() {
 
   const handleLogin = () => {
     const users = getStoredData<User[]>('dummyUsers', []);
-    const user = users.find(u => u.username === loginUsername);
+    const user = users.find(u => u.username === loginUsername && u.password === loginPassword);
 
     if (user) {
-      // In a real app, you'd check the hashed password. Here we just log in.
+      // In a real app, you'd check a hashed password.
       localStorage.setItem('loggedInUser', user.id);
       router.push("/feed");
     } else {
@@ -62,6 +62,8 @@ export default function AuthPage() {
     const newUser: User = {
       id: newUserId,
       username: signupUsername,
+      email: signupEmail,
+      password: signupPassword, // Storing password directly for demo purposes
       profilePicUrl: 'https://placehold.co/200x200.png',
       bannerUrl: 'https://placehold.co/800x200.png',
       humorTags: [],
@@ -75,7 +77,11 @@ export default function AuthPage() {
     setStoredData('dummyUsers', updatedUsers);
     localStorage.setItem('loggedInUser', newUserId);
     
-    // In a real app, you might want to redirect to a profile setup or quiz page.
+    toast({
+        title: "Account Created!",
+        description: "Welcome! Let's find your meme-mate.",
+    });
+    
     router.push("/quiz");
   };
 

@@ -1,6 +1,8 @@
 export interface User {
   id: string;
   username: string;
+  email?: string; // Optional for existing users, required for new ones
+  password?: string; // Optional for existing users, required for new ones
   profilePicUrl: string;
   bannerUrl: string;
   humorTags: string[];
@@ -41,7 +43,7 @@ export interface Match {
 }
 
 export interface ChatMessage {
-  id: string;
+  id:string;
   matchId: string;
   senderId: string;
   text: string;
