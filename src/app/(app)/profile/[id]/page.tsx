@@ -32,7 +32,7 @@ export default function ProfilePage() {
       {isOwnProfile && <ProfileSettings />}
       <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
         <div className="h-32 sm:h-48 bg-primary relative">
-           <Image src="https://placehold.co/800x200" layout="fill" objectFit="cover" alt="Banner" data-ai-hint="comic background"/>
+           <Image src="https://placehold.co/800x200.png" layout="fill" objectFit="cover" alt="Banner" data-ai-hint="comic background"/>
         </div>
         <CardContent className="p-4 sm:p-6 text-center -mt-16 sm:-mt-24">
           <Avatar className="mx-auto h-32 w-32 sm:h-48 sm:w-48 border-8 border-background comic-border !border-4">

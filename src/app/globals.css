@@ -69,7 +69,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: url('https://placehold.co/1920x1080/FFF8E1/FFF8E1.png');
+    background-image: url('https://placehold.co/1920x1080.png/FFF8E1/FFF8E1');
     background-size: cover;
     background-position: center;
     opacity: 0.5;
