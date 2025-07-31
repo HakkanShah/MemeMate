@@ -9,6 +9,12 @@ export interface User {
   quizResult: string;
 }
 
+export interface MemeComment {
+    userId: string;
+    text: string;
+    timestamp: Date;
+}
+
 export interface Meme {
   id: string;
   imageUrl: string;
@@ -21,6 +27,7 @@ export interface Meme {
     '😭': number;
     '💘': number;
   };
+  comments: MemeComment[];
   timestamp: Date;
   aiHint?: string;
 }

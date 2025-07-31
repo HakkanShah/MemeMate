@@ -111,6 +111,10 @@ export const dummyMemes: Meme[] = [
     caption: 'Daya, pata lagao isne swipe right kyun nahi kiya!',
     authorId: 'user1',
     reactions: { '😂': 102, '🙏': 12, '💀': 45, '😭': 5, '💘': 20 },
+    comments: [
+        { userId: 'user2', text: 'So true!', timestamp: new Date() },
+        { userId: 'user3', text: 'Hahaha!', timestamp: new Date() }
+    ],
     timestamp: new Date('2024-07-20T10:00:00Z'),
   },
   {
@@ -120,6 +124,7 @@ export const dummyMemes: Meme[] = [
     caption: 'When you want to post a dark meme but your parents follow you.',
     authorId: 'user2',
     reactions: { '😂': 250, '🙏': 80, '💀': 10, '😭': 55, '💘': 90 },
+    comments: [],
     timestamp: new Date('2024-07-20T11:30:00Z'),
   },
   {
@@ -129,6 +134,7 @@ export const dummyMemes: Meme[] = [
     caption: 'Me looking at my crush talking to someone else',
     authorId: 'user3',
     reactions: { '😂': 500, '🙏': 25, '💀': 80, '😭': 150, '💘': 30 },
+    comments: [],
     timestamp: new Date('2024-07-20T12:00:00Z'),
   },
     {
@@ -138,6 +144,7 @@ export const dummyMemes: Meme[] = [
     caption: 'My mood after getting a match',
     authorId: 'user4',
     reactions: { '😂': 300, '🙏': 50, '💀': 20, '😭': 10, '💘': 180 },
+    comments: [],
     timestamp: new Date('2024-07-20T14:00:00Z'),
   },
   {
@@ -147,6 +154,7 @@ export const dummyMemes: Meme[] = [
     caption: 'My brain cells arguing whether to study or scroll memes.',
     authorId: 'user5',
     reactions: { '😂': 450, '🙏': 5, '💀': 120, '😭': 30, '💘': 50 },
+    comments: [],
     timestamp: new Date('2024-07-21T09:00:00Z'),
   },
   {
@@ -156,6 +164,7 @@ export const dummyMemes: Meme[] = [
     caption: 'Final year project: Works on my machine. Viva: Machine not found.',
     authorId: 'user6',
     reactions: { '😂': 600, '🙏': 15, '💀': 50, '😭': 200, '💘': 25 },
+    comments: [],
     timestamp: new Date('2024-07-21T10:30:00Z'),
   },
   {
@@ -165,6 +174,7 @@ export const dummyMemes: Meme[] = [
     caption: 'Me waiting for my crush to notice my new DP.',
     authorId: 'user7',
     reactions: { '😂': 350, '🙏': 100, '💀': 15, '😭': 25, '💘': 300 },
+    comments: [],
     timestamp: new Date('2024-07-21T11:00:00Z'),
   },
   {
@@ -174,6 +184,7 @@ export const dummyMemes: Meme[] = [
     caption: 'When the OTP arrives after you have already closed the tab.',
     authorId: 'user1',
     reactions: { '😂': 700, '🙏': 40, '💀': 90, '😭': 100, '💘': 60 },
+    comments: [],
     timestamp: new Date('2024-07-21T12:00:00Z'),
   },
   {
@@ -183,6 +194,7 @@ export const dummyMemes: Meme[] = [
     caption: 'Me after my code runs on the first try.',
     authorId: 'user8',
     reactions: { '😂': 800, '🙏': 20, '💀': 10, '😭': 5, '💘': 100 },
+    comments: [],
     timestamp: new Date('2024-07-22T09:00:00Z'),
   },
   {
@@ -192,6 +204,7 @@ export const dummyMemes: Meme[] = [
     caption: 'This is a wholesome meme. No dark humor here.',
     authorId: 'user9',
     reactions: { '😂': 100, '🙏': 500, '💀': 0, '😭': 5, '💘': 400 },
+    comments: [],
     timestamp: new Date('2024-07-22T10:00:00Z'),
   },
   {
@@ -201,6 +214,7 @@ export const dummyMemes: Meme[] = [
     caption: 'Me explaining to my parents why I need more pocket money.',
     authorId: 'user10',
     reactions: { '😂': 900, '🙏': 10, '💀': 50, '😭': 100, '💘': 20 },
+    comments: [],
     timestamp: new Date('2024-07-22T11:00:00Z'),
   },
   {
@@ -210,6 +224,7 @@ export const dummyMemes: Meme[] = [
     caption: '1 like = 1 prayer for my grades.',
     authorId: 'user6',
     reactions: { '😂': 200, '🙏': 800, '💀': 20, '😭': 500, '💘': 10 },
+    comments: [],
     timestamp: new Date('2024-07-22T12:00:00Z'),
   },
 ];

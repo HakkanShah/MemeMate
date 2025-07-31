@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -9,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import type { Meme } from "@/lib/types";
 import { getUserById } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
+import { MessageSquare, Send } from "lucide-react";
+import { Input } from "./ui/input";
 
 interface MemeCardProps {
   meme: Meme;
@@ -17,12 +20,26 @@ interface MemeCardProps {
 export function MemeCard({ meme }: MemeCardProps) {
   const author = getUserById(meme.authorId);
   const [reactions, setReactions] = useState(meme.reactions);
+  const [comments, setComments] = useState(meme.comments || []);
+  const [newComment, setNewComment] = useState("");
 
   const handleReaction = (emoji: keyof typeof reactions) => {
     setReactions(prev => ({ ...prev, [emoji]: prev[emoji] + 1 }));
   };
+  
+  const handleCommentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newComment.trim() === "") return;
+    setComments(prev => [...prev, { userId: 'user1', text: newComment, timestamp: new Date() }]);
+    setNewComment("");
+  }
+
 
   if (!author) return null;
+  
+  const topReactions = Object.entries(reactions)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 3);
 
   return (
     <div className="break-inside-avoid">
@@ -50,10 +67,37 @@ export function MemeCard({ meme }: MemeCardProps) {
           </div>
           <p className="p-3 text-base">{meme.caption}</p>
         </CardContent>
-        <CardFooter className="p-3 flex justify-around">
-          {Object.entries(reactions).map(([emoji, count]) => (
-            <ReactionButton key={emoji} emoji={emoji} count={count} onClick={() => handleReaction(emoji as keyof typeof reactions)} />
-          ))}
+        <CardFooter className="p-3 flex flex-col items-start gap-2">
+           <div className="flex justify-around w-full">
+              {topReactions.map(([emoji, count]) => (
+                <ReactionButton key={emoji} emoji={emoji} count={count} onClick={() => handleReaction(emoji as keyof typeof reactions)} />
+              ))}
+               <Button variant="ghost" className="flex items-center gap-2 text-lg">
+                  <MessageSquare />
+                  <span className="text-sm font-bold">{comments.length}</span>
+              </Button>
+           </div>
+           <div className="w-full space-y-2">
+             {comments.slice(0,2).map((comment, index) => {
+                const commentAuthor = getUserById(comment.userId);
+                return (
+                    <div key={index} className="text-sm">
+                        <span className="font-bold">{commentAuthor?.username || 'User'}</span>: {comment.text}
+                    </div>
+                )
+             })}
+             <form onSubmit={handleCommentSubmit} className="flex items-center gap-2 w-full">
+                <Input 
+                    placeholder="Add a comment..." 
+                    className="h-9 comic-border !border-2"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                />
+                <Button type="submit" size="icon" className="h-9 w-9 flex-shrink-0 comic-border !border-2 rounded-full">
+                    <Send className="h-4 w-4"/>
+                </Button>
+             </form>
+           </div>
         </CardFooter>
       </Card>
     </div>
