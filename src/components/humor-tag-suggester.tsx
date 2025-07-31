@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useState, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { suggestHumorTags } from '@/ai/flows/suggest-humor-tags';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -26,7 +26,7 @@ function SubmitButton() {
 }
 
 export function HumorTagSuggestor({ currentBio }: { currentBio: string }) {
-  const [state, formAction] = useFormState(async (prevState: any, formData: FormData) => {
+  const [state, formAction] = useActionState(async (prevState: any, formData: FormData) => {
     const content = formData.get('content') as string;
     if (!content) return { tags: [] };
     const result = await suggestHumorTags({ content });
