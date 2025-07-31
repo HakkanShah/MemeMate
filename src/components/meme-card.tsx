@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -8,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import type { Meme, MemeComment } from "@/lib/types";
-import { getUserById } from "@/lib/dummy-data";
+import { getUserById, updateMeme } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 import { MessageSquare, Send, ArrowUp, ArrowDown } from "lucide-react";
 import { Input } from "./ui/input";
@@ -17,42 +16,66 @@ interface MemeCardProps {
   meme: Meme;
 }
 
-export function MemeCard({ meme }: MemeCardProps) {
+export function MemeCard({ meme: initialMeme }: MemeCardProps) {
+  const [meme, setMeme] = useState(initialMeme);
   const author = getUserById(meme.authorId);
-  const [reactions, setReactions] = useState(meme.reactions);
-  const [comments, setComments] = useState(meme.comments || []);
+  
   const [newComment, setNewComment] = useState("");
   const [showAllComments, setShowAllComments] = useState(false);
 
-  const handleReaction = (emoji: keyof typeof reactions) => {
-    setReactions(prev => ({ ...prev, [emoji]: prev[emoji] + 1 }));
+  const handleReaction = (emoji: keyof Meme['reactions']) => {
+    const updatedMeme = {
+      ...meme,
+      reactions: {
+        ...meme.reactions,
+        [emoji]: meme.reactions[emoji] + 1
+      }
+    };
+    setMeme(updatedMeme);
+    updateMeme(updatedMeme);
   };
   
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (newComment.trim() === "") return;
-    setComments(prev => [...prev, { userId: 'user1', text: newComment, timestamp: new Date(), votes: 0 }]);
+
+    const newCommentObj: MemeComment = { 
+        userId: 'user1', 
+        text: newComment, 
+        timestamp: new Date(), 
+        votes: 0 
+    };
+    
+    const updatedMeme = {
+        ...meme,
+        comments: [...meme.comments, newCommentObj]
+    };
+
+    setMeme(updatedMeme);
+    updateMeme(updatedMeme);
     setNewComment("");
   }
 
   const handleVote = (commentIndex: number, voteType: 'up' | 'down') => {
-    setComments(prev => 
-      prev.map((comment, index) => {
-        if (index === commentIndex) {
-          return { ...comment, votes: comment.votes + (voteType === 'up' ? 1 : -1) };
-        }
-        return comment;
-      })
-    );
+    const updatedComments = [...meme.comments];
+    updatedComments[commentIndex].votes += (voteType === 'up' ? 1 : -1);
+    
+    const updatedMeme = {
+      ...meme,
+      comments: updatedComments
+    };
+
+    setMeme(updatedMeme);
+    updateMeme(updatedMeme);
   };
 
   if (!author) return null;
   
-  const topReactions = Object.entries(reactions)
+  const topReactions = Object.entries(meme.reactions)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 3);
 
-  const sortedComments = [...comments].sort((a, b) => b.votes - a.votes);
+  const sortedComments = [...meme.comments].sort((a, b) => b.votes - a.votes);
   const commentsToShow = showAllComments ? sortedComments : sortedComments.slice(0, 2);
 
   return (
@@ -84,17 +107,17 @@ export function MemeCard({ meme }: MemeCardProps) {
         <CardFooter className="p-3 flex flex-col items-start gap-2">
            <div className="flex justify-around w-full">
               {topReactions.map(([emoji, count]) => (
-                <ReactionButton key={emoji} emoji={emoji} count={count} onClick={() => handleReaction(emoji as keyof typeof reactions)} />
+                <ReactionButton key={emoji} emoji={emoji} count={count} onClick={() => handleReaction(emoji as keyof Meme['reactions'])} />
               ))}
                <Button variant="ghost" className="flex items-center gap-2 text-lg" onClick={() => setShowAllComments(!showAllComments)}>
                   <MessageSquare />
-                  <span className="text-sm font-bold">{comments.length}</span>
+                  <span className="text-sm font-bold">{meme.comments.length}</span>
               </Button>
            </div>
            <div className="w-full space-y-2">
              {commentsToShow.map((comment, index) => {
                 const commentAuthor = getUserById(comment.userId);
-                const originalIndex = comments.findIndex(c => c === comment);
+                const originalIndex = meme.comments.findIndex(c => c === comment);
                 return (
                     <div key={index} className="text-sm flex justify-between items-center w-full">
                        <div>
@@ -112,8 +135,8 @@ export function MemeCard({ meme }: MemeCardProps) {
                     </div>
                 )
              })}
-             {!showAllComments && comments.length > 2 && (
-                <Button variant="link" size="sm" onClick={() => setShowAllComments(true)}>View all {comments.length} comments</Button>
+             {!showAllComments && meme.comments.length > 2 && (
+                <Button variant="link" size="sm" onClick={() => setShowAllComments(true)}>View all {meme.comments.length} comments</Button>
              )}
              <form onSubmit={handleCommentSubmit} className="flex items-center gap-2 w-full">
                 <Input 

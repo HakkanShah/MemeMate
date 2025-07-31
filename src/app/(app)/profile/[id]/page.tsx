@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { notFound, useParams } from "next/navigation";
 import Image from "next/image";
-import { dummyUsers, getMemesByAuthor } from "@/lib/dummy-data";
+import { getUserById, getMemesByAuthor } from "@/lib/dummy-data";
+import type { User, Meme } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -14,13 +16,26 @@ import { ProfileSettings } from "@/components/profile-settings";
 export default function ProfilePage() {
   const params = useParams();
   const userId = params.id as string;
-  const user = dummyUsers.find(u => u.id === userId);
+  
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [userMemes, setUserMemes] = useState<Meme[]>([]);
+  
+  useEffect(() => {
+    if (userId) {
+      const foundUser = getUserById(userId);
+      setUser(foundUser);
+      if(foundUser) {
+        const memes = getMemesByAuthor(foundUser.id);
+        setUserMemes(memes);
+      }
+    }
+  }, [userId]);
 
   if (!user) {
-    notFound();
+    // You might want to show a loading spinner here
+    return <div>Loading...</div>;
   }
-
-  const userMemes = getMemesByAuthor(user.id);
+  
   const isOwnProfile = user.id === 'user1'; // Demo: assume user1 is the logged-in user
 
   const topMemes = [...userMemes]

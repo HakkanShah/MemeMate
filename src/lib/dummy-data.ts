@@ -1,6 +1,33 @@
-import type { User, Meme, Match, ChatMessage } from '@/lib/types';
+import type { User, Meme, Match, ChatMessage, MemeComment } from '@/lib/types';
 
-export const dummyUsers: User[] = [
+// --- Local Storage Wrapper ---
+
+const isBrowser = typeof window !== 'undefined';
+
+function getStoredData<T>(key: string, defaultValue: T): T {
+  if (!isBrowser) return defaultValue;
+  try {
+    const item = window.localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.error(`Error reading from localStorage key “${key}”:`, error);
+    return defaultValue;
+  }
+}
+
+function setStoredData<T>(key: string, value: T): void {
+  if (!isBrowser) return;
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Error writing to localStorage key “${key}”:`, error);
+  }
+}
+
+
+// --- Initial Default Data ---
+
+const defaultUsers: User[] = [
   {
     id: 'user1',
     username: 'RajuMemer69',
@@ -123,7 +150,7 @@ export const dummyUsers: User[] = [
   },
 ];
 
-export const dummyMemes: Meme[] = [
+const defaultMemes: Meme[] = [
   {
     id: 'meme1',
     imageUrl: 'https://i.imgflip.com/1g8my4.jpg',
@@ -249,7 +276,7 @@ export const dummyMemes: Meme[] = [
   },
 ];
 
-export const dummyMatches: Match[] = [
+const defaultMatches: Match[] = [
   {
     id: 'match1',
     userIds: ['user1', 'user2'],
@@ -277,7 +304,7 @@ export const dummyMatches: Match[] = [
   },
 ];
 
-export const dummyChatMessages: ChatMessage[] = [
+const defaultChatMessages: ChatMessage[] = [
     { id: 'msg1', matchId: 'match1', senderId: 'user1', text: 'Aree wah, tu bhi Taarak Mehta ka fan 😍', timestamp: new Date('2024-07-19T20:01:00Z') },
     { id: 'msg2', matchId: 'match1', senderId: 'user2', text: 'Obviously! Your memes are better than Sharma ji ka beta\'s marks 😂', timestamp: new Date('2024-07-19T20:02:00Z') },
     { id: 'msg3', matchId: 'match1', senderId: 'user1', text: 'Haha thanks! So, chai pe chalein?', timestamp: new Date('2024-07-19T20:03:00Z') },
@@ -295,7 +322,56 @@ export const dummyChatMessages: ChatMessage[] = [
     { id: 'msg11', matchId: 'match5', senderId: 'user10', text: 'Already on it. A new meme is cooking.', timestamp: new Date('2024-07-22T21:02:00Z') },
 ];
 
-export const getUserById = (id: string) => dummyUsers.find(u => u.id === id);
-export const getMemesByAuthor = (authorId: string) => dummyMemes.filter(m => m.authorId === authorId);
-export const getMatchById = (id: string) => dummyMatches.find(m => m.id === id);
-export const getMessagesByMatchId = (matchId: string) => dummyChatMessages.filter(m => m.matchId === matchId);
+
+// --- Data Access and Mutation Functions ---
+
+// Initialize data if it doesn't exist in local storage
+if (isBrowser) {
+    if (!localStorage.getItem('dummyUsers')) {
+        setStoredData('dummyUsers', defaultUsers);
+    }
+    if (!localStorage.getItem('dummyMemes')) {
+        setStoredData('dummyMemes', defaultMemes);
+    }
+    if (!localStorage.getItem('dummyMatches')) {
+        setStoredData('dummyMatches', defaultMatches);
+    }
+    if (!localStorage.getItem('dummyChatMessages')) {
+        setStoredData('dummyChatMessages', defaultChatMessages);
+    }
+}
+
+// Export getters that read from local storage
+export const dummyUsers: User[] = getStoredData('dummyUsers', defaultUsers);
+export const dummyMemes: Meme[] = getStoredData('dummyMemes', defaultMemes);
+export const dummyMatches: Match[] = getStoredData('dummyMatches', defaultMatches);
+export const dummyChatMessages: ChatMessage[] = getStoredData('dummyChatMessages', defaultChatMessages);
+
+export const getUserById = (id: string) => getStoredData<User[]>('dummyUsers', []).find(u => u.id === id);
+export const getMemesByAuthor = (authorId: string) => getStoredData<Meme[]>('dummyMemes', []).filter(m => m.authorId === authorId);
+export const getMatchById = (id: string) => getStoredData<Match[]>('dummyMatches', []).find(m => m.id === id);
+export const getMessagesByMatchId = (matchId: string) => getStoredData<ChatMessage[]>('dummyChatMessages', []).filter(m => m.matchId === matchId);
+
+// --- Functions to update data and persist to localStorage ---
+
+export const addMeme = (meme: Meme) => {
+    const memes = getStoredData<Meme[]>('dummyMemes', []);
+    setStoredData('dummyMemes', [meme, ...memes]);
+};
+
+export const updateMeme = (updatedMeme: Meme) => {
+    const memes = getStoredData<Meme[]>('dummyMemes', []);
+    const newMemes = memes.map(meme => meme.id === updatedMeme.id ? updatedMeme : meme);
+    setStoredData('dummyMemes', newMemes);
+};
+
+
+export const addMessage = (message: ChatMessage) => {
+    const messages = getStoredData<ChatMessage[]>('dummyChatMessages', []);
+    setStoredData('dummyChatMessages', [...messages, message]);
+};
+
+export const addMatch = (match: Match) => {
+    const matches = getStoredData<Match[]>('dummyMatches', []);
+    setStoredData('dummyMatches', [...matches, match]);
+};

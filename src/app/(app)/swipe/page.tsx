@@ -1,18 +1,24 @@
 
 "use client";
 
-import { useState, useTransition } from "react";
-import { dummyUsers } from "@/lib/dummy-data";
+import { useState, useTransition, useEffect } from "react";
+import { dummyUsers as getInitialUsers } from "@/lib/dummy-data";
 import { SwipeCard } from "@/components/swipe-card";
 import { Button } from "@/components/ui/button";
 import { Heart, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { User } from "@/lib/types";
 
 export default function SwipePage() {
-  const [users, setUsers] = useState(dummyUsers.filter(u => u.id !== 'user1')); // Exclude self
+  const [users, setUsers] = useState<User[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    const allUsers = getInitialUsers;
+    setUsers(allUsers.filter(u => u.id !== 'user1')); // Exclude self
+  }, []);
 
   const handleSwipe = (direction: 'left' | 'right') => {
     if (isPending) return;

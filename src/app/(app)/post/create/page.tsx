@@ -8,9 +8,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Upload, Wand2 } from 'lucide-react';
+import { addMeme } from '@/lib/dummy-data';
+import type { Meme } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CreatePostPage() {
     const router = useRouter();
+    const { toast } = useToast();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [caption, setCaption] = useState('');
 
@@ -27,11 +31,32 @@ export default function CreatePostPage() {
 
     const handlePost = () => {
         if (!imagePreview || !caption) {
-            alert('Please upload an image and write a caption!');
+            toast({
+                variant: "destructive",
+                title: "Incomplete Post",
+                description: "Please upload an image and write a caption!",
+            });
             return;
         }
-        // In a real app, you would handle the form submission here
-        alert('Meme posted successfully! (Just kidding, this is a demo)');
+        
+        const newMeme: Meme = {
+            id: `meme-${Date.now()}`,
+            imageUrl: imagePreview,
+            caption: caption,
+            authorId: 'user1', // Assume the logged in user is user1
+            reactions: { '😂': 0, '🙏': 0, '💀': 0, '😭': 0, '💘': 0 },
+            comments: [],
+            timestamp: new Date(),
+            aiHint: 'custom meme'
+        };
+
+        addMeme(newMeme);
+
+        toast({
+            title: "Meme Posted!",
+            description: "Your masterpiece is now live in the feed.",
+        });
+        
         router.push('/feed');
     };
 

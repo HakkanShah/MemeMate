@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { notFound, useParams } from "next/navigation";
-import { getMatchById, getMessagesByMatchId, getUserById } from "@/lib/dummy-data";
+import { getMatchById, getMessagesByMatchId, getUserById, addMessage } from "@/lib/dummy-data";
 import type { ChatMessage as ChatMessageType } from "@/lib/types";
 import { ChatBubble } from "@/components/chat-bubble";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,17 @@ export default function ChatPage() {
   const params = useParams();
   const matchId = params.id as string;
   const match = getMatchById(matchId);
-  const initialMessages = getMessagesByMatchId(matchId);
-
-  const [messages, setMessages] = useState(initialMessages);
+  
+  const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [newMessage, setNewMessage] = useState("");
+
+  useEffect(() => {
+      if (matchId) {
+          const initialMessages = getMessagesByMatchId(matchId);
+          setMessages(initialMessages);
+      }
+  }, [matchId]);
+
 
   if (!match) {
     notFound();
@@ -31,13 +38,14 @@ export default function ChatPage() {
     if (newMessage.trim() === "") return;
 
     const message: ChatMessageType = {
-      id: `msg${Math.random()}`,
+      id: `msg${Date.now()}`,
       matchId,
       senderId: currentUserId,
       text: newMessage,
       timestamp: new Date(),
     };
 
+    addMessage(message);
     setMessages(prev => [...prev, message]);
     setNewMessage("");
   };
