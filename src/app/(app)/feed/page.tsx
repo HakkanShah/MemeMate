@@ -20,7 +20,7 @@ const sortMemes = (memes: Meme[]) => {
 };
 
 export default function FeedPage() {
-  const [memes, setMemes] = useState<Meme[]>(() => sortMemes(getStoredData<Meme[]>('dummyMemes', [])));
+  const [memes, setMemes] = useState<Meme[]>([]);
 
   const loadMemes = useCallback(() => {
     const allMemes = getStoredData<Meme[]>('dummyMemes', []);
@@ -28,7 +28,8 @@ export default function FeedPage() {
   }, []);
 
   useEffect(() => {
-    // Initial load is now in useState, so this effect is only for syncing changes.
+    loadMemes();
+
     const handleStorageChange = (e: StorageEvent) => {
         if (e.key === 'dummyMemes') {
             loadMemes();
