@@ -17,6 +17,10 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
   const userMemes = getMemesByAuthor(user.id);
   const isOwnProfile = user.id === 'user1'; // Demo: assume user1 is the logged-in user
 
+  const topMemes = [...userMemes]
+    .sort((a, b) => (b.reactions['😂'] + b.reactions['💘']) - (a.reactions['😂'] + a.reactions['💘']))
+    .slice(0, 3);
+
   return (
     <div className="p-4">
       <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
@@ -43,8 +47,19 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
       
       {isOwnProfile && <HumorTagSuggestor currentBio={user.bio} />}
 
+      {topMemes.length > 0 && (
+        <div className="mb-8">
+          <h2 className="font-headline text-4xl text-center my-8 tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
+            Top Memes
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {topMemes.map(meme => <MemeCard key={meme.id} meme={meme} />)}
+          </div>
+        </div>
+      )}
+
       <h2 className="font-headline text-4xl text-center my-8 tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
-        {user.username}'s Memes
+        {isOwnProfile ? "Your Meme Gallery" : `${user.username}'s Memes`}
       </h2>
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
         {userMemes.map(meme => <MemeCard key={meme.id} meme={meme} />)}
