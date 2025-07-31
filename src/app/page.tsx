@@ -69,7 +69,7 @@ export default function AuthPage() {
       humorTags: [],
       memeGenres: [],
       status: 'Single AF',
-      bio: 'New to Desi MemeMatch! Help me setup my profile.',
+      bio: 'New to MemeMate! Help me setup my profile.',
       quizResult: 'Newbie Memer',
     };
 
@@ -89,10 +89,10 @@ export default function AuthPage() {
     <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8 md:p-12">
       <div className="text-center mb-8">
         <h1 className="font-headline text-5xl sm:text-6xl md:text-8xl tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
-          Desi MemeMatch
+          MemeMate
         </h1>
         <p className="font-body text-lg sm:text-xl md:text-2xl mt-2 text-muted-foreground">
-          Jahan Memes Milte Hain, Aur Dil Bhi!
+          Where memes bring hearts together!
         </p>
       </div>
 
@@ -104,9 +104,9 @@ export default function AuthPage() {
         <TabsContent value="login">
           <Card className="comic-border">
             <CardHeader>
-              <CardTitle className="font-headline text-3xl">Wapis Aaye, MemeLover!</CardTitle>
+              <CardTitle className="font-headline text-3xl">Welcome Back, MemeLover!</CardTitle>
               <CardDescription>
-                Apna username aur password daalo aur meme-verse mein enter karo.
+                Enter your username and password to enter the meme-verse.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -125,9 +125,9 @@ export default function AuthPage() {
         <TabsContent value="signup">
           <Card className="comic-border">
             <CardHeader>
-              <CardTitle className="font-headline text-3xl">Naya Khiladi!</CardTitle>
+              <CardTitle className="font-headline text-3xl">New Player!</CardTitle>
               <CardDescription>
-                Account banao aur dekho kaun hai tumhara meme-mate.
+                Create an account and find your meme-mate.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

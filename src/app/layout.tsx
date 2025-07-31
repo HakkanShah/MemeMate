@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'Desi MemeMatch',
-  description: 'A Desi Meme Social + Dating Web App',
+  title: 'MemeMate',
+  description: 'Find your meme-mate!',
 };
 
 export default function RootLayout({
