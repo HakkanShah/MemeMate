@@ -12,26 +12,31 @@ import { MemeCard } from "@/components/meme-card";
 import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
 import { ProfileSettings } from "@/components/profile-settings";
 import { Users, Heart, CheckCircle } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+
 
 export default function ProfilePage() {
   const params = useParams();
   const userId = params.id as string;
   
-  const [user, setUser] = useState<User | undefined>(() => getUserById(userId));
-  const [userMemes, setUserMemes] = useState<Meme[]>(() => getMemesByAuthor(userId));
+  const [user, setUser] = useState<User | null>(null);
+  const [userMemes, setUserMemes] = useState<Meme[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(() => {
      if (userId) {
       const foundUser = getUserById(userId);
-      setUser(foundUser);
+      setUser(foundUser || null);
       if(foundUser) {
         const memes = getMemesByAuthor(foundUser.id);
         setUserMemes(memes);
       }
     }
+    setLoading(false);
   }, [userId]);
   
   useEffect(() => {
+    loadData();
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'dummyUsers' || e.key === 'dummyMemes') {
         loadData();
@@ -42,9 +47,12 @@ export default function ProfilePage() {
   }, [loadData]);
 
 
+  if (loading) {
+    return <ProfileSkeleton />;
+  }
+
   if (!user) {
-    // This now only shows briefly if the user ID is invalid
-    return <div>User not found...</div>;
+    return <div className="text-center p-8">User not found...</div>;
   }
   
   const isOwnProfile = user.id === 'user1'; // Demo: assume user1 is the logged-in user
@@ -111,6 +119,33 @@ export default function ProfilePage() {
       </h2>
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
         {userMemes.map(meme => <MemeCard key={meme.id} meme={meme} />)}
+      </div>
+    </div>
+  );
+}
+
+
+function ProfileSkeleton() {
+  return (
+    <div className="p-4">
+      <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
+        <Skeleton className="h-32 sm:h-48 w-full bg-primary/50" />
+        <CardContent className="p-4 sm:p-6 text-center -mt-16 sm:-mt-24">
+          <Skeleton className="mx-auto h-32 w-32 sm:h-48 sm:w-48 rounded-full border-8 border-background comic-border !border-4" />
+          <Skeleton className="h-12 w-48 mx-auto mt-4" />
+          <Skeleton className="h-6 w-24 mx-auto mt-2" />
+          <Skeleton className="h-10 w-full mt-4" />
+          <div className="flex flex-wrap justify-center gap-2 mt-4">
+            <Skeleton className="h-6 w-20" />
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-6 w-16" />
+          </div>
+        </CardContent>
+      </Card>
+      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+        {[...Array(8)].map((_, i) => (
+          <Skeleton key={i} className="h-64 w-full" />
+        ))}
       </div>
     </div>
   );
