@@ -1,18 +1,33 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { MemeCard } from "@/components/meme-card";
-import { dummyMemes as getInitialMemes } from "@/lib/dummy-data";
+import { getStoredData } from "@/lib/dummy-data";
 import type { Meme } from '@/lib/types';
 
 export default function FeedPage() {
   const [memes, setMemes] = useState<Meme[]>([]);
 
-  useEffect(() => {
-    // Data is now read from localStorage via the dummy-data module
-    const allMemes = getInitialMemes; 
+  const loadMemes = useCallback(() => {
+    const allMemes = getStoredData<Meme[]>('dummyMemes', []);
     setMemes(allMemes);
   }, []);
+
+  useEffect(() => {
+    loadMemes();
+
+    const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === 'dummyMemes') {
+            loadMemes();
+        }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+        window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [loadMemes]);
 
   return (
     <div className="p-4">

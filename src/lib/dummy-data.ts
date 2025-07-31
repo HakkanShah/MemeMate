@@ -4,7 +4,7 @@ import type { User, Meme, Match, ChatMessage, MemeComment } from '@/lib/types';
 
 const isBrowser = typeof window !== 'undefined';
 
-function getStoredData<T>(key: string, defaultValue: T): T {
+export function getStoredData<T>(key: string, defaultValue: T): T {
   if (!isBrowser) return defaultValue;
   try {
     const item = window.localStorage.getItem(key);
@@ -18,7 +18,19 @@ function getStoredData<T>(key: string, defaultValue: T): T {
 function setStoredData<T>(key: string, value: T): void {
   if (!isBrowser) return;
   try {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    const oldValue = window.localStorage.getItem(key);
+    const newValue = JSON.stringify(value);
+    
+    window.localStorage.setItem(key, newValue);
+
+    // Dispatch a storage event so other tabs can sync
+    window.dispatchEvent(new StorageEvent('storage', {
+        key: key,
+        oldValue: oldValue,
+        newValue: newValue,
+        storageArea: window.localStorage
+    }));
+
   } catch (error) {
     console.error(`Error writing to localStorage key “${key}”:`, error);
   }

@@ -1,23 +1,25 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useActionState, useTransition } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Upload, Wand2 } from 'lucide-react';
+import { Upload, Wand2, Loader2 } from 'lucide-react';
 import { addMeme } from '@/lib/dummy-data';
 import type { Meme } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
+import { suggestMemeCaption } from '@/ai/flows/suggest-meme-caption';
 
 export default function CreatePostPage() {
     const router = useRouter();
     const { toast } = useToast();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [caption, setCaption] = useState('');
-
+    const [isSuggesting, startSuggestionTransition] = useTransition();
+    
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -27,6 +29,29 @@ export default function CreatePostPage() {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleSuggestCaption = () => {
+        if (!imagePreview) {
+             toast({
+                variant: "destructive",
+                title: "No Image",
+                description: "Please upload an image before suggesting a caption.",
+            });
+            return;
+        }
+        startSuggestionTransition(async () => {
+            const result = await suggestMemeCaption({ imageDataUri: imagePreview });
+            if (result.caption) {
+                setCaption(result.caption);
+            } else {
+                 toast({
+                    variant: "destructive",
+                    title: "AI Error",
+                    description: "Could not suggest a caption. Please try again.",
+                });
+            }
+        });
     };
 
     const handlePost = () => {
@@ -99,9 +124,13 @@ export default function CreatePostPage() {
                             value={caption}
                             onChange={(e) => setCaption(e.target.value)}
                         />
-                         <Button variant="outline" className="w-full justify-start comic-border !border-2">
-                            <Wand2 className="mr-2 h-4 w-4" />
-                            Suggest a caption with AI
+                         <Button variant="outline" className="w-full justify-start comic-border !border-2" onClick={handleSuggestCaption} disabled={isSuggesting}>
+                            {isSuggesting ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                                <Wand2 className="mr-2 h-4 w-4" />
+                            )}
+                            {isSuggesting ? 'Thinking...' : 'Suggest a caption with AI'}
                         </Button>
                     </div>
 
