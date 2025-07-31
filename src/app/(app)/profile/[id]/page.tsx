@@ -1,11 +1,49 @@
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import Image from "next/image";
 import { dummyUsers, getMemesByAuthor } from "@/lib/dummy-data";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { MemeCard } from "@/components/meme-card";
 import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Settings, LogOut } from "lucide-react";
+
+function ProfileSettings() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // In a real app, this would handle the logout logic
+    router.push('/');
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="absolute top-4 left-4 z-10 comic-border !border-2">
+          <Settings />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="comic-border" align="start">
+        <DropdownMenuLabel>Settings</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Logout</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 
 export default function ProfilePage({ params }: { params: { id: string } }) {
   const user = dummyUsers.find(u => u.id === params.id);
@@ -22,7 +60,8 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
     .slice(0, 3);
 
   return (
-    <div className="p-4">
+    <div className="p-4 relative">
+      {isOwnProfile && <ProfileSettings />}
       <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
         <div className="h-32 sm:h-48 bg-primary relative">
            <Image src="https://placehold.co/800x200" layout="fill" objectFit="cover" alt="Banner" data-ai-hint="comic background"/>
