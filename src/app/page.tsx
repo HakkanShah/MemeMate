@@ -27,7 +27,6 @@ export default function AuthPage() {
     const user = users.find(u => u.username === loginUsername && u.password === loginPassword);
 
     if (user) {
-      // In a real app, you'd check a hashed password.
       localStorage.setItem('loggedInUser', user.id);
       router.push("/feed");
     } else {
@@ -63,7 +62,7 @@ export default function AuthPage() {
       id: newUserId,
       username: signupUsername,
       email: signupEmail,
-      password: signupPassword, // Storing password directly for demo purposes
+      password: signupPassword,
       profilePicUrl: 'https://placehold.co/200x200.png',
       bannerUrl: 'https://placehold.co/800x200.png',
       humorTags: [],
@@ -86,9 +85,9 @@ export default function AuthPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8 md:p-12">
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8">
       <div className="text-center mb-8">
-        <h1 className="font-headline text-5xl sm:text-6xl md:text-8xl tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
+        <h1 className="font-headline text-6xl sm:text-7xl md:text-8xl tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
           MemeMate
         </h1>
         <p className="font-body text-lg sm:text-xl md:text-2xl mt-2 text-muted-foreground">
@@ -96,7 +95,7 @@ export default function AuthPage() {
         </p>
       </div>
 
-      <Tabs defaultValue="login" className="w-full max-w-sm sm:max-w-md">
+      <Tabs defaultValue="login" className="w-full max-w-sm">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Login</TabsTrigger>
           <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -104,9 +103,9 @@ export default function AuthPage() {
         <TabsContent value="login">
           <Card className="comic-border">
             <CardHeader>
-              <CardTitle className="font-headline text-3xl">Welcome Back, MemeLover!</CardTitle>
+              <CardTitle className="font-headline text-3xl">Welcome Back!</CardTitle>
               <CardDescription>
-                Enter your username and password to enter the meme-verse.
+                Enter your details to enter the meme-verse.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

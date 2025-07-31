@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useActionState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -41,14 +41,22 @@ export default function CreatePostPage() {
             return;
         }
         startSuggestionTransition(async () => {
-            const result = await suggestMemeCaption({ imageDataUri: imagePreview });
-            if (result.caption) {
-                setCaption(result.caption);
-            } else {
+            try {
+                const result = await suggestMemeCaption({ imageDataUri: imagePreview });
+                if (result.caption) {
+                    setCaption(result.caption);
+                } else {
+                     toast({
+                        variant: "destructive",
+                        title: "AI Error",
+                        description: "Could not suggest a caption. Please try again.",
+                    });
+                }
+            } catch (error) {
                  toast({
                     variant: "destructive",
-                    title: "AI Error",
-                    description: "Could not suggest a caption. Please try again.",
+                    title: "AI Suggestion Failed",
+                    description: "Something went wrong while talking to the AI. Please try again later.",
                 });
             }
         });
@@ -86,8 +94,8 @@ export default function CreatePostPage() {
     };
 
     return (
-        <div className="p-4 max-w-2xl mx-auto">
-            <h1 className="font-headline text-5xl text-center my-8 tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
+        <div className="p-2 sm:p-4 max-w-2xl mx-auto">
+            <h1 className="font-headline text-4xl sm:text-5xl text-center my-8 tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
                 Create a New Meme
             </h1>
             <Card className="comic-border">
@@ -104,7 +112,7 @@ export default function CreatePostPage() {
                             {imagePreview ? (
                                 <Image src={imagePreview} alt="Meme preview" width={200} height={200} className="object-contain max-h-full rounded-md" />
                             ) : (
-                                <div className="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
                                     <Upload className="w-10 h-10 mb-3 text-muted-foreground" />
                                     <p className="mb-2 text-sm text-muted-foreground">
                                         <span className="font-semibold">Click to upload</span> or drag and drop
