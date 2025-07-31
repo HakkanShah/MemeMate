@@ -39,12 +39,12 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
   const { toast } = useToast();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [formData, setFormData] = useState<Partial<User>>({
-    username: user.username,
-    bio: user.bio,
-    gender: user.gender,
-    relationshipStatus: user.relationshipStatus,
-    lookingFor: user.lookingFor,
-    status: user.status
+    username: user.username || '',
+    bio: user.bio || '',
+    gender: user.gender || '',
+    relationshipStatus: user.relationshipStatus || 'Single AF',
+    lookingFor: user.lookingFor || '',
+    status: user.status || 'Single AF'
   });
   const [profilePicPreview, setProfilePicPreview] = useState<string | null>(user.profilePicUrl);
   const [bannerPreview, setBannerPreview] = useState<string | null>(user.bannerUrl || null);
