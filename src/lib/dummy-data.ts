@@ -101,6 +101,26 @@ export const dummyUsers: User[] = [
     bio: 'If you are not outraged, you are not paying attention. Or looking at my memes.',
     quizResult: 'Roast Master',
   },
+  {
+    id: 'user11',
+    username: 'MemeWaliAunty',
+    profilePicUrl: 'https://placehold.co/200x200',
+    humorTags: ['WhatsApp Aunty', 'Sanskari'],
+    memeGenres: ['Cringe'],
+    status: 'Meme-ing Around',
+    bio: 'Good morning messages and memes are my specialty.',
+    quizResult: 'Wholesome Queen',
+  },
+  {
+    id: 'user12',
+    username: 'ThePunMaster',
+    profilePicUrl: 'https://placehold.co/200x200',
+    humorTags: ['Troll', 'Roast'],
+    memeGenres: ['Roast'],
+    status: 'Single AF',
+    bio: 'I don\'t make jokes. I make puns. There\'s a difference.',
+    quizResult: 'Roast Master',
+  },
 ];
 
 export const dummyMemes: Meme[] = [
