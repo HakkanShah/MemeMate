@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { notFound, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import { getUserById, getMemesByAuthor } from "@/lib/dummy-data";
 import type { User, Meme } from "@/lib/types";
@@ -12,16 +12,15 @@ import { MemeCard } from "@/components/meme-card";
 import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
 import { ProfileSettings } from "@/components/profile-settings";
 
-
 export default function ProfilePage() {
   const params = useParams();
   const userId = params.id as string;
   
   const [user, setUser] = useState<User | undefined>(undefined);
   const [userMemes, setUserMemes] = useState<Meme[]>([]);
-  
-  useEffect(() => {
-    if (userId) {
+
+  const loadData = () => {
+     if (userId) {
       const foundUser = getUserById(userId);
       setUser(foundUser);
       if(foundUser) {
@@ -29,7 +28,20 @@ export default function ProfilePage() {
         setUserMemes(memes);
       }
     }
+  }
+  
+  useEffect(() => {
+    loadData();
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'dummyUsers' || e.key === 'dummyMemes') {
+        loadData();
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, [userId]);
+
 
   if (!user) {
     // You might want to show a loading spinner here
@@ -44,10 +56,10 @@ export default function ProfilePage() {
 
   return (
     <div className="p-4 relative">
-      {isOwnProfile && <ProfileSettings />}
+      {isOwnProfile && <ProfileSettings user={user} />}
       <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
         <div className="h-32 sm:h-48 bg-primary relative">
-           <Image src="https://placehold.co/800x200.png" layout="fill" objectFit="cover" alt="Banner" data-ai-hint="comic background"/>
+           <Image src={user.bannerUrl || "https://placehold.co/800x200.png"} layout="fill" objectFit="cover" alt="Banner" data-ai-hint="comic background"/>
         </div>
         <CardContent className="p-4 sm:p-6 text-center -mt-16 sm:-mt-24">
           <Avatar className="mx-auto h-32 w-32 sm:h-48 sm:w-48 border-8 border-background comic-border !border-4">

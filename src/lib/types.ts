@@ -2,6 +2,7 @@ export interface User {
   id: string;
   username: string;
   profilePicUrl: string;
+  bannerUrl: string;
   humorTags: string[];
   memeGenres: string[];
   status: 'Single AF' | 'Meme-ing Around' | 'Taken But Still Posting';

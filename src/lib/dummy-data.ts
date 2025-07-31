@@ -44,6 +44,7 @@ const defaultUsers: User[] = [
     id: 'user1',
     username: 'RajuMemer69',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Desi', 'Troll', 'Dark'],
     memeGenres: ['Political', 'Roast'],
     status: 'Single AF',
@@ -54,6 +55,7 @@ const defaultUsers: User[] = [
     id: 'user2',
     username: 'SharmaJiKiBeti',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Bollywood', 'Wholesome', 'Sanskari'],
     memeGenres: ['Cringe', 'Wholesome'],
     status: 'Meme-ing Around',
@@ -64,6 +66,7 @@ const defaultUsers: User[] = [
     id: 'user3',
     username: 'JethalalOP',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Desi', 'WhatsApp Aunty'],
     memeGenres: ['Cringe', 'Sanskari'],
     status: 'Single AF',
@@ -74,6 +77,7 @@ const defaultUsers: User[] = [
     id: 'user4',
     username: 'BhaiKaMeme',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Troll', 'Roast'],
     memeGenres: ['Political', 'Roast'],
     status: 'Taken But Still Posting',
@@ -84,6 +88,7 @@ const defaultUsers: User[] = [
     id: 'user5',
     username: 'SarcasmKiRani',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Dark', 'Roast'],
     memeGenres: ['Political'],
     status: 'Single AF',
@@ -94,6 +99,7 @@ const defaultUsers: User[] = [
     id: 'user6',
     username: 'EngineerMemes',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Engineer AF', 'Troll'],
     memeGenres: ['Engineering', 'Roast'],
     status: 'Meme-ing Around',
@@ -104,6 +110,7 @@ const defaultUsers: User[] = [
     id: 'user7',
     username: 'BollywoodKaBadshah',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Bollywood', 'Wholesome'],
     memeGenres: ['Cringe'],
     status: 'Taken But Still Posting',
@@ -114,6 +121,7 @@ const defaultUsers: User[] = [
     id: 'user8',
     username: 'CringeContentCreator',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Cringe', 'Bollywood'],
     memeGenres: ['Cringe'],
     status: 'Meme-ing Around',
@@ -124,6 +132,7 @@ const defaultUsers: User[] = [
     id: 'user9',
     username: 'TheWholesomeMemer',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Wholesome', 'Sanskari'],
     memeGenres: ['Wholesome'],
     status: 'Single AF',
@@ -134,6 +143,7 @@ const defaultUsers: User[] = [
     id: 'user10',
     username: 'PoliticalKida',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Political', 'Roast'],
     memeGenres: ['Political'],
     status: 'Taken But Still Posting',
@@ -144,6 +154,7 @@ const defaultUsers: User[] = [
     id: 'user11',
     username: 'MemeWaliAunty',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['WhatsApp Aunty', 'Sanskari'],
     memeGenres: ['Cringe'],
     status: 'Meme-ing Around',
@@ -154,6 +165,7 @@ const defaultUsers: User[] = [
     id: 'user12',
     username: 'ThePunMaster',
     profilePicUrl: 'https://placehold.co/200x200.png',
+    bannerUrl: 'https://placehold.co/800x200.png',
     humorTags: ['Troll', 'Roast'],
     memeGenres: ['Roast'],
     status: 'Single AF',
@@ -377,6 +389,11 @@ export const updateMeme = (updatedMeme: Meme) => {
     setStoredData('dummyMemes', newMemes);
 };
 
+export const updateUser = (updatedUser: User) => {
+    const users = getStoredData<User[]>('dummyUsers', []);
+    const newUsers = users.map(user => user.id === updatedUser.id ? updatedUser : user);
+    setStoredData('dummyUsers', newUsers);
+};
 
 export const addMessage = (message: ChatMessage) => {
     const messages = getStoredData<ChatMessage[]>('dummyChatMessages', []);
