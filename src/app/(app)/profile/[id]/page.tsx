@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -65,11 +66,13 @@ export default function ProfilePage() {
     <div className="p-2 sm:p-4 relative">
       {isOwnProfile && <ProfileSettings user={user} />}
       <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
-        <div className="h-32 sm:h-48 bg-primary relative">
-           <Image src={user.bannerUrl || "https://placehold.co/800x200.png"} layout="fill" objectFit="cover" alt="Banner" data-ai-hint="comic background"/>
+        <div className="bg-primary p-4">
+             <div className="flex flex-wrap justify-center gap-2">
+                {user.humorTags.slice(0, 3).map(tag => <Badge key={tag} variant="secondary" className="text-lg comic-border !border-2">{tag}</Badge>)}
+            </div>
         </div>
-        <CardContent className="p-4 pt-0 sm:p-6 text-center -mt-16 sm:-mt-24">
-          <Avatar className="mx-auto h-32 w-32 sm:h-40 sm:w-40 border-8 border-background comic-border !border-4">
+        <CardContent className="p-4 sm:p-6 text-center">
+          <Avatar className="mx-auto h-32 w-32 sm:h-40 sm:w-40 border-8 border-background comic-border !border-4 -mt-20">
             <AvatarImage src={user.profilePicUrl} alt={user.username} data-ai-hint="meme avatar" />
             <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
           </Avatar>
@@ -129,9 +132,9 @@ function ProfileSkeleton() {
   return (
     <div className="p-2 sm:p-4">
       <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
-        <Skeleton className="h-32 sm:h-48 w-full bg-primary/50" />
-        <CardContent className="p-4 sm:p-6 text-center -mt-16 sm:-mt-24">
-          <Skeleton className="mx-auto h-32 w-32 sm:h-40 sm:w-40 rounded-full border-8 border-background comic-border !border-4" />
+        <Skeleton className="h-24 w-full bg-primary/50" />
+        <CardContent className="p-4 sm:p-6 text-center">
+          <Skeleton className="mx-auto h-32 w-32 sm:h-40 sm:w-40 rounded-full border-8 border-background comic-border !border-4 -mt-20" />
           <Skeleton className="h-12 w-48 mx-auto mt-4" />
           <Skeleton className="h-6 w-24 mx-auto mt-2" />
           <Skeleton className="h-10 w-full mt-4" />

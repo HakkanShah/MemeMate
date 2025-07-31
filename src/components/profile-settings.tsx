@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -12,7 +13,6 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
   SheetFooter,
   SheetClose
 } from "@/components/ui/sheet";
@@ -47,7 +47,6 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
     status: user.status || 'Single AF'
   });
   const [profilePicPreview, setProfilePicPreview] = useState<string | null>(user.profilePicUrl);
-  const [bannerPreview, setBannerPreview] = useState<string | null>(user.bannerUrl || null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -58,17 +57,13 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
     setFormData(prev => ({ ...prev, [name]: value }));
   }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, imageType: 'profile' | 'banner') => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const result = reader.result as string;
-        if (imageType === 'profile') {
-          setProfilePicPreview(result);
-        } else {
-          setBannerPreview(result);
-        }
+        setProfilePicPreview(result);
       };
       reader.readAsDataURL(file);
     }
@@ -79,7 +74,6 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
       ...user,
       ...formData,
       profilePicUrl: profilePicPreview || user.profilePicUrl,
-      bannerUrl: bannerPreview || user.bannerUrl,
     };
     updateUser(updatedUser);
     toast({
@@ -120,22 +114,7 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
                 <Upload className="w-8 h-8 text-muted-foreground" />
               )}
             </label>
-            <Input id="profile-pic-upload" type="file" className="hidden" accept="image/*" onChange={(e) => handleImageChange(e, 'profile')} />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="banner-upload" className="text-center block">Banner Image</Label>
-             <label
-                htmlFor="banner-upload"
-                className="flex items-center justify-center w-full h-32 rounded-md cursor-pointer bg-muted/50 hover:bg-muted/80 transition-colors comic-border !border-2 overflow-hidden"
-            >
-                {bannerPreview ? (
-                    <Image src={bannerPreview} alt="Banner preview" layout="fill" className="object-cover" />
-                ) : (
-                    <Upload className="w-8 h-8 text-muted-foreground" />
-                )}
-            </label>
-            <Input id="banner-upload" type="file" className="hidden" accept="image/*" onChange={(e) => handleImageChange(e, 'banner')} />
+            <Input id="profile-pic-upload" type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
           </div>
 
           <div className="space-y-2">

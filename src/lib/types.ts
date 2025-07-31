@@ -1,10 +1,10 @@
+
 export interface User {
   id: string;
   username: string;
   email?: string; // Optional for existing users, required for new ones
   password?: string; // Optional for existing users, required for new ones
   profilePicUrl: string;
-  bannerUrl: string;
   humorTags: string[];
   memeGenres: string[];
   gender?: string;

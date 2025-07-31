@@ -64,7 +64,6 @@ export default function AuthPage() {
       email: signupEmail,
       password: signupPassword,
       profilePicUrl: 'https://placehold.co/200x200.png',
-      bannerUrl: 'https://placehold.co/800x200.png',
       humorTags: [],
       memeGenres: [],
       status: 'Single AF',
