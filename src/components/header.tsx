@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Heart, User, Sparkles } from "lucide-react";
+import { Home, MessageCircle, Heart, User, PlusSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 const navItems = [
   { href: "/feed", label: "Feed", icon: Home },
   { href: "/swipe", label: "Swipe", icon: Heart },
+  { href: "/post/create", label: "Post", icon: PlusSquare },
   { href: "/chat", label: "Chats", icon: MessageCircle },
   { href: "/profile/user1", label: "Profile", icon: User },
 ];
