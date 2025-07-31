@@ -9,25 +9,25 @@ body {
 
 @layer base {
   :root {
-    --background: 40 82% 94%;
+    --background: 45 69% 86%; /* Desaturated Yellow (#F2E7C6) */
     --foreground: 20 14.3% 4.1%;
-    --card: 40 82% 91%;
+    --card: 45 69% 89%; /* Lighter version of background */
     --card-foreground: 20 14.3% 4.1%;
-    --popover: 40 82% 91%;
+    --popover: 45 69% 89%;
     --popover-foreground: 20 14.3% 4.1%;
-    --primary: 220 80% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 48 100% 70%; /* Meme Yellow (#FFDA63) */
+    --primary-foreground: 20 14.3% 4.1%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 210 40% 9.8%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 0 90% 60%;
-    --accent-foreground: 210 40% 9.8%;
+    --accent: 198 93% 54%; /* Jio Blue (#12B8FF) */
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 220 80% 55%;
+    --ring: 198 93% 54%; /* Jio Blue for ring */
     --radius: 0.5rem;
   }
 
@@ -38,19 +38,19 @@ body {
     --card-foreground: 0 0% 98%;
     --popover: 20 14.3% 4.1%;
     --popover-foreground: 0 0% 98%;
-    --primary: 220 80% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 48 100% 70%;
+    --primary-foreground: 20 14.3% 4.1%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 0 90% 60%;
+    --accent: 198 93% 54%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 220 80% 55%;
+    --ring: 198 93% 54%;
   }
 }
 
@@ -69,15 +69,15 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: url('https://placehold.co/1920x1080.png/FFF8E1/FFF8E1');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.5;
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(circle at center, hsla(0, 0%, 0%, 0.05) 1px, transparent 1px),
+      radial-gradient(circle at center, hsla(0, 0%, 0%, 0.05) 1px, transparent 1px);
+    background-size: 10px 10px;
+    background-position: 0 0, 5px 5px;
+    opacity: 0.3;
     z-index: -1;
     pointer-events: none;
-    background-repeat: no-repeat;
-    filter: grayscale(50%);
-    data-ai-hint: comic book pattern;
   }
 
   .font-headline {
