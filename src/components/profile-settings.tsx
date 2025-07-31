@@ -23,11 +23,11 @@ export function ProfileSettings() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="absolute top-4 left-4 z-10 comic-border !border-2">
+        <Button variant="ghost" size="icon" className="absolute top-4 right-4 z-10 comic-border !border-2">
           <Settings />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="comic-border" align="start">
+      <DropdownMenuContent className="comic-border" align="end">
         <DropdownMenuLabel>Settings</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>
