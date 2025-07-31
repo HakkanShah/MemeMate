@@ -86,7 +86,7 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
           <Settings />
         </Button>
       </SheetTrigger>
-      <SheetContent className="comic-border !border-l-4">
+      <SheetContent className="comic-border !border-l-4 overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="font-headline text-3xl">Edit Your Profile</SheetTitle>
           <SheetDescription>
@@ -95,13 +95,13 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
         </SheetHeader>
         <div className="grid gap-6 py-4">
           <div className="space-y-2">
-            <Label htmlFor="profile-pic-upload">Profile Picture</Label>
+            <Label htmlFor="profile-pic-upload" className="text-center block">Profile Picture</Label>
             <label
               htmlFor="profile-pic-upload"
-              className="relative flex items-center justify-center w-32 h-32 rounded-full cursor-pointer bg-muted/50 hover:bg-muted/80 transition-colors mx-auto"
+              className="relative flex items-center justify-center w-32 h-32 rounded-full cursor-pointer bg-muted/50 hover:bg-muted/80 transition-colors mx-auto comic-border !border-2 overflow-hidden"
             >
               {profilePicPreview ? (
-                <Image src={profilePicPreview} alt="Profile preview" layout="fill" className="object-cover rounded-full" />
+                <Image src={profilePicPreview} alt="Profile preview" layout="fill" className="object-cover" />
               ) : (
                 <Upload className="w-8 h-8 text-muted-foreground" />
               )}
@@ -110,13 +110,13 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="banner-upload">Banner Image</Label>
+            <Label htmlFor="banner-upload" className="text-center block">Banner Image</Label>
              <label
                 htmlFor="banner-upload"
-                className="flex items-center justify-center w-full h-32 rounded-md cursor-pointer bg-muted/50 hover:bg-muted/80 transition-colors"
+                className="flex items-center justify-center w-full h-32 rounded-md cursor-pointer bg-muted/50 hover:bg-muted/80 transition-colors comic-border !border-2 overflow-hidden"
             >
                 {bannerPreview ? (
-                    <Image src={bannerPreview} alt="Banner preview" layout="fill" className="object-cover rounded-md" />
+                    <Image src={bannerPreview} alt="Banner preview" layout="fill" className="object-cover" />
                 ) : (
                     <Upload className="w-8 h-8 text-muted-foreground" />
                 )}
@@ -137,7 +137,7 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
             <Input id="status" name="status" value={formData.status} onChange={handleInputChange} className="comic-border !border-2" />
           </div>
         </div>
-        <SheetFooter className="flex-col sm:flex-col sm:space-x-0 gap-2">
+        <SheetFooter className="flex-col sm:flex-col sm:space-x-0 gap-2 mt-4">
           <Button onClick={handleSaveChanges} className="w-full comic-border !border-2">Save changes</Button>
           <Button variant="destructive" onClick={handleLogout} className="w-full comic-border !border-2">
             <LogOut className="mr-2 h-4 w-4" />
