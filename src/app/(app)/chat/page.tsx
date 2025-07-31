@@ -2,17 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import Link from "next/link";
-import { dummyMatches as getInitialMatches, getUserById } from "@/lib/dummy-data";
+import { getStoredData, getUserById } from "@/lib/dummy-data";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import type { Match } from '@/lib/types';
 
 export default function ChatListPage() {
   const currentUserId = "user1";
-  const [matches, setMatches] = useState<Match[]>([]);
+  // Load matches directly from stored data on initial render
+  const [matches, setMatches] = useState<Match[]>(() => getStoredData('dummyMatches', []));
 
   useEffect(() => {
-    setMatches(getInitialMatches);
+    const handleStorageChange = () => {
+        setMatches(getStoredData('dummyMatches', []));
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   return (

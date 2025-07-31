@@ -5,13 +5,9 @@ import { MemeCard } from "@/components/meme-card";
 import { getStoredData } from "@/lib/dummy-data";
 import type { Meme } from '@/lib/types';
 
-export default function FeedPage() {
-  const [memes, setMemes] = useState<Meme[]>([]);
-
-  const loadMemes = useCallback(() => {
-    const allMemes = getStoredData<Meme[]>('dummyMemes', []);
+const sortMemes = (memes: Meme[]) => {
     // Sort memes to show verified user's posts first, then by timestamp
-    const sortedMemes = allMemes.sort((a, b) => {
+    return memes.sort((a, b) => {
         if (a.authorId === 'user_hakkan' && b.authorId !== 'user_hakkan') {
             return -1; // a comes first
         }
@@ -21,12 +17,18 @@ export default function FeedPage() {
         // If both are/aren't Hakkan, sort by time
         return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
     });
-    setMemes(sortedMemes);
+};
+
+export default function FeedPage() {
+  const [memes, setMemes] = useState<Meme[]>(() => sortMemes(getStoredData<Meme[]>('dummyMemes', [])));
+
+  const loadMemes = useCallback(() => {
+    const allMemes = getStoredData<Meme[]>('dummyMemes', []);
+    setMemes(sortMemes(allMemes));
   }, []);
 
   useEffect(() => {
-    loadMemes();
-
+    // Initial load is now in useState, so this effect is only for syncing changes.
     const handleStorageChange = (e: StorageEvent) => {
         if (e.key === 'dummyMemes') {
             loadMemes();

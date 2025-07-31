@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { getUserById, getMemesByAuthor } from "@/lib/dummy-data";
@@ -17,10 +17,10 @@ export default function ProfilePage() {
   const params = useParams();
   const userId = params.id as string;
   
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const [userMemes, setUserMemes] = useState<Meme[]>([]);
+  const [user, setUser] = useState<User | undefined>(() => getUserById(userId));
+  const [userMemes, setUserMemes] = useState<Meme[]>(() => getMemesByAuthor(userId));
 
-  const loadData = () => {
+  const loadData = useCallback(() => {
      if (userId) {
       const foundUser = getUserById(userId);
       setUser(foundUser);
@@ -29,11 +29,9 @@ export default function ProfilePage() {
         setUserMemes(memes);
       }
     }
-  }
+  }, [userId]);
   
   useEffect(() => {
-    loadData();
-
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'dummyUsers' || e.key === 'dummyMemes') {
         loadData();
@@ -41,12 +39,12 @@ export default function ProfilePage() {
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [userId]);
+  }, [loadData]);
 
 
   if (!user) {
-    // You might want to show a loading spinner here
-    return <div>Loading...</div>;
+    // This now only shows briefly if the user ID is invalid
+    return <div>User not found...</div>;
   }
   
   const isOwnProfile = user.id === 'user1'; // Demo: assume user1 is the logged-in user
