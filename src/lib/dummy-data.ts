@@ -70,7 +70,37 @@ export const dummyUsers: User[] = [
     status: 'Taken But Still Posting',
     bio: 'My life is a Karan Johar movie, but with more memes.',
     quizResult: 'Wholesome King',
-  }
+  },
+  {
+    id: 'user8',
+    username: 'CringeContentCreator',
+    profilePicUrl: 'https://placehold.co/200x200',
+    humorTags: ['Cringe', 'Bollywood'],
+    memeGenres: ['Cringe'],
+    status: 'Meme-ing Around',
+    bio: 'Making you cringe is my passion.',
+    quizResult: 'Cringe King',
+  },
+  {
+    id: 'user9',
+    username: 'TheWholesomeMemer',
+    profilePicUrl: 'https://placehold.co/200x200',
+    humorTags: ['Wholesome', 'Sanskari'],
+    memeGenres: ['Wholesome'],
+    status: 'Single AF',
+    bio: 'Spreading positivity, one meme at a time.',
+    quizResult: 'Wholesome Queen',
+  },
+  {
+    id: 'user10',
+    username: 'PoliticalKida',
+    profilePicUrl: 'https://placehold.co/200x200',
+    humorTags: ['Political', 'Roast'],
+    memeGenres: ['Political'],
+    status: 'Taken But Still Posting',
+    bio: 'If you are not outraged, you are not paying attention. Or looking at my memes.',
+    quizResult: 'Roast Master',
+  },
 ];
 
 export const dummyMemes: Meme[] = [
@@ -146,6 +176,42 @@ export const dummyMemes: Meme[] = [
     reactions: { '😂': 700, '🙏': 40, '💀': 90, '😭': 100, '💘': 60 },
     timestamp: new Date('2024-07-21T12:00:00Z'),
   },
+  {
+    id: 'meme9',
+    imageUrl: 'https://placehold.co/600x600',
+    aiHint: 'woman dancing',
+    caption: 'Me after my code runs on the first try.',
+    authorId: 'user8',
+    reactions: { '😂': 800, '🙏': 20, '💀': 10, '😭': 5, '💘': 100 },
+    timestamp: new Date('2024-07-22T09:00:00Z'),
+  },
+  {
+    id: 'meme10',
+    imageUrl: 'https://placehold.co/700x700',
+    aiHint: 'cute cat',
+    caption: 'This is a wholesome meme. No dark humor here.',
+    authorId: 'user9',
+    reactions: { '😂': 100, '🙏': 500, '💀': 0, '😭': 5, '💘': 400 },
+    timestamp: new Date('2024-07-22T10:00:00Z'),
+  },
+  {
+    id: 'meme11',
+    imageUrl: 'https://placehold.co/600x700',
+    aiHint: 'politician speech',
+    caption: 'Me explaining to my parents why I need more pocket money.',
+    authorId: 'user10',
+    reactions: { '😂': 900, '🙏': 10, '💀': 50, '😭': 100, '💘': 20 },
+    timestamp: new Date('2024-07-22T11:00:00Z'),
+  },
+  {
+    id: 'meme12',
+    imageUrl: 'https://placehold.co/600x750',
+    aiHint: 'student crying',
+    caption: '1 like = 1 prayer for my grades.',
+    authorId: 'user6',
+    reactions: { '😂': 200, '🙏': 800, '💀': 20, '😭': 500, '💘': 10 },
+    timestamp: new Date('2024-07-22T12:00:00Z'),
+  },
 ];
 
 export const dummyMatches: Match[] = [
@@ -156,13 +222,23 @@ export const dummyMatches: Match[] = [
   },
   {
     id: 'match2',
-    userIds: ['user3', 'user4'],
+    userIds: ['user1', 'user3'],
     timestamp: new Date('2024-07-18T18:00:00Z'),
   },
   {
     id: 'match3',
     userIds: ['user1', 'user5'],
     timestamp: new Date('2024-07-20T21:00:00Z'),
+  },
+  {
+    id: 'match4',
+    userIds: ['user2', 'user7'],
+    timestamp: new Date('2024-07-21T21:00:00Z'),
+  },
+  {
+    id: 'match5',
+    userIds: ['user4', 'user10'],
+    timestamp: new Date('2024-07-22T21:00:00Z'),
   },
 ];
 
@@ -172,10 +248,16 @@ export const dummyChatMessages: ChatMessage[] = [
     { id: 'msg3', matchId: 'match1', senderId: 'user1', text: 'Haha thanks! So, chai pe chalein?', timestamp: new Date('2024-07-19T20:03:00Z') },
 
     { id: 'msg4', matchId: 'match2', senderId: 'user3', text: 'Your bio is hilarious', timestamp: new Date('2024-07-18T18:01:00Z') },
-    { id: 'msg5', matchId: 'match2', senderId: 'user4', text: 'Yours too! Finally, someone with good taste in memes', timestamp: new Date('2024-07-18T18:02:00Z') },
+    { id: 'msg5', matchId: 'match2', senderId: 'user1', text: 'Yours too! Finally, someone with good taste in memes', timestamp: new Date('2024-07-18T18:02:00Z') },
     
     { id: 'msg6', matchId: 'match3', senderId: 'user1', text: 'Your sarcasm is on point!', timestamp: new Date('2024-07-20T21:01:00Z') },
     { id: 'msg7', matchId: 'match3', senderId: 'user5', text: 'I could say the same about your troll memes.', timestamp: new Date('2024-07-20T21:02:00Z') },
+
+    { id: 'msg8', matchId: 'match4', senderId: 'user2', text: 'Your SRK pose is better than the original!', timestamp: new Date('2024-07-21T21:01:00Z') },
+    { id: 'msg9', matchId: 'match4', senderId: 'user7', text: 'Haha, years of practice in front of the mirror.', timestamp: new Date('2024-07-21T21:02:00Z') },
+
+    { id: 'msg10', matchId: 'match5', senderId: 'user4', text: 'Did you see the latest news? Perfect meme material.', timestamp: new Date('2024-07-22T21:01:00Z') },
+    { id: 'msg11', matchId: 'match5', senderId: 'user10', text: 'Already on it. A new meme is cooking.', timestamp: new Date('2024-07-22T21:02:00Z') },
 ];
 
 export const getUserById = (id: string) => dummyUsers.find(u => u.id === id);
