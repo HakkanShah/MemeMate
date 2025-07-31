@@ -15,7 +15,7 @@ export function getStoredData<T>(key: string, defaultValue: T): T {
   }
 }
 
-function setStoredData<T>(key: string, value: T): void {
+export function setStoredData<T>(key: string, value: T): void {
   if (!isBrowser) return;
   try {
     const oldValue = window.localStorage.getItem(key);
