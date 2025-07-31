@@ -13,6 +13,7 @@ export interface MemeComment {
     userId: string;
     text: string;
     timestamp: Date;
+    votes: number;
 }
 
 export interface Meme {

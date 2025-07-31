@@ -7,10 +7,10 @@ import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import type { Meme } from "@/lib/types";
+import type { Meme, MemeComment } from "@/lib/types";
 import { getUserById } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
-import { MessageSquare, Send } from "lucide-react";
+import { MessageSquare, Send, ArrowUp, ArrowDown } from "lucide-react";
 import { Input } from "./ui/input";
 
 interface MemeCardProps {
@@ -22,6 +22,7 @@ export function MemeCard({ meme }: MemeCardProps) {
   const [reactions, setReactions] = useState(meme.reactions);
   const [comments, setComments] = useState(meme.comments || []);
   const [newComment, setNewComment] = useState("");
+  const [showAllComments, setShowAllComments] = useState(false);
 
   const handleReaction = (emoji: keyof typeof reactions) => {
     setReactions(prev => ({ ...prev, [emoji]: prev[emoji] + 1 }));
@@ -30,16 +31,29 @@ export function MemeCard({ meme }: MemeCardProps) {
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (newComment.trim() === "") return;
-    setComments(prev => [...prev, { userId: 'user1', text: newComment, timestamp: new Date() }]);
+    setComments(prev => [...prev, { userId: 'user1', text: newComment, timestamp: new Date(), votes: 0 }]);
     setNewComment("");
   }
 
+  const handleVote = (commentIndex: number, voteType: 'up' | 'down') => {
+    setComments(prev => 
+      prev.map((comment, index) => {
+        if (index === commentIndex) {
+          return { ...comment, votes: comment.votes + (voteType === 'up' ? 1 : -1) };
+        }
+        return comment;
+      })
+    );
+  };
 
   if (!author) return null;
   
   const topReactions = Object.entries(reactions)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 3);
+
+  const sortedComments = [...comments].sort((a, b) => b.votes - a.votes);
+  const commentsToShow = showAllComments ? sortedComments : sortedComments.slice(0, 2);
 
   return (
     <div className="break-inside-avoid">
@@ -72,20 +86,35 @@ export function MemeCard({ meme }: MemeCardProps) {
               {topReactions.map(([emoji, count]) => (
                 <ReactionButton key={emoji} emoji={emoji} count={count} onClick={() => handleReaction(emoji as keyof typeof reactions)} />
               ))}
-               <Button variant="ghost" className="flex items-center gap-2 text-lg">
+               <Button variant="ghost" className="flex items-center gap-2 text-lg" onClick={() => setShowAllComments(!showAllComments)}>
                   <MessageSquare />
                   <span className="text-sm font-bold">{comments.length}</span>
               </Button>
            </div>
            <div className="w-full space-y-2">
-             {comments.slice(0,2).map((comment, index) => {
+             {commentsToShow.map((comment, index) => {
                 const commentAuthor = getUserById(comment.userId);
+                const originalIndex = comments.findIndex(c => c === comment);
                 return (
-                    <div key={index} className="text-sm">
-                        <span className="font-bold">{commentAuthor?.username || 'User'}</span>: {comment.text}
+                    <div key={index} className="text-sm flex justify-between items-center w-full">
+                       <div>
+                         <span className="font-bold">{commentAuthor?.username || 'User'}</span>: {comment.text}
+                       </div>
+                       <div className="flex items-center gap-1">
+                          <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => handleVote(originalIndex, 'up')}>
+                            <ArrowUp className="h-4 w-4" />
+                          </Button>
+                          <span className="text-xs font-bold w-4 text-center">{comment.votes}</span>
+                          <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => handleVote(originalIndex, 'down')}>
+                            <ArrowDown className="h-4 w-4" />
+                          </Button>
+                       </div>
                     </div>
                 )
              })}
+             {!showAllComments && comments.length > 2 && (
+                <Button variant="link" size="sm" onClick={() => setShowAllComments(true)}>View all {comments.length} comments</Button>
+             )}
              <form onSubmit={handleCommentSubmit} className="flex items-center gap-2 w-full">
                 <Input 
                     placeholder="Add a comment..." 

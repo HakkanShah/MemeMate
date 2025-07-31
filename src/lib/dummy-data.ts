@@ -112,8 +112,8 @@ export const dummyMemes: Meme[] = [
     authorId: 'user1',
     reactions: { '😂': 102, '🙏': 12, '💀': 45, '😭': 5, '💘': 20 },
     comments: [
-        { userId: 'user2', text: 'So true!', timestamp: new Date() },
-        { userId: 'user3', text: 'Hahaha!', timestamp: new Date() }
+        { userId: 'user2', text: 'So true!', timestamp: new Date(), votes: 5 },
+        { userId: 'user3', text: 'Hahaha!', timestamp: new Date(), votes: 2 }
     ],
     timestamp: new Date('2024-07-20T10:00:00Z'),
   },
