@@ -27,7 +27,10 @@ export default function ProfilePage() {
   const loadData = useCallback(() => {
      if (userId) {
       const foundUser = getUserById(userId);
-      if(!foundUser) return notFound();
+      if(!foundUser) {
+        setLoading(false); // Stop loading even if user not found
+        return; // Early exit
+      };
       
       setUser(foundUser);
       const memes = getMemesByAuthor(foundUser.id);
@@ -53,7 +56,7 @@ export default function ProfilePage() {
   }
 
   if (!user) {
-     return <div className="text-center p-8">User not found...</div>;
+    notFound();
   }
   
   const isOwnProfile = user.id === 'user1';
@@ -66,19 +69,19 @@ export default function ProfilePage() {
     <div className="p-2 sm:p-4 relative">
       {isOwnProfile && <ProfileSettings user={user} />}
       <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
-        <div className="bg-primary p-4 pt-16">
+        <div className="bg-primary p-4 pt-16 sm:pt-20">
              <div className="flex flex-wrap justify-center gap-2">
                 {user.humorTags.slice(0, 3).map(tag => <Badge key={tag} variant="secondary" className="text-lg comic-border !border-2">{tag}</Badge>)}
             </div>
         </div>
         <CardContent className="p-4 sm:p-6 text-center relative">
-          <Avatar className="mx-auto h-32 w-32 sm:h-40 sm:w-40 border-8 border-background comic-border !border-4 absolute -top-24 left-1/2 -translate-x-1/2">
+          <Avatar className="mx-auto h-32 w-32 sm:h-40 sm:w-40 border-8 border-background comic-border !border-4 absolute -top-20 sm:-top-24 left-1/2 -translate-x-1/2">
             <AvatarImage src={user.profilePicUrl} alt={user.username} data-ai-hint="meme avatar" />
             <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
           </Avatar>
            <div className="flex items-center justify-center gap-2 mt-16 sm:mt-20">
             <h1 className="font-headline text-4xl sm:text-5xl">{user.username}</h1>
-            {user.isVerified && <CheckCircle className="w-8 h-8 text-blue-500" />}
+            {user.isVerified && <CheckCircle className="w-8 h-8 text-blue-500 fill-blue-500" />}
           </div>
           <p className="text-lg text-muted-foreground mt-1">{user.gender}</p>
           <p className="mt-4 text-base sm:text-xl italic">"{user.bio}"</p>

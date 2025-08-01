@@ -92,7 +92,7 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
             <Link href={`/profile/${author.id}`}>
               <CardTitle className="text-lg font-bold hover:underline">{author.username}</CardTitle>
             </Link>
-            {author.isVerified && <CheckCircle className="w-4 h-4 text-blue-500" />}
+            {author.isVerified && <CheckCircle className="w-4 h-4 text-blue-500 fill-blue-500" />}
           </div>
         </CardHeader>
         <CardContent className="p-0">
