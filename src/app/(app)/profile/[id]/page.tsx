@@ -81,7 +81,7 @@ export default function ProfilePage() {
           </Avatar>
            <div className="flex items-center justify-center gap-2 mt-16 sm:mt-20">
             <h1 className="font-headline text-4xl sm:text-5xl">{user.username}</h1>
-            {user.isVerified && <CheckCircle className="w-8 h-8 text-blue-500 fill-blue-500" />}
+            {user.isVerified && <CheckCircle className="w-8 h-8 text-white fill-blue-500" />}
           </div>
           <p className="text-lg text-muted-foreground mt-1">{user.gender}</p>
           <p className="mt-4 text-base sm:text-xl italic">"{user.bio}"</p>
