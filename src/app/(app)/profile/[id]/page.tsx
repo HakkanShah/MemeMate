@@ -31,6 +31,7 @@ export default function ProfilePage() {
       const foundUser = getUserById(userId);
       if(!foundUser) {
         setLoading(false); 
+        setUser(null);
         return;
       };
       
@@ -42,26 +43,28 @@ export default function ProfilePage() {
   }, [userId]);
   
   useEffect(() => {
+    // This runs once on component mount in the browser
     const id = localStorage.getItem('loggedInUser');
     setLoggedInUserId(id);
     // The rest of the logic depends on the userId from params, so it will be called in the next effect.
   }, []);
 
   useEffect(() => {
-    if (loggedInUserId) { // Only load data once we know who is logged in
-      loadData();
-    }
+    // This effect runs whenever the userId from params changes, or when we finally get the loggedInUserId
+    loadData();
+
      const handleStorageChange = (e: StorageEvent) => {
-      if ((e.key === 'dummyUsers' || e.key === 'dummyMemes') && loggedInUserId) {
+      if ((e.key === 'dummyUsers' || e.key === 'dummyMemes')) {
         loadData();
       }
     };
+
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [loggedInUserId, loadData]);
+  }, [userId, loadData]);
 
 
-  if (loading || !loggedInUserId) {
+  if (loading) {
     return <ProfileSkeleton />;
   }
 

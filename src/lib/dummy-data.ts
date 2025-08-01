@@ -221,7 +221,10 @@ const defaultMemes: Meme[] = [
     caption: 'You can\'t have bugs in your code if you don\'t write any code.',
     authorId: 'user_hakkan',
     reactions: { '😂': 999, '🙏': 500, '💀': 250, '😭': 10, '💘': 300 },
-    comments: [],
+    comments: [
+        { userId: 'user1', text: 'The ultimate truth!', timestamp: new Date(), votes: 25 },
+        { userId: 'user6', text: 'I felt this in my soul.', timestamp: new Date(), votes: 18 }
+    ],
     timestamp: new Date('2024-07-31T10:00:00Z'),
   },
   {
@@ -231,7 +234,9 @@ const defaultMemes: Meme[] = [
     caption: 'Semicolons are optional. Change my mind.',
     authorId: 'user_hakkan',
     reactions: { '😂': 850, '🙏': 100, '💀': 500, '😭': 50, '💘': 100 },
-    comments: [],
+    comments: [
+        { userId: 'user4', text: 'The JS community is coming for you.', timestamp: new Date(), votes: 12 },
+    ],
     timestamp: new Date('2024-07-30T10:00:00Z'),
   },
   {

@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -20,16 +20,28 @@ interface MemeCardProps {
 export function MemeCard({ meme: initialMeme }: MemeCardProps) {
   const [meme, setMeme] = useState(initialMeme);
   const author = getUserById(meme.authorId);
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
   
   const [newComment, setNewComment] = useState("");
   const [showAllComments, setShowAllComments] = useState(false);
 
+  useEffect(() => {
+    const id = localStorage.getItem('loggedInUser');
+    setLoggedInUserId(id);
+  }, []);
+
   const handleReaction = (emoji: keyof Meme['reactions']) => {
+    const isOwnPost = loggedInUserId === meme.authorId;
+    const isAdmin = loggedInUserId === 'user_hakkan';
+    
+    // Admin can boost their own posts
+    const increment = (isOwnPost && isAdmin) ? 10 : 1;
+
     const updatedMeme = {
       ...meme,
       reactions: {
         ...meme.reactions,
-        [emoji]: meme.reactions[emoji] + 1
+        [emoji]: meme.reactions[emoji] + increment
       }
     };
     setMeme(updatedMeme);
@@ -38,10 +50,10 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
   
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newComment.trim() === "") return;
+    if (newComment.trim() === "" || !loggedInUserId) return;
 
     const newCommentObj: MemeComment = { 
-        userId: 'user1', 
+        userId: loggedInUserId, 
         text: newComment, 
         timestamp: new Date(), 
         votes: 0 
@@ -148,8 +160,9 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
                     className="h-9 comic-border !border-2"
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
+                    disabled={!loggedInUserId}
                 />
-                <Button type="submit" size="icon" className="h-9 w-9 flex-shrink-0 comic-border !border-2 rounded-full">
+                <Button type="submit" size="icon" className="h-9 w-9 flex-shrink-0 comic-border !border-2 rounded-full" disabled={!loggedInUserId}>
                     <Send className="h-4 w-4"/>
                 </Button>
              </form>
