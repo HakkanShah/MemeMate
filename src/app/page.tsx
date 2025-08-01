@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { useToast } from '@/hooks/use-toast';
@@ -23,10 +24,15 @@ export default function AuthPage() {
   const [signupUsername, setSignupUsername] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    // If user is already logged in, redirect to feed
+    if (localStorage.getItem('loggedInUser')) {
+      router.push("/feed");
+    }
+  }, [router]);
 
   const handleLogin = () => {
     // Special bypass for Hakkan's account
@@ -86,7 +92,10 @@ export default function AuthPage() {
 
     const updatedUsers = [...users, newUser];
     setStoredData('dummyUsers', updatedUsers);
-    localStorage.setItem('loggedInUser', newUserId);
+    
+    if (rememberMe) {
+        localStorage.setItem('loggedInUser', newUserId);
+    }
     
     toast({
         title: "Account Created!",
@@ -95,6 +104,25 @@ export default function AuthPage() {
     
     router.push("/quiz");
   };
+
+  if (!isClient) {
+    return (
+        <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8">
+            <div className="text-center mb-8">
+                <h1 className="font-headline text-6xl sm:text-7xl md:text-8xl tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
+                MemeMate
+                </h1>
+                <p className="font-body text-lg sm:text-xl md:text-2xl mt-2 text-muted-foreground">
+                Where memes bring hearts together!
+                </p>
+            </div>
+            <Skeleton className="w-full max-w-sm h-[450px]" />
+             <footer className="text-center text-sm text-muted-foreground mt-8">
+                Project by <a href="https://github.com/HakkanShah" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Hakkan Shah</a>
+            </footer>
+        </main>
+    );
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8">
@@ -107,9 +135,6 @@ export default function AuthPage() {
         </p>
       </div>
       
-      {!isClient ? (
-        <Skeleton className="w-full max-w-sm h-[450px]" />
-      ) : (
         <Tabs defaultValue="login" className="w-full max-w-sm">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
@@ -157,12 +182,16 @@ export default function AuthPage() {
                   <Label htmlFor="password-signup">Password</Label>
                   <Input id="password-signup" type="password" value={signupPassword} onChange={e => setSignupPassword(e.target.value)} />
                 </div>
+                <div className="flex items-center space-x-2">
+                    <Checkbox id="remember-me" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(checked as boolean)} />
+                    <Label htmlFor="remember-me" className="cursor-pointer">Remember me</Label>
+                </div>
                 <Button onClick={handleSignUp} className="w-full">Create Account</Button>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-      )}
+      
 
       <footer className="text-center text-sm text-muted-foreground mt-8">
         Project by <a href="https://github.com/HakkanShah" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Hakkan Shah</a>
