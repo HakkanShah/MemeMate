@@ -12,6 +12,7 @@ import { addMeme } from '@/lib/dummy-data';
 import type { Meme } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { suggestMemeCaption } from '@/ai/flows/suggest-meme-caption';
+import { playSound, SOUNDS } from '@/lib/sounds';
 
 export default function CreatePostPage() {
     const router = useRouter();
@@ -71,12 +72,14 @@ export default function CreatePostPage() {
             });
             return;
         }
+
+        const loggedInUserId = localStorage.getItem('loggedInUser') || 'user1';
         
         const newMeme: Meme = {
             id: `meme-${Date.now()}`,
             imageUrl: imagePreview,
             caption: caption,
-            authorId: 'user1', // Assume the logged in user is user1
+            authorId: loggedInUserId,
             reactions: { '😂': 0, '🙏': 0, '💀': 0, '😭': 0, '💘': 0 },
             comments: [],
             timestamp: new Date(),
@@ -84,6 +87,7 @@ export default function CreatePostPage() {
         };
 
         addMeme(newMeme);
+        playSound(SOUNDS.POST_SUCCESS);
 
         toast({
             title: "Meme Posted!",

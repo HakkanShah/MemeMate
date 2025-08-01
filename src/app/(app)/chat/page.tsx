@@ -9,13 +9,19 @@ import type { Match } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ChatListPage() {
-  const currentUserId = "user1";
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const id = localStorage.getItem('loggedInUser');
+    setCurrentUserId(id);
+  }, []);
+
+  useEffect(() => {
     const loadMatches = () => {
-        const storedMatches = getStoredData('dummyMatches', []);
+        if (!currentUserId) return;
+        const storedMatches = getStoredData<Match[]>('dummyMatches', []).filter(m => m.userIds.includes(currentUserId));
         // Sort matches by timestamp, most recent first
         storedMatches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
         setMatches(storedMatches);
@@ -24,13 +30,15 @@ export default function ChatListPage() {
     
     loadMatches();
 
-    const handleStorageChange = () => {
-        loadMatches();
+    const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === 'dummyMatches') {
+          loadMatches();
+        }
     };
 
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  }, [currentUserId]);
 
   return (
     <div className="p-2 sm:p-4">

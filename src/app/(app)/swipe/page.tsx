@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useTransition, useEffect } from "react";
-import { getStoredData, addMatch } from "@/lib/dummy-data";
+import { getStoredData, addMatch, getUserById } from "@/lib/dummy-data";
 import { SwipeCard } from "@/components/swipe-card";
 import { Button } from "@/components/ui/button";
 import { Heart, X } from "lucide-react";
@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import type { User, Match } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { playSound, SOUNDS } from "@/lib/sounds";
 
 export default function SwipePage() {
   const { toast } = useToast();
@@ -17,29 +18,35 @@ export default function SwipePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
 
   useEffect(() => {
+    const id = localStorage.getItem('loggedInUser');
+    setLoggedInUserId(id);
     const allUsers = getStoredData<User[]>('dummyUsers', []);
-    setUsers(allUsers.filter(u => u.id !== 'user1')); // Exclude self
+    setUsers(allUsers.filter(u => u.id !== id)); // Exclude self
   }, []);
 
   const handleSwipe = (direction: 'left' | 'right', swipedUserId: string) => {
-    if (isPending) return;
+    if (isPending || !loggedInUserId) return;
 
     // Simulate a match on every right swipe for demo purposes
     if (direction === 'right') {
+        playSound(SOUNDS.SWIPE_RIGHT);
         const newMatch: Match = {
             id: `match-${Date.now()}`,
-            userIds: ['user1', swipedUserId],
+            userIds: [loggedInUserId, swipedUserId],
             timestamp: new Date()
         };
         addMatch(newMatch);
-      
+        const swipedUser = getUserById(swipedUserId);
         toast({
             title: "IT'S A MATCH! 💘",
-            description: "You can now chat with them.",
+            description: `You can now chat with ${swipedUser?.username || 'them'}.`,
             className: "comic-border !border-4 !border-green-500 bg-primary"
         });
+    } else {
+        playSound(SOUNDS.SWIPE_LEFT);
     }
 
     setSwipeDirection(direction);

@@ -12,6 +12,7 @@ import { getUserById, updateMeme } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 import { MessageSquare, Send, ArrowUp, ArrowDown, CheckCircle } from "lucide-react";
 import { Input } from "./ui/input";
+import { playSound, SOUNDS } from "@/lib/sounds";
 
 interface MemeCardProps {
   meme: Meme;
@@ -31,6 +32,7 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
   }, []);
 
   const handleReaction = (emoji: keyof Meme['reactions']) => {
+    playSound(SOUNDS.REACTION);
     const isOwnPost = loggedInUserId === meme.authorId;
     const isAdmin = loggedInUserId === 'user_hakkan';
     
@@ -51,6 +53,7 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (newComment.trim() === "" || !loggedInUserId) return;
+    playSound(SOUNDS.MESSAGE_SENT);
 
     const newCommentObj: MemeComment = { 
         userId: loggedInUserId, 
@@ -70,6 +73,7 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
   }
 
   const handleVote = (commentIndex: number, voteType: 'up' | 'down') => {
+    playSound(SOUNDS.REACTION, 0.2);
     const updatedComments = [...meme.comments];
     updatedComments[commentIndex].votes += (voteType === 'up' ? 1 : -1);
     

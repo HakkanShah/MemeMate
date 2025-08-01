@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { playSound, SOUNDS } from "@/lib/sounds";
 
 export default function ChatPage() {
   const params = useParams();
@@ -19,18 +20,24 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [currentUserId, setCurrentUserId] = useState('user1');
 
   useEffect(() => {
-      const loadMessages = () => {
-        if (matchId) {
-            const initialMessages = getMessagesByMatchId(matchId);
-            setMessages(initialMessages);
-        }
-      };
-      loadMessages();
-      
-      window.addEventListener('storage', loadMessages);
-      return () => window.removeEventListener('storage', loadMessages);
+    const loggedInId = localStorage.getItem('loggedInUser');
+    if (loggedInId) {
+        setCurrentUserId(loggedInId);
+    }
+
+    const loadMessages = () => {
+    if (matchId) {
+        const initialMessages = getMessagesByMatchId(matchId);
+        setMessages(initialMessages);
+    }
+    };
+    loadMessages();
+    
+    window.addEventListener('storage', loadMessages);
+    return () => window.removeEventListener('storage', loadMessages);
 
   }, [matchId]);
 
@@ -42,8 +49,7 @@ export default function ChatPage() {
   if (!match) {
     notFound();
   }
-
-  const currentUserId = 'user1'; 
+  
   const otherUserId = match.userIds.find(id => id !== currentUserId)!;
   const otherUser = getUserById(otherUserId)!;
 
@@ -62,6 +68,7 @@ export default function ChatPage() {
     addMessage(message);
     setMessages(prev => [...prev, message]);
     setNewMessage("");
+    playSound(SOUNDS.MESSAGE_SENT);
   };
 
   return (
