@@ -23,6 +23,13 @@ export default function AuthPage() {
   const [signupPassword, setSignupPassword] = useState('');
 
   const handleLogin = () => {
+    // Special bypass for Hakkan's account
+    if (loginUsername === 'memeking' && loginPassword === 'Hakkan@123') {
+        localStorage.setItem('loggedInUser', 'user_hakkan');
+        router.push("/feed");
+        return;
+    }
+
     const users = getStoredData<User[]>('dummyUsers', []);
     const user = users.find(u => u.username === loginUsername && u.password === loginPassword);
 
