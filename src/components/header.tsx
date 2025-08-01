@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -9,21 +10,27 @@ import { useEffect, useState } from "react";
 
 export function Header() {
   const pathname = usePathname();
-  const [loggedInUserId, setLoggedInUserId] = useState('user1');
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
 
   useEffect(() => {
+    // This code runs only on the client, after the component has mounted
     const userId = localStorage.getItem('loggedInUser');
     if (userId) {
       setLoggedInUserId(userId);
+    } else {
+      // Fallback for safety, though login should set this.
+      setLoggedInUserId('user1'); 
     }
   }, []);
+
+  const profileHref = loggedInUserId ? `/profile/${loggedInUserId}` : '#';
 
   const navItems = [
     { href: "/feed", label: "Feed", icon: Home },
     { href: "/swipe", label: "Swipe", icon: Heart },
     { href: "/post/create", label: "Post", icon: PlusSquare },
     { href: "/chat", label: "Chats", icon: MessageCircle },
-    { href: `/profile/${loggedInUserId}`, label: "Profile", icon: User },
+    { href: profileHref, label: "Profile", icon: User },
   ];
 
   return (
@@ -32,24 +39,31 @@ export function Header() {
         <div className="bg-card/80 backdrop-blur-sm p-2 rounded-full comic-border border-2">
           <nav className="flex items-center justify-around">
             {navItems.map(({ href, label, icon: Icon }) => {
-              const isActive = (href === '/chat' && pathname.startsWith('/chat')) || 
-                             (href.startsWith('/profile/') && pathname.startsWith('/profile/')) ||
-                             (href !== '/chat' && !href.startsWith('/profile/') && pathname === href);
+              const isProfileLink = label === 'Profile';
+              const isActive = (isProfileLink && pathname.startsWith('/profile/')) ||
+                             (href === '/chat' && pathname.startsWith('/chat')) ||
+                             (!isProfileLink && href !== '/chat' && pathname === href);
+
+              const linkContent = (
+                 <Link
+                    href={href}
+                    className={cn(
+                      "flex flex-col items-center justify-center h-14 w-14 rounded-full transition-all duration-300",
+                      isActive
+                        ? "bg-primary text-primary-foreground scale-110 shadow-lg"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
+                      !loggedInUserId && isProfileLink && 'pointer-events-none opacity-50' // Disable profile link until ID is loaded
+                    )}
+                  >
+                    <Icon className="h-7 w-7" />
+                    <span className="sr-only">{label}</span>
+                  </Link>
+              );
+
               return (
-                <Tooltip key={href}>
+                <Tooltip key={label}>
                   <TooltipTrigger asChild>
-                    <Link
-                      href={href}
-                      className={cn(
-                        "flex flex-col items-center justify-center h-14 w-14 rounded-full transition-all duration-300",
-                        isActive
-                          ? "bg-primary text-primary-foreground scale-110 shadow-lg"
-                          : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
-                      )}
-                    >
-                      <Icon className="h-7 w-7" />
-                      <span className="sr-only">{label}</span>
-                    </Link>
+                    {linkContent}
                   </TooltipTrigger>
                   <TooltipContent side="top" className="comic-border bg-card">
                     <p className="font-headline tracking-wide">{label}</p>
