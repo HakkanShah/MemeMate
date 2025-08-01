@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useTransition } from 'react';
@@ -10,13 +11,12 @@ import { Button } from '@/components/ui/button';
 import { Upload, Wand2, Loader2 } from 'lucide-react';
 import { addMeme } from '@/lib/dummy-data';
 import type { Meme } from '@/lib/types';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { suggestMemeCaption } from '@/ai/flows/suggest-meme-caption';
 import { playSound, SOUNDS } from '@/lib/sounds';
 
 export default function CreatePostPage() {
     const router = useRouter();
-    const { toast } = useToast();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [caption, setCaption] = useState('');
     const [isSuggesting, startSuggestionTransition] = useTransition();

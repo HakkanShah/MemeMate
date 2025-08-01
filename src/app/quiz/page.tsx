@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -7,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { updateUser, getUserById } from '@/lib/dummy-data';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast';
 import type { User } from '@/lib/types';
 
 const quizQuestions = [
@@ -45,7 +46,6 @@ const quizQuestions = [
 
 export default function QuizPage() {
     const router = useRouter();
-    const { toast } = useToast();
     const [answers, setAnswers] = useState<{[key: number]: string}>({});
 
     const handleAnswerChange = (questionIndex: number, value: string) => {

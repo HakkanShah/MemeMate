@@ -9,14 +9,13 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { getStoredData, setStoredData } from '@/lib/dummy-data';
 import type { User } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AuthPage() {
   const router = useRouter();
-  const { toast } = useToast();
   const [isClient, setIsClient] = useState(false);
 
   const [loginUsername, setLoginUsername] = useState('');

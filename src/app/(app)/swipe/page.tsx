@@ -8,12 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Heart, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { User, Match } from "@/lib/types";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { playSound, SOUNDS } from "@/lib/sounds";
 
 export default function SwipePage() {
-  const { toast } = useToast();
   const [users, setUsers] = useState<User[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);

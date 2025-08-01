@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Settings, LogOut, Upload } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 interface ProfileSettingsProps {
   user: User | null;
@@ -37,7 +37,6 @@ interface ProfileSettingsProps {
 
 export function ProfileSettings({ user }: ProfileSettingsProps) {
   const router = useRouter();
-  const { toast } = useToast();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [formData, setFormData] = useState<Partial<User>>({
     username: user?.username || '',
