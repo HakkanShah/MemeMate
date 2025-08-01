@@ -32,7 +32,7 @@ import { Settings, LogOut, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface ProfileSettingsProps {
-  user: User;
+  user: User | null;
 }
 
 export function ProfileSettings({ user }: ProfileSettingsProps) {
@@ -40,14 +40,18 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
   const { toast } = useToast();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [formData, setFormData] = useState<Partial<User>>({
-    username: user.username || '',
-    bio: user.bio || '',
-    gender: user.gender || '',
-    relationshipStatus: user.relationshipStatus || 'Single AF',
-    lookingFor: user.lookingFor || '',
-    status: user.status || 'Single AF'
+    username: user?.username || '',
+    bio: user?.bio || '',
+    gender: user?.gender || '',
+    relationshipStatus: user?.relationshipStatus || 'Single AF',
+    lookingFor: user?.lookingFor || '',
+    status: user?.status || 'Single AF'
   });
-  const [profilePicPreview, setProfilePicPreview] = useState<string | null>(user.profilePicUrl);
+  const [profilePicPreview, setProfilePicPreview] = useState<string | null>(user?.profilePicUrl || null);
+
+  if (!user) {
+    return null;
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -85,6 +89,7 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
   };
   
   const handleLogout = () => {
+    localStorage.removeItem('loggedInUser');
     router.push('/');
   };
 

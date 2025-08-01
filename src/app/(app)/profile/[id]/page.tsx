@@ -30,8 +30,8 @@ export default function ProfilePage() {
      if (userId) {
       const foundUser = getUserById(userId);
       if(!foundUser) {
-        setLoading(false); // Stop loading even if user not found
-        return; // Early exit
+        setLoading(false); 
+        return;
       };
       
       setUser(foundUser);
@@ -44,18 +44,24 @@ export default function ProfilePage() {
   useEffect(() => {
     const id = localStorage.getItem('loggedInUser');
     setLoggedInUserId(id);
-    loadData();
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'dummyUsers' || e.key === 'dummyMemes') {
+    // The rest of the logic depends on the userId from params, so it will be called in the next effect.
+  }, []);
+
+  useEffect(() => {
+    if (loggedInUserId) { // Only load data once we know who is logged in
+      loadData();
+    }
+     const handleStorageChange = (e: StorageEvent) => {
+      if ((e.key === 'dummyUsers' || e.key === 'dummyMemes') && loggedInUserId) {
         loadData();
       }
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [loadData]);
+  }, [loggedInUserId, loadData]);
 
 
-  if (loading) {
+  if (loading || !loggedInUserId) {
     return <ProfileSkeleton />;
   }
 
