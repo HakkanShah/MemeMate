@@ -44,7 +44,7 @@ const defaultUsers: User[] = [
   {
     id: 'user_hakkan',
     username: 'Hakkan',
-    profilePicUrl: 'https://media.licdn.com/dms/image/D4D03AQFH465NCDJNEw/profile-displayphoto-shrink_400_400/0/1721308420349?e=1726704000&v=beta&t=9f4G-oB1g_qCQ8R0s6Z_jA8J6Z_J0X3jG2bY6M0nJ1c',
+    profilePicUrl: 'https://i.ibb.co/689D1jF/hakkan.jpg',
     humorTags: ['Engineer AF', 'Roast', 'Troll', 'Dark'],
     memeGenres: ['Political', 'Engineering'],
     status: 'Meme-ing Around',
