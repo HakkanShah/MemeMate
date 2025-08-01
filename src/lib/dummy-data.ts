@@ -45,6 +45,8 @@ const defaultUsers: User[] = [
     id: 'user_hakkan',
     username: 'Hakkan',
     profilePicUrl: 'https://i.ibb.co/689D1jF/hakkan.jpg',
+    username: 'memeking',
+    password: 'Hakkan@123',
     humorTags: ['Engineer AF', 'Roast', 'Troll', 'Dark'],
     memeGenres: ['Political', 'Engineering'],
     status: 'Meme-ing Around',
@@ -216,7 +218,7 @@ const defaultUsers: User[] = [
 const defaultMemes: Meme[] = [
   {
     id: 'meme_hakkan_1',
-    imageUrl: 'https://i.imgflip.com/1h7in.jpg',
+    imageUrl: 'https://media.istockphoto.com/id/158675497/photo/blank-computer-monitor-with-clipping-path.jpg?s=612x612&w=0&k=20&c=D5XCjIhyt_vfYAITLQ6rYBxbzne4ObXZEjLhSrck7RI=',
     aiHint: 'roll safe',
     caption: 'You can\'t have bugs in your code if you don\'t write any code.',
     authorId: 'user_hakkan',
@@ -229,7 +231,7 @@ const defaultMemes: Meme[] = [
   },
   {
     id: 'meme_hakkan_2',
-    imageUrl: 'https://i.imgflip.com/2/30b1gx.jpg',
+    imageUrl: 'https://pbs.twimg.com/media/D5qFyfxWwAAsPPE.jpg',
     aiHint: 'change my mind',
     caption: 'Semicolons are optional. Change my mind.',
     authorId: 'user_hakkan',
