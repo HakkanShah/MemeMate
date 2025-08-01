@@ -5,17 +5,26 @@ import { usePathname } from "next/navigation";
 import { Home, MessageCircle, Heart, User, PlusSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
-
-const navItems = [
-  { href: "/feed", label: "Feed", icon: Home },
-  { href: "/swipe", label: "Swipe", icon: Heart },
-  { href: "/post/create", label: "Post", icon: PlusSquare },
-  { href: "/chat", label: "Chats", icon: MessageCircle },
-  { href: "/profile/user1", label: "Profile", icon: User },
-];
+import { useEffect, useState } from "react";
 
 export function Header() {
   const pathname = usePathname();
+  const [loggedInUserId, setLoggedInUserId] = useState('user1');
+
+  useEffect(() => {
+    const userId = localStorage.getItem('loggedInUser');
+    if (userId) {
+      setLoggedInUserId(userId);
+    }
+  }, []);
+
+  const navItems = [
+    { href: "/feed", label: "Feed", icon: Home },
+    { href: "/swipe", label: "Swipe", icon: Heart },
+    { href: "/post/create", label: "Post", icon: PlusSquare },
+    { href: "/chat", label: "Chats", icon: MessageCircle },
+    { href: `/profile/${loggedInUserId}`, label: "Profile", icon: User },
+  ];
 
   return (
     <TooltipProvider>
@@ -23,7 +32,9 @@ export function Header() {
         <div className="bg-card/80 backdrop-blur-sm p-2 rounded-full comic-border border-2">
           <nav className="flex items-center justify-around">
             {navItems.map(({ href, label, icon: Icon }) => {
-              const isActive = pathname.startsWith(href);
+              const isActive = (href === '/chat' && pathname.startsWith('/chat')) || 
+                             (href.startsWith('/profile/') && pathname.startsWith('/profile/')) ||
+                             (href !== '/chat' && !href.startsWith('/profile/') && pathname === href);
               return (
                 <Tooltip key={href}>
                   <TooltipTrigger asChild>

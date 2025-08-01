@@ -23,6 +23,8 @@ export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
   const [userMemes, setUserMemes] = useState<Meme[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
+
 
   const loadData = useCallback(() => {
      if (userId) {
@@ -40,6 +42,8 @@ export default function ProfilePage() {
   }, [userId]);
   
   useEffect(() => {
+    const id = localStorage.getItem('loggedInUser');
+    setLoggedInUserId(id);
     loadData();
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'dummyUsers' || e.key === 'dummyMemes') {
@@ -59,7 +63,7 @@ export default function ProfilePage() {
     notFound();
   }
   
-  const isOwnProfile = user.id === 'user1';
+  const isOwnProfile = user.id === loggedInUserId;
 
   const topMemes = [...userMemes]
     .sort((a, b) => (b.reactions['😂'] + b.reactions['💘']) - (a.reactions['😂'] + a.reactions['💘']))
