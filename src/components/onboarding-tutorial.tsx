@@ -93,13 +93,16 @@ export function OnboardingTutorial({ onFinish }: OnboardingTutorialProps) {
                 <Settings />
             </Button>
         )}
-        {isNavOpen && (
+        {(step === 0 || step === 1) && (
              <div className="fixed bottom-4 left-1/2 -translate-x-1/2">
                 <Button 
                     size="icon" 
-                    className="relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 bg-destructive text-destructive-foreground translate-y-4"
+                    className={cn(
+                        "relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 transition-transform duration-300 pointer-events-none",
+                         isNavOpen && "rotate-45 bg-destructive text-destructive-foreground"
+                    )}
                 >
-                    ...
+                  <Grip className={cn(!isNavOpen ? "opacity-100" : "opacity-0")} />
                 </Button>
             </div>
         )}
