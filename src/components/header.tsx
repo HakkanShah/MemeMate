@@ -57,9 +57,9 @@ export function Header() {
                     <Button 
                       variant="ghost"
                       size="icon" 
-                      className="relative h-14 w-14 rounded-full bg-card/80 backdrop-blur-sm"
+                      className="relative h-14 w-14 rounded-full bg-card/80 backdrop-blur-sm border-2 border-foreground"
                     >
-                      <Bell className="h-7 w-7" />
+                      <Bell className="h-8 w-8" />
                       {hasUnread && <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full border-2 border-background animate-pulse" />}
                     </Button>
                   </Link>
