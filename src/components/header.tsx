@@ -3,14 +3,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Heart, User, PlusSquare } from "lucide-react";
+import { Home, MessageCircle, Heart, User, PlusSquare, Grip } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
 
 export function Header() {
   const pathname = usePathname();
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // This code runs only on the client, after the component has mounted
@@ -35,44 +37,81 @@ export function Header() {
 
   return (
     <TooltipProvider>
-      <header className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[95%] max-w-md sm:max-w-sm z-50">
-        <div className="bg-card/80 backdrop-blur-sm p-2 rounded-full comic-border border-2">
-          <nav className="flex items-center justify-around">
-            {navItems.map(({ href, label, icon: Icon }) => {
-              const isProfileLink = label === 'Profile';
-              const isActive = (isProfileLink && pathname.startsWith('/profile/')) ||
-                             (href === '/chat' && pathname.startsWith('/chat')) ||
-                             (!isProfileLink && href !== '/chat' && pathname === href);
+      <header className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+        <nav className="relative flex items-center justify-center">
+            {/* Nav items that fan out */}
+             <div
+              className={cn(
+                "absolute bottom-0 flex items-center justify-center transition-all duration-500",
+                 isOpen ? "w-80 h-40" : "w-0 h-0"
+              )}
+              style={{
+                clipPath: isOpen ? 'circle(100% at 50% 100%)' : 'circle(0% at 50% 100%)',
+              }}
+            >
+              {navItems.map(({ href, label, icon: Icon }, index) => {
+                const isProfileLink = label === 'Profile';
+                const isActive = (isProfileLink && pathname.startsWith('/profile/')) ||
+                               (href === '/chat' && pathname.startsWith('/chat')) ||
+                               (!isProfileLink && href !== '/chat' && pathname === href);
+                
+                // Calculate position on the arc
+                const angle = -15 - (index * 37.5); // Spread from -15 to -165 degrees
+                const x = 50 + 45 * Math.cos(angle * Math.PI / 180);
+                const y = 100 + 45 * Math.sin(angle * Math.PI / 180);
 
-              const linkContent = (
-                 <Link
-                    href={href}
-                    className={cn(
-                      "flex flex-col items-center justify-center h-14 w-14 rounded-full transition-all duration-300",
-                      isActive
-                        ? "bg-primary text-primary-foreground scale-110 shadow-lg"
-                        : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
-                      !loggedInUserId && isProfileLink && 'pointer-events-none opacity-50' // Disable profile link until ID is loaded
-                    )}
-                  >
-                    <Icon className="h-7 w-7" />
-                    <span className="sr-only">{label}</span>
-                  </Link>
-              );
+                const linkContent = (
+                   <Link
+                      href={href}
+                      className={cn(
+                        "absolute flex flex-col items-center justify-center h-14 w-14 rounded-full transition-all duration-300",
+                        "bg-card/90 comic-border !border-2",
+                        isActive
+                          ? "bg-primary text-primary-foreground scale-110 shadow-lg"
+                          : "text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
+                        !loggedInUserId && isProfileLink && 'pointer-events-none opacity-50',
+                        !isOpen && "opacity-0 scale-0 pointer-events-none"
+                      )}
+                       style={{
+                         top: `${y}%`,
+                         left: `${x}%`,
+                         transform: `translate(-50%, -50%)`,
+                         transitionDelay: isOpen ? `${index * 50}ms` : '0ms'
+                       }}
+                    >
+                      <Icon className="h-7 w-7" />
+                      <span className="sr-only">{label}</span>
+                    </Link>
+                );
 
-              return (
-                <Tooltip key={label}>
-                  <TooltipTrigger asChild>
-                    {linkContent}
-                  </TooltipTrigger>
-                  <TooltipContent side="top" className="comic-border bg-card">
-                    <p className="font-headline tracking-wide">{label}</p>
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })}
-          </nav>
-        </div>
+                return (
+                  <Tooltip key={label}>
+                    <TooltipTrigger asChild>
+                      {linkContent}
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="comic-border bg-card">
+                      <p className="font-headline tracking-wide">{label}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+             </div>
+
+            {/* Central button */}
+            <Button 
+                size="icon" 
+                onClick={() => setIsOpen(!isOpen)}
+                className={cn(
+                    "relative h-20 w-20 rounded-full comic-border !border-4 !shadow-none z-10",
+                    isOpen ? "bg-destructive text-destructive-foreground rotate-45" : "bg-primary text-primary-foreground"
+                )}
+                aria-expanded={isOpen}
+                aria-label="Toggle navigation menu"
+            >
+                <Grip className={cn("h-10 w-10 transition-transform duration-300", isOpen && "rotate-90 scale-75")}/>
+                <PlusSquare className={cn("h-10 w-10 absolute transition-transform duration-300", isOpen ? "scale-100" : "scale-0")}/>
+            </Button>
+        </nav>
       </header>
     </TooltipProvider>
   );
