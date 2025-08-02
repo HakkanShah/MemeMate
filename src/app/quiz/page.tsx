@@ -13,35 +13,35 @@ import type { User } from '@/lib/types';
 
 const quizQuestions = [
     {
-        question: "Pick your fav meme:",
-        options: ["Shaktimaan flying", "JCB ki khudai", "Angry Hanuman", "Anbe Sivam"],
+        question: "Your go-to reaction meme?",
+        options: ["'Main kya karu? Job chhod doon?'", "'Mera to sab kuch lut gaya'", "'Oo bhai, maro mujhe maro'", "'Ye kya ho raha hai?'"],
         results: {
-            "Shaktimaan flying": "Wholesome King",
-            "JCB ki khudai": "Certified Troll",
-            "Angry Hanuman": "Roast Master",
-            "Anbe Sivam": "Meme God"
+ "Main kya karu? Job chhod doon?": "Relatable Rant King",
+ "Mera to sab kuch lut gaya": "Drama Queen/King",
+ "Oo bhai, maro mujhe maro": "Self-Deprecating Humorist",
+ "Ye kya ho raha hai?": "Confused Soul",
         }
     },
     {
-        question: "Preferred roast style:",
-        options: ["Kapil Sharma", "CarryMinati", "Aunty ji's taunts", "News debate"],
+        question: "When someone shares a cringe meme, you are:",
+        options: ["'Mummy, chappal kahan hai?'", "'Bas karo bhai, rulayega kya?'", "'Delete karde bhai, izzat ki maa behen ho rahi hai'", "'Aap chronology samajhiye'"],
         results: {
-            "Kapil Sharma": "Wholesome King",
-            "CarryMinati": "Roast Master",
-            "Aunty ji's taunts": "Certified Troll",
-            "News debate": "Meme God"
+ "Mummy, chappal kahan hai?": "Aggressive Roaster",
+ "Bas karo bhai, rulayega kya?": "Sympathetic Critic",
+ "Delete karde bhai, izzat ki maa behen ho rahi hai": "Embarrassed Spectator",
+ "Aap chronology samajhiye": "Analytical Critic",
         }
     },
     {
-        question: "Which meme gets you?",
-        options: ["Pappu pass ho gaya", "Gormint aunty", "Kokilaben's rasoda", "Paragliding guy"],
+        question: "Your spirit animal meme?",
+        options: ["Sacred Games' Gaitonde", "Mirzapur's Munna Bhaiya", "Panchayat's Abhishek Tripathi", "Scam 1992's Harshad Mehta"],
         results: {
-            "Pappu pass ho gaya": "Wholesome King",
-            "Gormint aunty": "Roast Master",
-            "Kokilaben's rasoda": "Certified Troll",
-            "Paragliding guy": "Meme God"
+ "Sacred Games' Gaitonde": "Philosophical Memer",
+ "Mirzapur's Munna Bhaiya": "Aggressive & Bold Memer",
+ "Panchayat's Abhishek Tripathi": "Relatable Everyday Memer",
+ "Scam 1992's Harshad Mehta": "Master Strategist Memer",
         }
-    }
+    },
 ];
 
 export default function QuizPage() {
@@ -54,10 +54,10 @@ export default function QuizPage() {
 
     const calculateResult = () => {
         const resultCounts: {[key: string]: number} = {
-            "Wholesome King": 0,
-            "Certified Troll": 0,
-            "Roast Master": 0,
-            "Meme God": 0,
+ "Relatable Rant King": 0,
+ "Drama Queen/King": 0,
+ "Self-Deprecating Humorist": 0,
+ "Confused Soul": 0,
         };
 
         quizQuestions.forEach((q, index) => {
@@ -113,7 +113,7 @@ export default function QuizPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
-        <h1 className="font-headline text-4xl sm:text-5xl text-center mb-8 tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
+ <h1 className="font-headline text-4xl sm:text-5xl text-center mb-8 tracking-wider text-primary-foreground drop-shadow-lg" style={{ WebkitTextStroke: '2px black' }}>
           Meme Compatibility Quiz
         </h1>
         <Card className="w-full max-w-lg comic-border bg-card/80 backdrop-blur-sm">
@@ -124,11 +124,11 @@ export default function QuizPage() {
             <CardContent className="space-y-8">
                 {quizQuestions.map((q, index) => (
                     <div key={index}>
-                        <h3 className="font-bold text-lg mb-2">{index+1}. {q.question}</h3>
-                        <RadioGroup onValueChange={(value) => handleAnswerChange(index, value)}>
+ <h3 className="font-bold text-lg mb-3 text-gray-800 drop-shadow-sm">{index+1}. {q.question}</h3>
+ <RadioGroup onValueChange={(value) => handleAnswerChange(index, value)} className="space-y-3">
                             {q.options.map((opt) => (
-                                <div key={opt} className="flex items-center space-x-2">
-                                    <RadioGroupItem value={opt} id={`q${index}-${opt}`} />
+ <div key={opt} className="flex items-center space-x-3 p-3 border rounded-md bg-white shadow-sm hover:bg-gray-50 transition-colors cursor-pointer">
+ <RadioGroupItem value={opt} id={`q${index}-${opt}`} className="text-primary-foreground focus:ring-2 focus:ring-primary-foreground" />
                                     <Label htmlFor={`q${index}-${opt}`}>{opt}</Label>
 
                                 </div>
