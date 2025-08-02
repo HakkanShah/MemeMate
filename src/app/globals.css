@@ -85,6 +85,12 @@ body {
   }
 }
 
+@keyframes jiggle {
+  0% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+  100% { transform: rotate(-1deg); }
+}
+
 .comic-border {
   border: 4px solid hsl(var(--foreground));
   border-radius: var(--radius);
@@ -93,6 +99,6 @@ body {
 }
 
 .comic-border:hover {
-  transform: translate(-2px, -2px) rotate(-1deg);
-  box-shadow: 12px 12px 0px hsl(var(--accent));
+  box-shadow: 10px 10px 0px hsl(var(--primary));
+  animation: jiggle 0.3s infinite;
 }
