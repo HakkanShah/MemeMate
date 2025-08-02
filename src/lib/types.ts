@@ -15,6 +15,7 @@ export interface User {
   quizResult: string;
   isVerified?: boolean;
   githubUrl?: string;
+  hasSeenTutorial?: boolean;
 }
 
 export interface MemeComment {

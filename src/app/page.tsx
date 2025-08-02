@@ -87,6 +87,7 @@ export default function AuthPage() {
       status: 'Single AF',
       bio: 'New to MemeMate! Help me setup my profile.',
       quizResult: 'Newbie Memer',
+      hasSeenTutorial: false,
     };
 
     const updatedUsers = [...users, newUser];

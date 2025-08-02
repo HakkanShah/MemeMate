@@ -56,6 +56,7 @@ const defaultUsers: User[] = [
     lookingFor: 'A bug-free life',
     isVerified: true,
     githubUrl: 'https://github.com/HakkanShah',
+    hasSeenTutorial: true,
   },
   {
     id: 'user1',
@@ -68,7 +69,8 @@ const defaultUsers: User[] = [
     quizResult: 'Certified Troll',
     gender: 'Male',
     relationshipStatus: 'Single AF',
-    lookingFor: 'My meme-mate'
+    lookingFor: 'My meme-mate',
+    hasSeenTutorial: true,
   },
   {
     id: 'user2',
@@ -81,7 +83,8 @@ const defaultUsers: User[] = [
     quizResult: 'Wholesome Queen',
     gender: 'Female',
     relationshipStatus: 'Meme-ing Around',
-    lookingFor: 'Someone who gets my jokes'
+    lookingFor: 'Someone who gets my jokes',
+    hasSeenTutorial: true,
   },
   {
     id: 'user3',
@@ -94,7 +97,8 @@ const defaultUsers: User[] = [
     quizResult: 'Silent Shitposter',
     gender: 'Male',
     relationshipStatus: 'Single AF',
-    lookingFor: 'A partner in cringe'
+    lookingFor: 'A partner in cringe',
+    hasSeenTutorial: true,
   },
   {
     id: 'user4',
@@ -107,7 +111,8 @@ const defaultUsers: User[] = [
     quizResult: 'Roast Master',
     gender: 'Male',
     relationshipStatus: 'Taken But Still Posting',
-    lookingFor: 'Friends'
+    lookingFor: 'Friends',
+    hasSeenTutorial: true,
   },
   {
     id: 'user5',
@@ -120,7 +125,8 @@ const defaultUsers: User[] = [
     quizResult: 'Roast Master',
     gender: 'Female',
     relationshipStatus: "It's Complicated",
-    lookingFor: 'A worthy opponent'
+    lookingFor: 'A worthy opponent',
+    hasSeenTutorial: true,
   },
   {
     id: 'user6',
@@ -133,7 +139,8 @@ const defaultUsers: User[] = [
     quizResult: 'Certified Troll',
     gender: 'Male',
     relationshipStatus: 'Single AF',
-    lookingFor: 'A stable connection (and Wi-Fi)'
+    lookingFor: 'A stable connection (and Wi-Fi)',
+    hasSeenTutorial: true,
   },
   {
     id: 'user7',
@@ -146,7 +153,8 @@ const defaultUsers: User[] = [
     quizResult: 'Wholesome King',
     gender: 'Male',
     relationshipStatus: 'Taken But Still Posting',
-    lookingFor: 'My Simran'
+    lookingFor: 'My Simran',
+    hasSeenTutorial: true,
   },
   {
     id: 'user8',
@@ -159,7 +167,8 @@ const defaultUsers: User[] = [
     quizResult: 'Cringe King',
     gender: 'Non-binary',
     relationshipStatus: 'Meme-ing Around',
-    lookingFor: 'Collaborators'
+    lookingFor: 'Collaborators',
+    hasSeenTutorial: true,
   },
   {
     id: 'user9',
@@ -172,7 +181,8 @@ const defaultUsers: User[] = [
     quizResult: 'Wholesome Queen',
     gender: 'Female',
     relationshipStatus: 'Single AF',
-    lookingFor: 'A kind soul'
+    lookingFor: 'A kind soul',
+    hasSeenTutorial: true,
   },
   {
     id: 'user10',
@@ -185,7 +195,8 @@ const defaultUsers: User[] = [
     quizResult: 'Roast Master',
     gender: 'Male',
     relationshipStatus: 'Taken But Still Posting',
-    lookingFor: 'A debate partner'
+    lookingFor: 'A debate partner',
+    hasSeenTutorial: true,
   },
   {
     id: 'user11',
@@ -198,7 +209,8 @@ const defaultUsers: User[] = [
     quizResult: 'Wholesome Queen',
     gender: 'Female',
     relationshipStatus: 'Meme-ing Around',
-    lookingFor: 'Good vibes'
+    lookingFor: 'Good vibes',
+    hasSeenTutorial: true,
   },
   {
     id: 'user12',
@@ -211,7 +223,8 @@ const defaultUsers: User[] = [
     quizResult: 'Roast Master',
     gender: 'Male',
     relationshipStatus: 'Single AF',
-    lookingFor: 'Pun-intended relationships'
+    lookingFor: 'Pun-intended relationships',
+    hasSeenTutorial: true,
   },
 ];
 
