@@ -48,11 +48,10 @@ export function Header() {
                 const isProfileLink = label === 'Profile';
                 const isActive = (isProfileLink && pathname.startsWith('/profile/')) ||
                                (href === '/chat' && pathname.startsWith('/chat')) ||
-                               (href !== '/chat' && !isProfileLink && pathname === href);
+                               (!pathname.startsWith('/chat') && !isProfileLink && pathname === href);
                 
-                // Correct angle calculation for a semicircle starting from left to right (-180 to 0 degrees in radians)
                 const angle = -Math.PI + (index * (Math.PI / (navItems.length - 1)));
-                const radius = 110; // The radius of the circle
+                const radius = 110; 
                 const x = 50 + (radius / 2.2) * Math.cos(angle);
                 const y = 90 + (radius / 2.2) * Math.sin(angle);
 
@@ -61,7 +60,7 @@ export function Header() {
                       href={href}
                       className={cn(
                         "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300",
-                        "bg-card/90 border-4 border-foreground rounded-lg shadow-[4px_4px_0px_hsl(var(--accent))]",
+                        "bg-card/90 border-4 border-foreground shadow-[4px_4px_0px_hsl(var(--accent))]",
                         isActive
                           ? "bg-primary text-primary-foreground scale-110"
                           : "text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
@@ -104,9 +103,15 @@ export function Header() {
                 )}
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
+                style={{ transformStyle: 'preserve-3d' }}
             >
-                <Grip className={cn("h-7 w-7 transition-all duration-300 absolute", isOpen ? "scale-0 opacity-0" : "scale-100 opacity-100")}/>
-                <X className={cn("h-7 w-7 transition-all duration-300 absolute", isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0")}/>
+                <div className={cn("absolute inset-0 flex items-center justify-center transition-transform duration-500", isOpen && "[transform:rotateY(180deg)]")}>
+                  <Grip className={cn("h-7 w-7 transition-opacity duration-200", isOpen ? "opacity-0" : "opacity-100")} style={{backfaceVisibility: 'hidden'}} />
+                </div>
+                <div className={cn("absolute inset-0 flex items-center justify-center transition-transform duration-500 [transform:rotateY(180deg)]", !isOpen && "[transform:rotateY(360deg)]")}>
+                   <X className={cn("h-7 w-7 transition-opacity duration-200", isOpen ? "opacity-100" : "opacity-0")} style={{backfaceVisibility: 'hidden'}} />
+                </div>
+
             </Button>
         </nav>
       </header>
