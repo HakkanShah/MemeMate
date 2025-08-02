@@ -38,7 +38,7 @@ export function Header() {
              <div
               className={cn(
                 "absolute bottom-0 flex items-center justify-center transition-all duration-500",
-                 isOpen ? "w-[18rem] h-[9rem]" : "w-0 h-0"
+                 isOpen ? "w-72 h-36" : "w-0 h-0"
               )}
               style={{
                 clipPath: isOpen ? 'circle(100% at 50% 100%)' : 'circle(0% at 50% 100%)',
@@ -51,8 +51,8 @@ export function Header() {
                                (href !== '/chat' && !isProfileLink && pathname === href);
                 
                 // Correct order: Feed, Swipe, Post, Chats, Profile
-                // Angle starts from -15 (right side) to -165 (left side)
-                const angle = -15 - (index * 37.5);
+                // Angle starts from -165 (left side) to -15 (right side)
+                const angle = -165 + (index * 37.5);
                 const x = 50 + 45 * Math.cos(angle * Math.PI / 180);
                 const y = 100 + 45 * Math.sin(angle * Math.PI / 180);
 
