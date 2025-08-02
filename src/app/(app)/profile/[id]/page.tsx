@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { getUserById, getMemesByAuthor } from "@/lib/dummy-data";
 import type { User, Meme } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { MemeCard } from "@/components/meme-card";
 import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
 import { ProfileSettings } from "@/components/profile-settings";
-import { Users, Heart, CheckCircle } from "lucide-react";
+import { Users, Heart, CheckCircle, Github } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 
@@ -98,9 +99,20 @@ export default function ProfilePage() {
           </div>
           <p className="text-lg text-muted-foreground mt-1">{user.gender}</p>
           <p className="mt-4 text-base sm:text-xl italic">"{user.bio}"</p>
+          
+          {user.githubUrl && (
+            <div className="mt-4">
+              <Link href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:underline">
+                <Github className="w-5 h-5" />
+                <span>Follow on GitHub</span>
+              </Link>
+            </div>
+          )}
+          
           <div className="mt-4">
             <Badge className="font-headline text-lg p-2 rounded-md comic-border !border-2 tracking-wider">{user.quizResult}</Badge>
           </div>
+
            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-sm text-muted-foreground">
             {user.relationshipStatus && 
               <span className="flex items-center gap-1">

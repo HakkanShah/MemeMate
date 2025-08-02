@@ -14,6 +14,7 @@ export interface User {
   bio: string;
   quizResult: string;
   isVerified?: boolean;
+  githubUrl?: string;
 }
 
 export interface MemeComment {
