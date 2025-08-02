@@ -44,8 +44,7 @@ const defaultUsers: User[] = [
   {
     id: 'user_hakkan',
     username: 'Hakkan',
-    profilePicUrl: 'https://i.ibb.co/689D1jF/hakkan.jpg',
-    username: 'memeking',
+    profilePicUrl: '/images/Hakkan MemeMate Dp.png',
     password: 'Hakkan@123',
     humorTags: ['Engineer AF', 'Roast', 'Troll', 'Dark'],
     memeGenres: ['Political', 'Engineering'],
