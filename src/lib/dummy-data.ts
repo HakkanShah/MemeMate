@@ -217,8 +217,7 @@ const defaultUsers: User[] = [
 const defaultMemes: Meme[] = [
   {
     id: 'meme_hakkan_1',
-    imageUrl: 'https://media.istockphoto.com/id/158675497/photo/blank-computer-monitor-with-clipping-path.jpg?s=612x612&w=0&k=20&c=D5XCjIhyt_vfYAITLQ6rYBxbzne4ObXZEjLhSrck7RI=',
-    aiHint: 'roll safe',
+    imageUrl: '/images/blank_coding.png',
     caption: 'You can\'t have bugs in your code if you don\'t write any code.',
     authorId: 'user_hakkan',
     reactions: { '😂': 999, '🙏': 500, '💀': 250, '😭': 10, '💘': 300 },
