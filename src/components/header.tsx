@@ -17,12 +17,7 @@ export function Header() {
   useEffect(() => {
     // This code runs only on the client, after the component has mounted
     const userId = localStorage.getItem('loggedInUser');
-    if (userId) {
-      setLoggedInUserId(userId);
-    } else {
-      // Fallback for safety, though login should set this.
-      setLoggedInUserId('user1'); 
-    }
+    setLoggedInUserId(userId);
   }, []);
 
   const profileHref = loggedInUserId ? `/profile/${loggedInUserId}` : '#';
@@ -43,7 +38,7 @@ export function Header() {
              <div
               className={cn(
                 "absolute bottom-0 flex items-center justify-center transition-all duration-500",
-                 isOpen ? "w-80 h-40" : "w-0 h-0"
+                 isOpen ? "w-[20rem] h-[10rem]" : "w-0 h-0"
               )}
               style={{
                 clipPath: isOpen ? 'circle(100% at 50% 100%)' : 'circle(0% at 50% 100%)',
@@ -53,7 +48,7 @@ export function Header() {
                 const isProfileLink = label === 'Profile';
                 const isActive = (isProfileLink && pathname.startsWith('/profile/')) ||
                                (href === '/chat' && pathname.startsWith('/chat')) ||
-                               (!isProfileLink && href !== '/chat' && pathname === href);
+                               (href !== '/chat' && !isProfileLink && pathname === href);
                 
                 // Calculate position on the arc
                 const angle = -15 - (index * 37.5); // Spread from -15 to -165 degrees
@@ -78,6 +73,7 @@ export function Header() {
                          transform: `translate(-50%, -50%)`,
                          transitionDelay: isOpen ? `${index * 50}ms` : '0ms'
                        }}
+                       onClick={() => setIsOpen(false)}
                     >
                       <Icon className="h-7 w-7" />
                       <span className="sr-only">{label}</span>
@@ -102,14 +98,14 @@ export function Header() {
                 size="icon" 
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "relative h-20 w-20 rounded-full comic-border !border-4 !shadow-none z-10",
+                    "relative h-20 w-20 rounded-full comic-border !border-4 !shadow-none z-10 transition-all duration-300",
                     isOpen ? "bg-destructive text-destructive-foreground rotate-45" : "bg-primary text-primary-foreground"
                 )}
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
             >
-                <Grip className={cn("h-10 w-10 transition-transform duration-300", isOpen && "rotate-90 scale-75")}/>
-                <PlusSquare className={cn("h-10 w-10 absolute transition-transform duration-300", isOpen ? "scale-100" : "scale-0")}/>
+                <Grip className={cn("h-10 w-10 transition-transform duration-300 absolute", isOpen ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100")}/>
+                <PlusSquare className={cn("h-10 w-10 transition-transform duration-300 absolute", isOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0")}/>
             </Button>
         </nav>
       </header>
