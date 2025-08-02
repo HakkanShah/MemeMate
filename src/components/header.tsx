@@ -59,11 +59,10 @@ export function Header() {
                    <Link
                       href={href}
                       className={cn(
-                        "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300",
-                        "bg-card/90 border-4 border-foreground shadow-[4px_4px_0px_hsl(var(--accent))]",
+                        "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300 comic-border",
                         isActive
                           ? "bg-primary text-primary-foreground scale-110"
-                          : "text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
+                          : "bg-card/90 text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
                         !loggedInUserId && isProfileLink && 'pointer-events-none opacity-50',
                         !isOpen && "opacity-0 scale-0 pointer-events-none"
                       )}
