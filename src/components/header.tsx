@@ -101,20 +101,14 @@ export function Header() {
                 size="icon" 
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 transition-transform duration-300",
-                    isOpen ? "bg-destructive text-destructive-foreground translate-y-4" : "bg-primary text-primary-foreground"
+                    "relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 transition-all duration-300",
+                    isOpen ? "bg-destructive text-destructive-foreground rotate-45 translate-y-4" : "bg-primary text-primary-foreground"
                 )}
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
-                style={{ transformStyle: 'preserve-3d' }}
             >
-                <div className={cn("absolute inset-0 flex items-center justify-center transition-transform duration-500", isOpen && "[transform:rotateY(180deg)]")} style={{backfaceVisibility: 'hidden'}}>
-                  <Grip className={cn("h-7 w-7 transition-opacity duration-200", isOpen ? "opacity-0" : "opacity-100")}  />
-                </div>
-                <div className={cn("absolute inset-0 flex items-center justify-center transition-transform duration-500 [transform:rotateY(180deg)]", !isOpen && "[transform:rotateY(360deg)]")} style={{backfaceVisibility: 'hidden'}}>
-                   <X className={cn("h-7 w-7 transition-opacity duration-200", isOpen ? "opacity-100" : "opacity-0")} />
-                </div>
-
+                <Grip className={cn("h-7 w-7 transition-all duration-300", isOpen ? "opacity-0 scale-50 rotate-45" : "opacity-100 scale-100 rotate-0")}  />
+                <X className={cn("absolute h-7 w-7 transition-all duration-300", isOpen ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45")} />
             </Button>
         </nav>
       </header>
