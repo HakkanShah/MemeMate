@@ -13,13 +13,10 @@ export function Header() {
   const pathname = usePathname();
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // This code runs only on the client, after the component has mounted
     const userId = localStorage.getItem('loggedInUser');
     setLoggedInUserId(userId);
-    setIsClient(true);
   }, []);
 
   const profileHref = loggedInUserId ? `/profile/${loggedInUserId}` : '#';
@@ -32,11 +29,8 @@ export function Header() {
     { href: profileHref, label: "Profile", icon: User },
   ];
 
-  const isMobile = isClient && window.innerWidth < 640;
-  
-  const navContainerSize = isMobile ? "w-60 h-28 sm:w-80 sm:h-40" : "w-80 h-40";
-  const iconSize = isMobile ? "h-12 w-12" : "h-12 w-12";
-
+  const navContainerSize = "w-80 h-40";
+  const iconSize = "h-12 w-12";
 
   return (
     <TooltipProvider>
@@ -58,12 +52,9 @@ export function Header() {
                                (href === '/chat' && pathname.startsWith('/chat')) ||
                                (!pathname.startsWith('/chat') && !isProfileLink && pathname === href);
                 
-                // Use a flatter 160-degree arc (-170 to -10 degrees) instead of a full 180.
-                const totalAngle = 160;
-                const startAngle = -170;
-                const angleRad = (startAngle + (index * (totalAngle / (navItems.length - 1)))) * (Math.PI / 180);
-
-                const radius = isMobile ? 85 : 110;
+                const angle = 180 / (navItems.length - 1) * index;
+                const angleRad = (angle - 180) * (Math.PI / 180);
+                const radius = 110;
                 const x = 50 + (radius / 2.2) * Math.cos(angleRad);
                 const y = 90 + (radius / 2.2) * Math.sin(angleRad);
 
