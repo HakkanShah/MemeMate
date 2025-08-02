@@ -38,7 +38,7 @@ export function Header() {
              <div
               className={cn(
                 "absolute bottom-0 flex items-center justify-center transition-all duration-500",
-                 isOpen ? "w-72 h-36" : "w-0 h-0"
+                 isOpen ? "w-80 h-40" : "w-0 h-0"
               )}
               style={{
                 clipPath: isOpen ? 'circle(100% at 50% 100%)' : 'circle(0% at 50% 100%)',
@@ -50,11 +50,10 @@ export function Header() {
                                (href === '/chat' && pathname.startsWith('/chat')) ||
                                (href !== '/chat' && !isProfileLink && pathname === href);
                 
-                // Correct order: Feed, Swipe, Post, Chats, Profile
-                // Angle starts from -165 (left side) to -15 (right side)
+                // Angle from -165 (left) to -15 (right) for a semicircle
                 const angle = -165 + (index * 37.5);
-                const x = 50 + 45 * Math.cos(angle * Math.PI / 180);
-                const y = 100 + 45 * Math.sin(angle * Math.PI / 180);
+                const x = 50 + 48 * Math.cos(angle * Math.PI / 180);
+                const y = 100 + 48 * Math.sin(angle * Math.PI / 180);
 
                 const linkContent = (
                    <Link
@@ -99,14 +98,14 @@ export function Header() {
                 size="icon" 
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "relative h-16 w-16 rounded-full comic-border !border-4 !shadow-none z-10 transition-all duration-300",
-                    isOpen ? "bg-destructive text-destructive-foreground rotate-45" : "bg-primary text-primary-foreground"
+                    "relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 transition-all duration-300",
+                    isOpen ? "bg-destructive text-destructive-foreground rotate-45 translate-y-4" : "bg-primary text-primary-foreground"
                 )}
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
             >
-                <Grip className={cn("h-8 w-8 transition-transform duration-300 absolute", isOpen ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100")}/>
-                <PlusSquare className={cn("h-8 w-8 transition-transform duration-300 absolute", isOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0")}/>
+                <Grip className={cn("h-7 w-7 transition-transform duration-300 absolute", isOpen ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100")}/>
+                <PlusSquare className={cn("h-7 w-7 transition-transform duration-300 absolute", isOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0")}/>
             </Button>
         </nav>
       </header>
