@@ -56,6 +56,8 @@ const defaultUsers: User[] = [
     lookingFor: 'A bug-free life',
     isVerified: true,
     githubUrl: 'https://github.com/HakkanShah',
+    facebookUrl: 'https://www.facebook.com/i.hakkan',
+    linkedinUrl: 'https://www.linkedin.com/in/hakkan',
     hasSeenTutorial: true,
     following: ['user1', 'user2', 'user5'],
     followers: ['user1', 'user3', 'user4', 'user6'],

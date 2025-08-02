@@ -15,6 +15,8 @@ export interface User {
   quizResult: string;
   isVerified?: boolean;
   githubUrl?: string;
+  facebookUrl?: string;
+  linkedinUrl?: string;
   hasSeenTutorial?: boolean;
   following?: string[];
   followers?: string[];

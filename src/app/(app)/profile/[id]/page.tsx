@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { MemeCard } from "@/components/meme-card";
 import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
 import { ProfileSettings } from "@/components/profile-settings";
-import { Users, Heart, CheckCircle, Github, UserPlus, UserCheck } from "lucide-react";
+import { Users, Heart, CheckCircle, Github, UserPlus, UserCheck, Linkedin, Facebook } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
@@ -120,16 +120,30 @@ export default function ProfilePage() {
           <p className="text-lg text-muted-foreground mt-1">{user.gender}</p>
           <p className="mt-4 text-base sm:text-xl italic">"{user.bio}"</p>
           
-          {user.githubUrl && (
-            <div className="mt-4">
-              <Link href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:underline">
-                <Github className="w-5 h-5" />
-                <span>Follow on GitHub</span>
-              </Link>
+          {(user.githubUrl || user.linkedinUrl || user.facebookUrl) && (
+            <div className="mt-6">
+                <h3 className="font-headline text-xl text-primary mb-2">Know the Developer</h3>
+                <div className="flex justify-center items-center gap-4">
+                  {user.githubUrl && (
+                    <Link href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary transition-colors">
+                      <Github className="w-8 h-8" />
+                    </Link>
+                  )}
+                  {user.linkedinUrl && (
+                     <Link href={user.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary transition-colors">
+                      <Linkedin className="w-8 h-8" />
+                    </Link>
+                  )}
+                   {user.facebookUrl && (
+                     <Link href={user.facebookUrl} target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary transition-colors">
+                      <Facebook className="w-8 h-8" />
+                    </Link>
+                  )}
+                </div>
             </div>
           )}
           
-          <div className="mt-4">
+          <div className="mt-6">
             <Badge className="font-headline text-lg p-2 rounded-md comic-border !border-2 tracking-wider">{user.quizResult}</Badge>
           </div>
 
