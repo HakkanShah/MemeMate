@@ -17,6 +17,7 @@ export interface User {
   githubUrl?: string;
   facebookUrl?: string;
   linkedinUrl?: string;
+  instagramUrl?: string;
   hasSeenTutorial?: boolean;
   following?: string[];
   followers?: string[];

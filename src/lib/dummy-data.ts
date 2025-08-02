@@ -58,6 +58,7 @@ const defaultUsers: User[] = [
     githubUrl: 'https://github.com/HakkanShah',
     facebookUrl: 'https://www.facebook.com/i.hakkan',
     linkedinUrl: 'https://www.linkedin.com/in/hakkan',
+    instagramUrl: 'https://www.instagram.com/hakkanshah',
     hasSeenTutorial: true,
     following: ['user1', 'user2', 'user5'],
     followers: ['user1', 'user3', 'user4', 'user6'],
