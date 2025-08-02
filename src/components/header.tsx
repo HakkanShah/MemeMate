@@ -42,7 +42,6 @@ export function Header() {
     { href: "/swipe", label: "Swipe", icon: Heart },
     { href: "/post/create", label: "Post", icon: PlusSquare },
     { href: "/chat", label: "Chats", icon: MessageCircle },
-    { href: "/notifications", label: "Notifications", icon: Bell, hasBadge: hasUnread },
     { href: profileHref, label: "Profile", icon: User },
   ];
   
@@ -51,9 +50,28 @@ export function Header() {
 
   return (
     <TooltipProvider>
-      <header className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+       <header className="header-bar">
+         {/* Notification Button */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+                <Link href="/notifications">
+                  <Button 
+                    variant="ghost"
+                    size="icon" 
+                    className="relative h-14 w-14 rounded-full static-comic-border !shadow-none bg-card/80"
+                  >
+                    <Bell className="h-7 w-7" />
+                    {hasUnread && <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full border-2 border-background animate-pulse" />}
+                  </Button>
+                </Link>
+            </TooltipTrigger>
+             <TooltipContent side="top" className="comic-border bg-card">
+                <p className="font-headline tracking-wide">Notifications</p>
+            </TooltipContent>
+          </Tooltip>
+
+         {/* Main Action Button with Fan-out Menu */}
         <nav className="relative flex items-center justify-center">
-            {/* Nav items that fan out */}
              <div
               className={cn(
                 "absolute bottom-0 flex items-center justify-center transition-all duration-500",
@@ -67,10 +85,10 @@ export function Header() {
                 const isProfileLink = label === 'Profile';
                 const isActive = (isProfileLink && pathname.startsWith('/profile/')) ||
                                (href === '/chat' && pathname.startsWith('/chat')) ||
-                               (href === '/notifications' && pathname.startsWith('/notifications')) ||
-                               (!pathname.startsWith('/chat') && !pathname.startsWith('/notifications') && !isProfileLink && pathname === href);
+                               (!pathname.startsWith('/chat') && !isProfileLink && pathname === href);
                 
-                const angle = 180 / (navItems.length - 1) * index;
+                // Adjusted angle for a flatter arc
+                const angle = 10 + (160 / (navItems.length - 1)) * index;
                 const angleRad = (angle - 180) * (Math.PI / 180);
                 const radius = 110;
                 const x = 50 + (radius / 2.2) * Math.cos(angleRad);
@@ -121,14 +139,13 @@ export function Header() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     "relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 transition-transform duration-300",
-                    isOpen && "rotate-45"
+                    isOpen && "rotate-45 bg-destructive text-destructive-foreground"
                 )}
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
             >
                 <Grip className={cn("h-7 w-7 transition-all duration-300", isOpen ? "opacity-0 scale-50" : "opacity-100 scale-100")}  />
                 <X className={cn("absolute h-7 w-7 transition-all duration-300", isOpen ? "opacity-100 scale-100" : "opacity-0 scale-50")} />
-                 {hasUnread && !isOpen && <div className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-background animate-pulse" />}
             </Button>
         </nav>
       </header>

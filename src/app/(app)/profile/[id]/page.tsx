@@ -69,14 +69,10 @@ export default function ProfilePage() {
   const handleFollowToggle = () => {
     if (!loggedInUserId || !user) return;
     startTransition(() => {
+        // Optimistically update the UI
+        setIsFollowing(prev => !prev);
+        // Call the actual data function
         toggleFollow(loggedInUserId, user.id);
-        // Manually update the state for immediate feedback
-        const updatedUser = getUserById(user.id);
-        const loggedInUser = getUserById(loggedInUserId);
-        if(updatedUser && loggedInUser) {
-            setUser(updatedUser);
-            setIsFollowing(loggedInUser.following?.includes(user.id) || false);
-        }
     });
   }
 
@@ -137,12 +133,14 @@ export default function ProfilePage() {
             <Badge className="font-headline text-lg p-2 rounded-md comic-border !border-2 tracking-wider">{user.quizResult}</Badge>
           </div>
 
-           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-base text-muted-foreground">
-             <span className="flex items-center gap-1">
-                <Users className="w-4 h-4 text-primary" /> {user.followers?.length || 0} Followers
+           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-6 text-lg">
+             <span className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-primary" /> 
+                <span className="font-bold">{user.followers?.length || 0}</span> Followers
               </span>
-              <span className="flex items-center gap-1">
-                <Users className="w-4 h-4 text-primary" /> {user.following?.length || 0} Following
+              <span className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-primary" /> 
+                <span className="font-bold">{user.following?.length || 0}</span> Following
               </span>
           </div>
 
