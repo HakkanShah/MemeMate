@@ -9,14 +9,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/t
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { getNotificationsByUserId } from "@/lib/dummy-data";
-import type { Notification } from "@/lib/types";
-
 
 export function Header() {
   const pathname = usePathname();
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
+
+  const showNotificationIcon = !pathname.startsWith('/profile/') && !pathname.startsWith('/post/create');
 
   useEffect(() => {
     const userId = localStorage.getItem('loggedInUser');
@@ -29,11 +29,10 @@ export function Header() {
         };
         checkNotifications();
         
-        // Listen for storage changes to update notification status
         window.addEventListener('storage', checkNotifications);
         return () => window.removeEventListener('storage', checkNotifications);
     }
-  }, [pathname]); // Re-check on pathname change, e.g., after visiting notifications
+  }, [pathname]);
 
   const profileHref = loggedInUserId ? `/profile/${loggedInUserId}` : '#';
 
@@ -50,27 +49,29 @@ export function Header() {
 
   return (
     <TooltipProvider>
-       <header className="header-bar">
-         {/* Notification Button */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-                <Link href="/notifications">
-                  <Button 
-                    variant="ghost"
-                    size="icon" 
-                    className="relative h-14 w-14 rounded-full static-comic-border !shadow-none bg-card/80"
-                  >
-                    <Bell className="h-7 w-7" />
-                    {hasUnread && <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full border-2 border-background animate-pulse" />}
-                  </Button>
-                </Link>
-            </TooltipTrigger>
-             <TooltipContent side="top" className="comic-border bg-card">
-                <p className="font-headline tracking-wide">Notifications</p>
-            </TooltipContent>
-          </Tooltip>
+      {showNotificationIcon && (
+        <div className="fixed top-4 right-4 z-50">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                  <Link href="/notifications">
+                    <Button 
+                      variant="ghost"
+                      size="icon" 
+                      className="relative h-14 w-14 rounded-full static-comic-border !shadow-none bg-card/80"
+                    >
+                      <Bell className="h-7 w-7" />
+                      {hasUnread && <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full border-2 border-background animate-pulse" />}
+                    </Button>
+                  </Link>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="comic-border bg-card">
+                  <p className="font-headline tracking-wide">Notifications</p>
+              </TooltipContent>
+            </Tooltip>
+        </div>
+      )}
 
-         {/* Main Action Button with Fan-out Menu */}
+      <header className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center">
         <nav className="relative flex items-center justify-center">
              <div
               className={cn(
@@ -81,13 +82,12 @@ export function Header() {
                 clipPath: isOpen ? 'circle(100% at 50% 100%)' : 'circle(0% at 50% 100%)',
               }}
             >
-              {navItems.map(({ href, label, icon: Icon, hasBadge }, index) => {
+              {navItems.map(({ href, label, icon: Icon }, index) => {
                 const isProfileLink = label === 'Profile';
                 const isActive = (isProfileLink && pathname.startsWith('/profile/')) ||
                                (href === '/chat' && pathname.startsWith('/chat')) ||
                                (!pathname.startsWith('/chat') && !isProfileLink && pathname === href);
                 
-                // Adjusted angle for a flatter arc
                 const angle = 10 + (160 / (navItems.length - 1)) * index;
                 const angleRad = (angle - 180) * (Math.PI / 180);
                 const radius = 110;
@@ -103,7 +103,7 @@ export function Header() {
                         isActive
                           ? "bg-primary text-primary-foreground scale-110"
                           : "bg-card/90 text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
-                        !loggedInUserId && (isProfileLink || label === "Notifications") && 'pointer-events-none opacity-50',
+                        !loggedInUserId && isProfileLink && 'pointer-events-none opacity-50',
                         !isOpen && "opacity-0 scale-0 pointer-events-none"
                       )}
                        style={{
@@ -115,7 +115,6 @@ export function Header() {
                        onClick={() => setIsOpen(false)}
                     >
                       <Icon className="h-6 w-6" />
-                      {hasBadge && <div className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-background" />}
                       <span className="sr-only">{label}</span>
                     </Link>
                 );
@@ -133,7 +132,6 @@ export function Header() {
               })}
              </div>
 
-            {/* Central button */}
             <Button 
                 size="icon" 
                 onClick={() => setIsOpen(!isOpen)}
