@@ -50,7 +50,7 @@ const defaultUsers: User[] = [
     memeGenres: ['Political', 'Engineering'],
     status: 'Meme-ing Around',
     bio: 'The developer of this platform. Bow down to your Meme King. I build, I break, I meme. Follow my coding adventures!',
-    quizResult: 'Meme God',
+    quizResult: 'Meme King',
     gender: 'Male',
     relationshipStatus: 'Married to my keyboard',
     lookingFor: 'A bug-free life',
@@ -61,7 +61,7 @@ const defaultUsers: User[] = [
     instagramUrl: 'https://www.instagram.com/hakkanshah',
     hasSeenTutorial: true,
     following: ['user1', 'user2', 'user5'],
-    followers: ['user1', 'user3', 'user4', 'user6'],
+    followers: ['user1', 'uaer2', 'user3', 'user4', 'user6'],
   },
   {
     id: 'user1',
