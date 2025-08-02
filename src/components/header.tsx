@@ -38,7 +38,7 @@ export function Header() {
              <div
               className={cn(
                 "absolute bottom-0 flex items-center justify-center transition-all duration-500",
-                 isOpen ? "w-80 h-40" : "w-0 h-0"
+                 isOpen ? "w-64 h-32 sm:w-80 sm:h-40" : "w-0 h-0"
               )}
               style={{
                 clipPath: isOpen ? 'circle(100% at 50% 100%)' : 'circle(0% at 50% 100%)',
@@ -51,7 +51,8 @@ export function Header() {
                                (!pathname.startsWith('/chat') && !isProfileLink && pathname === href);
                 
                 const angle = -Math.PI + (index * (Math.PI / (navItems.length - 1)));
-                const radius = 110; 
+                // Use a smaller radius for mobile, larger for sm screens and up
+                const radius = window.innerWidth < 640 ? 90 : 110; 
                 const x = 50 + (radius / 2.2) * Math.cos(angle);
                 const y = 90 + (radius / 2.2) * Math.sin(angle);
 
@@ -59,7 +60,7 @@ export function Header() {
                    <Link
                       href={href}
                       className={cn(
-                        "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300 static-comic-border",
+                        "absolute flex flex-col items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-full transition-all duration-300 static-comic-border",
                         isActive
                           ? "bg-primary text-primary-foreground scale-110"
                           : "bg-card/90 text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
@@ -74,7 +75,7 @@ export function Header() {
                        }}
                        onClick={() => setIsOpen(false)}
                     >
-                      <Icon className="h-6 w-6" />
+                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                       <span className="sr-only">{label}</span>
                     </Link>
                 );
@@ -97,7 +98,7 @@ export function Header() {
                 size="icon" 
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 transition-all duration-300",
+                    "relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 transition-transform duration-300",
                     isOpen ? "bg-destructive text-destructive-foreground translate-y-4" : "bg-primary text-primary-foreground"
                 )}
                 aria-expanded={isOpen}
