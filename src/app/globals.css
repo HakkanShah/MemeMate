@@ -102,3 +102,10 @@ body {
   box-shadow: 10px 10px 0px hsl(var(--primary));
   animation: jiggle 0.3s infinite;
 }
+
+.static-comic-border {
+  border: 4px solid hsl(var(--foreground));
+  border-radius: var(--radius);
+  box-shadow: 8px 8px 0px hsl(var(--accent));
+  transition: all 0.2s ease-in-out;
+}

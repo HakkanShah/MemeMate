@@ -59,7 +59,7 @@ export function Header() {
                    <Link
                       href={href}
                       className={cn(
-                        "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300 comic-border",
+                        "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300 static-comic-border",
                         isActive
                           ? "bg-primary text-primary-foreground scale-110"
                           : "bg-card/90 text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
