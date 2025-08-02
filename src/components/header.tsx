@@ -50,19 +50,19 @@ export function Header() {
                                (href === '/chat' && pathname.startsWith('/chat')) ||
                                (href !== '/chat' && !isProfileLink && pathname === href);
                 
-                // Angle from -165 (left) to -15 (right) for a semicircle
+                // Correct angle calculation for a semicircle starting from left to right
                 const angle = -165 + (index * 37.5);
                 const x = 50 + 48 * Math.cos(angle * Math.PI / 180);
-                const y = 100 + 48 * Math.sin(angle * Math.PI / 180);
+                const y = 90 + 48 * Math.sin(angle * Math.PI / 180);
 
                 const linkContent = (
                    <Link
                       href={href}
                       className={cn(
                         "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300",
-                        "bg-card/90 comic-border !border-2",
+                        "bg-card/90 border-4 border-foreground rounded-lg shadow-[8px_8px_0px_hsl(var(--accent))]",
                         isActive
-                          ? "bg-primary text-primary-foreground scale-110 shadow-lg"
+                          ? "bg-primary text-primary-foreground scale-110"
                           : "text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
                         !loggedInUserId && isProfileLink && 'pointer-events-none opacity-50',
                         !isOpen && "opacity-0 scale-0 pointer-events-none"
