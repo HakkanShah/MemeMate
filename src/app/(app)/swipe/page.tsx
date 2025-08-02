@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useEffect, useRef, useTransition } from "react";
 import { getStoredData, addMatch, getUserById } from "@/lib/dummy-data";
 import { SwipeCard } from "@/components/swipe-card";
 import { Button } from "@/components/ui/button";
@@ -12,12 +12,20 @@ import { toast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { playSound, SOUNDS } from "@/lib/sounds";
 
+const SWIPE_THRESHOLD = 100; // pixels
+
 export default function SwipePage() {
   const [users, setUsers] = useState<User[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const [isPending, startTransition] = useTransition();
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
+
+  // State for gesture handling
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const id = localStorage.getItem('loggedInUser');
@@ -25,11 +33,10 @@ export default function SwipePage() {
     const allUsers = getStoredData<User[]>('dummyUsers', []);
     setUsers(allUsers.filter(u => u.id !== id)); // Exclude self
   }, []);
-
-  const handleSwipe = (direction: 'left' | 'right', swipedUserId: string) => {
+  
+  const finishSwipe = (direction: 'left' | 'right', swipedUserId: string) => {
     if (isPending || !loggedInUserId) return;
 
-    // Simulate a match on every right swipe for demo purposes
     if (direction === 'right') {
         playSound(SOUNDS.SWIPE_RIGHT);
         const newMatch: Match = {
@@ -47,19 +54,54 @@ export default function SwipePage() {
     } else {
         playSound(SOUNDS.SWIPE_LEFT);
     }
-
+    
     setSwipeDirection(direction);
 
+    // Wait for animation to finish before loading next card
     setTimeout(() => {
       startTransition(() => {
         setCurrentIndex(prev => prev + 1);
+        setPosition({ x: 0, y: 0 }); // Reset position for the new card
         setSwipeDirection(null);
       });
-    }, 300); // Duration should match the CSS transition
+    }, 300);
   };
+
+
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    setPosition({ x: clientX - window.innerWidth / 2, y: 0 });
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    if (position.x > SWIPE_THRESHOLD) {
+      finishSwipe('right', currentUser.id);
+    } else if (position.x < -SWIPE_THRESHOLD) {
+      finishSwipe('left', currentUser.id);
+    } else {
+      // Snap back to center
+      setPosition({ x: 0, y: 0 });
+    }
+  };
+
 
   const currentUser = users[currentIndex];
   const nextUser = users[currentIndex + 1];
+
+  const rotation = position.x / 20;
+  const cardStyle = {
+    transform: `translateX(${position.x}px) rotate(${rotation}deg)`,
+    transition: isDragging ? 'none' : 'transform 0.3s ease',
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] pt-16 pb-28 px-2 overflow-hidden">
@@ -75,11 +117,20 @@ export default function SwipePage() {
                 </div>
             )}
             <div
+              ref={cardRef}
               className={cn(
-                "absolute inset-0 transition-transform duration-300 ease-in-out",
-                swipeDirection === 'left' && "-translate-x-[150%] rotate-[-25deg] opacity-0",
-                swipeDirection === 'right' && "translate-x-[150%] rotate-[25deg] opacity-0"
+                "absolute inset-0 cursor-grab active:cursor-grabbing",
+                 swipeDirection === 'left' && "-translate-x-[150%] rotate-[-25deg] opacity-0",
+                 swipeDirection === 'right' && "translate-x-[150%] rotate-[25deg] opacity-0"
               )}
+              style={cardStyle}
+              onMouseDown={handleDragStart}
+              onMouseMove={handleDragMove}
+              onMouseUp={handleDragEnd}
+              onMouseLeave={handleDragEnd}
+              onTouchStart={handleDragStart}
+              onTouchMove={handleDragMove}
+              onTouchEnd={handleDragEnd}
             >
               <SwipeCard user={currentUser} />
             </div>
@@ -99,7 +150,7 @@ export default function SwipePage() {
             variant="outline"
             size="icon"
             className="w-20 h-20 rounded-full comic-border border-4 border-destructive text-destructive hover:bg-destructive/10 !shadow-none active:scale-95 active:!shadow-inner"
-            onClick={() => handleSwipe('left', currentUser.id)}
+            onClick={() => finishSwipe('left', currentUser.id)}
             disabled={isPending}
           >
             <X className="h-10 w-10" />
@@ -108,7 +159,7 @@ export default function SwipePage() {
             variant="outline"
             size="icon"
             className="w-20 h-20 rounded-full comic-border border-4 border-green-500 text-green-500 hover:bg-green-500/10 !shadow-none active:scale-95 active:!shadow-inner"
-            onClick={() => handleSwipe('right', currentUser.id)}
+            onClick={() => finishSwipe('right', currentUser.id)}
             disabled={isPending}
           >
             <Heart className="h-10 w-10" />
@@ -118,3 +169,4 @@ export default function SwipePage() {
     </div>
   );
 }
+
