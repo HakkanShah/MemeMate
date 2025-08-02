@@ -93,7 +93,20 @@ npm run dev
 ---
 
 ## 🖼️ Demo Preview  
-*Screenshots, GIFs, or preview banners coming soon...*
+<div style="display: flex; overflow-x: auto; gap: 10px; padding: 10px;">
+  <img src="https://github.com/user-attachments/assets/0088873d-b84a-4ce1-b17f-91ca4eb4eef5" width="200" />
+  <img src="https://github.com/user-attachments/assets/c63efb7f-dceb-4a90-b5e1-a45f92e823e9" width="200" />
+  <img src="https://github.com/user-attachments/assets/7e7232d7-1155-450c-ae5c-21cbcd4c28a5" width="200" />
+  <img src="https://github.com/user-attachments/assets/58c5b12c-861f-4ca5-8e03-6c2c04510e39" width="200" />
+  <img src="https://github.com/user-attachments/assets/e4a518d4-3f23-47fc-86db-811360581445" width="200" />
+</div>
+
+
+
+
+
+
+
 
 ---
 
