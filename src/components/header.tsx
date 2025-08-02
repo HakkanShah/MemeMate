@@ -33,6 +33,10 @@ export function Header() {
   ];
 
   const isMobile = isClient && window.innerWidth < 640;
+  
+  const navContainerSize = isMobile ? "w-60 h-28 sm:w-80 sm:h-40" : "w-80 h-40";
+  const iconSize = isMobile ? "h-12 w-12" : "h-12 w-12";
+
 
   return (
     <TooltipProvider>
@@ -42,7 +46,7 @@ export function Header() {
              <div
               className={cn(
                 "absolute bottom-0 flex items-center justify-center transition-all duration-500",
-                 isOpen ? "w-64 h-32 sm:w-80 sm:h-40" : "w-0 h-0"
+                 isOpen ? navContainerSize : "w-0 h-0"
               )}
               style={{
                 clipPath: isOpen ? 'circle(100% at 50% 100%)' : 'circle(0% at 50% 100%)',
@@ -54,17 +58,21 @@ export function Header() {
                                (href === '/chat' && pathname.startsWith('/chat')) ||
                                (!pathname.startsWith('/chat') && !isProfileLink && pathname === href);
                 
-                const angle = -Math.PI + (index * (Math.PI / (navItems.length - 1)));
-                // Use a smaller radius for mobile, larger for sm screens and up
-                const radius = isMobile ? 90 : 110;
-                const x = 50 + (radius / 2.2) * Math.cos(angle);
-                const y = 90 + (radius / 2.2) * Math.sin(angle);
+                // Use a flatter 160-degree arc (-170 to -10 degrees) instead of a full 180.
+                const totalAngle = 160;
+                const startAngle = -170;
+                const angleRad = (startAngle + (index * (totalAngle / (navItems.length - 1)))) * (Math.PI / 180);
+
+                const radius = isMobile ? 85 : 110;
+                const x = 50 + (radius / 2.2) * Math.cos(angleRad);
+                const y = 90 + (radius / 2.2) * Math.sin(angleRad);
 
                 const linkContent = (
                    <Link
                       href={href}
                       className={cn(
-                        "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300 static-comic-border",
+                        "absolute flex flex-col items-center justify-center rounded-full transition-all duration-300 static-comic-border",
+                        iconSize,
                         isActive
                           ? "bg-primary text-primary-foreground scale-110"
                           : "bg-card/90 text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
@@ -109,11 +117,11 @@ export function Header() {
                 aria-label="Toggle navigation menu"
                 style={{ transformStyle: 'preserve-3d' }}
             >
-                <div className={cn("absolute inset-0 flex items-center justify-center transition-transform duration-500", isOpen && "[transform:rotateY(180deg)]")}>
-                  <Grip className={cn("h-7 w-7 transition-opacity duration-200", isOpen ? "opacity-0" : "opacity-100")} style={{backfaceVisibility: 'hidden'}} />
+                <div className={cn("absolute inset-0 flex items-center justify-center transition-transform duration-500", isOpen && "[transform:rotateY(180deg)]")} style={{backfaceVisibility: 'hidden'}}>
+                  <Grip className={cn("h-7 w-7 transition-opacity duration-200", isOpen ? "opacity-0" : "opacity-100")}  />
                 </div>
-                <div className={cn("absolute inset-0 flex items-center justify-center transition-transform duration-500 [transform:rotateY(180deg)]", !isOpen && "[transform:rotateY(360deg)]")}>
-                   <X className={cn("h-7 w-7 transition-opacity duration-200", isOpen ? "opacity-100" : "opacity-0")} style={{backfaceVisibility: 'hidden'}} />
+                <div className={cn("absolute inset-0 flex items-center justify-center transition-transform duration-500 [transform:rotateY(180deg)]", !isOpen && "[transform:rotateY(360deg)]")} style={{backfaceVisibility: 'hidden'}}>
+                   <X className={cn("h-7 w-7 transition-opacity duration-200", isOpen ? "opacity-100" : "opacity-0")} />
                 </div>
 
             </Button>
