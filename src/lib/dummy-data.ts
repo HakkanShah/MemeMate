@@ -1,5 +1,5 @@
 
-import type { User, Meme, Match, ChatMessage, MemeComment } from '@/lib/types';
+import type { User, Meme, Match, ChatMessage, MemeComment, Notification } from '@/lib/types';
 
 // --- Local Storage Wrapper ---
 
@@ -57,6 +57,8 @@ const defaultUsers: User[] = [
     isVerified: true,
     githubUrl: 'https://github.com/HakkanShah',
     hasSeenTutorial: true,
+    following: ['user1', 'user2', 'user5'],
+    followers: ['user1', 'user3', 'user4', 'user6'],
   },
   {
     id: 'user1',
@@ -71,6 +73,8 @@ const defaultUsers: User[] = [
     relationshipStatus: 'Single AF',
     lookingFor: 'My meme-mate',
     hasSeenTutorial: true,
+    following: ['user_hakkan', 'user2'],
+    followers: ['user_hakkan'],
   },
   {
     id: 'user2',
@@ -85,6 +89,8 @@ const defaultUsers: User[] = [
     relationshipStatus: 'Meme-ing Around',
     lookingFor: 'Someone who gets my jokes',
     hasSeenTutorial: true,
+    following: ['user_hakkan'],
+    followers: ['user_hakkan', 'user1'],
   },
   {
     id: 'user3',
@@ -99,6 +105,8 @@ const defaultUsers: User[] = [
     relationshipStatus: 'Single AF',
     lookingFor: 'A partner in cringe',
     hasSeenTutorial: true,
+    following: [],
+    followers: ['user_hakkan'],
   },
   {
     id: 'user4',
@@ -113,6 +121,8 @@ const defaultUsers: User[] = [
     relationshipStatus: 'Taken But Still Posting',
     lookingFor: 'Friends',
     hasSeenTutorial: true,
+    following: ['user_hakkan'],
+    followers: [],
   },
   {
     id: 'user5',
@@ -127,6 +137,8 @@ const defaultUsers: User[] = [
     relationshipStatus: "It's Complicated",
     lookingFor: 'A worthy opponent',
     hasSeenTutorial: true,
+    following: [],
+    followers: ['user_hakkan'],
   },
   {
     id: 'user6',
@@ -141,90 +153,8 @@ const defaultUsers: User[] = [
     relationshipStatus: 'Single AF',
     lookingFor: 'A stable connection (and Wi-Fi)',
     hasSeenTutorial: true,
-  },
-  {
-    id: 'user7',
-    username: 'BollywoodKaBadshah',
-    profilePicUrl: 'https://placehold.co/200x200.png',
-    humorTags: ['Bollywood', 'Wholesome'],
-    memeGenres: ['Cringe'],
-    status: 'Taken But Still Posting',
-    bio: 'My life is a Karan Johar movie, but with more memes.',
-    quizResult: 'Wholesome King',
-    gender: 'Male',
-    relationshipStatus: 'Taken But Still Posting',
-    lookingFor: 'My Simran',
-    hasSeenTutorial: true,
-  },
-  {
-    id: 'user8',
-    username: 'CringeContentCreator',
-    profilePicUrl: 'https://placehold.co/200x200.png',
-    humorTags: ['Cringe', 'Bollywood'],
-    memeGenres: ['Cringe'],
-    status: 'Meme-ing Around',
-    bio: 'Making you cringe is my passion.',
-    quizResult: 'Cringe King',
-    gender: 'Non-binary',
-    relationshipStatus: 'Meme-ing Around',
-    lookingFor: 'Collaborators',
-    hasSeenTutorial: true,
-  },
-  {
-    id: 'user9',
-    username: 'TheWholesomeMemer',
-    profilePicUrl: 'https://placehold.co/200x200.png',
-    humorTags: ['Wholesome', 'Sanskari'],
-    memeGenres: ['Wholesome'],
-    status: 'Single AF',
-    bio: 'Spreading positivity, one meme at a time.',
-    quizResult: 'Wholesome Queen',
-    gender: 'Female',
-    relationshipStatus: 'Single AF',
-    lookingFor: 'A kind soul',
-    hasSeenTutorial: true,
-  },
-  {
-    id: 'user10',
-    username: 'PoliticalKida',
-    profilePicUrl: 'https://placehold.co/200x200.png',
-    humorTags: ['Political', 'Roast'],
-    memeGenres: ['Political'],
-    status: 'Taken But Still Posting',
-    bio: 'If you are not outraged, you are not paying attention. Or looking at my memes.',
-    quizResult: 'Roast Master',
-    gender: 'Male',
-    relationshipStatus: 'Taken But Still Posting',
-    lookingFor: 'A debate partner',
-    hasSeenTutorial: true,
-  },
-  {
-    id: 'user11',
-    username: 'MemeWaliAunty',
-    profilePicUrl: 'https://placehold.co/200x200.png',
-    humorTags: ['WhatsApp Aunty', 'Sanskari'],
-    memeGenres: ['Cringe'],
-    status: 'Meme-ing Around',
-    bio: 'Good morning messages and memes are my specialty.',
-    quizResult: 'Wholesome Queen',
-    gender: 'Female',
-    relationshipStatus: 'Meme-ing Around',
-    lookingFor: 'Good vibes',
-    hasSeenTutorial: true,
-  },
-  {
-    id: 'user12',
-    username: 'ThePunMaster',
-    profilePicUrl: 'https://placehold.co/200x200.png',
-    humorTags: ['Troll', 'Roast'],
-    memeGenres: ['Roast'],
-    status: 'Single AF',
-    bio: 'I don\'t make jokes. I make puns. There\'s a difference.',
-    quizResult: 'Roast Master',
-    gender: 'Male',
-    relationshipStatus: 'Single AF',
-    lookingFor: 'Pun-intended relationships',
-    hasSeenTutorial: true,
+    following: ['user_hakkan'],
+    followers: [],
   },
 ];
 
@@ -276,106 +206,6 @@ const defaultMemes: Meme[] = [
     comments: [],
     timestamp: new Date('2024-07-20T11:30:00Z'),
   },
-  {
-    id: 'meme3',
-    imageUrl: 'https://i.imgflip.com/1bij.jpg',
-    aiHint: 'drake hotline bling',
-    caption: 'Me looking at my crush talking to someone else',
-    authorId: 'user3',
-    reactions: { '😂': 500, '🙏': 25, '💀': 80, '😭': 150, '💘': 30 },
-    comments: [],
-    timestamp: new Date('2024-07-20T12:00:00Z'),
-  },
-    {
-    id: 'meme4',
-    imageUrl: 'https://i.imgflip.com/1bh9.jpg',
-    aiHint: 'mocking spongebob',
-    caption: 'My mood after getting a match',
-    authorId: 'user4',
-    reactions: { '😂': 300, '🙏': 50, '💀': 20, '😭': 10, '💘': 180 },
-    comments: [],
-    timestamp: new Date('2024-07-20T14:00:00Z'),
-  },
-  {
-    id: 'meme5',
-    imageUrl: 'https://i.imgflip.com/2/1ur9b0.jpg',
-    aiHint: 'woman yelling at cat',
-    caption: 'My brain cells arguing whether to study or scroll memes.',
-    authorId: 'user5',
-    reactions: { '😂': 450, '🙏': 5, '💀': 120, '😭': 30, '💘': 50 },
-    comments: [],
-    timestamp: new Date('2024-07-21T09:00:00Z'),
-  },
-  {
-    id: 'meme6',
-    imageUrl: 'https://i.imgflip.com/2/30b1gx.jpg',
-    aiHint: 'change my mind',
-    caption: 'Final year project: Works on my machine. Viva: Machine not found.',
-    authorId: 'user6',
-    reactions: { '😂': 600, '🙏': 15, '💀': 50, '😭': 200, '💘': 25 },
-    comments: [],
-    timestamp: new Date('2024-07-21T10:30:00Z'),
-  },
-  {
-    id: 'meme7',
-    imageUrl: 'https://i.imgflip.com/4/3oevk2.jpg',
-    aiHint: 'bernie sanders asking',
-    caption: 'Me waiting for my crush to notice my new DP.',
-    authorId: 'user7',
-    reactions: { '😂': 350, '🙏': 100, '💀': 15, '😭': 25, '💘': 300 },
-    comments: [],
-    timestamp: new Date('2024-07-21T11:00:00Z'),
-  },
-  {
-    id: 'meme8',
-    imageUrl: 'https://i.imgflip.com/4/1g8my4.jpg',
-    aiHint: 'distracted boyfriend',
-    caption: 'When the OTP arrives after you have already closed the tab.',
-    authorId: 'user1',
-    reactions: { '😂': 700, '🙏': 40, '💀': 90, '😭': 100, '💘': 60 },
-    comments: [],
-    timestamp: new Date('2024-07-21T12:00:00Z'),
-  },
-  {
-    id: 'meme9',
-    imageUrl: 'https://i.imgflip.com/1h7in.jpg',
-    aiHint: 'roll safe',
-    caption: 'Me after my code runs on the first try.',
-    authorId: 'user8',
-    reactions: { '😂': 800, '🙏': 20, '💀': 10, '😭': 5, '💘': 100 },
-    comments: [],
-    timestamp: new Date('2024-07-22T09:00:00Z'),
-  },
-  {
-    id: 'meme10',
-    imageUrl: 'https://i.imgflip.com/1otk96.jpg',
-    aiHint: 'expanding brain',
-    caption: 'This is a wholesome meme. No dark humor here.',
-    authorId: 'user9',
-    reactions: { '😂': 100, '🙏': 500, '💀': 0, '😭': 5, '💘': 400 },
-    comments: [],
-    timestamp: new Date('2024-07-22T10:00:00Z'),
-  },
-  {
-    id: 'meme11',
-    imageUrl: 'https://i.imgflip.com/3/2v1ifk.jpg',
-    aiHint: 'joker',
-    caption: 'Me explaining to my parents why I need more pocket money.',
-    authorId: 'user10',
-    reactions: { '😂': 900, '🙏': 10, '💀': 50, '😭': 100, '💘': 20 },
-    comments: [],
-    timestamp: new Date('2024-07-22T11:00:00Z'),
-  },
-  {
-    id: 'meme12',
-    imageUrl: 'https://i.imgflip.com/4/3i7p.jpg',
-    aiHint: 'sad pablo escobar',
-    caption: '1 like = 1 prayer for my grades.',
-    authorId: 'user6',
-    reactions: { '😂': 200, '🙏': 800, '💀': 20, '😭': 500, '💘': 10 },
-    comments: [],
-    timestamp: new Date('2024-07-22T12:00:00Z'),
-  },
 ];
 
 const defaultMatches: Match[] = [
@@ -389,21 +219,6 @@ const defaultMatches: Match[] = [
     userIds: ['user1', 'user3'],
     timestamp: new Date('2024-07-18T18:00:00Z'),
   },
-  {
-    id: 'match3',
-    userIds: ['user1', 'user5'],
-    timestamp: new Date('2024-07-20T21:00:00Z'),
-  },
-  {
-    id: 'match4',
-    userIds: ['user2', 'user7'],
-    timestamp: new Date('2024-07-21T21:00:00Z'),
-  },
-  {
-    id: 'match5',
-    userIds: ['user4', 'user10'],
-    timestamp: new Date('2024-07-22T21:00:00Z'),
-  },
 ];
 
 const defaultChatMessages: ChatMessage[] = [
@@ -413,17 +228,13 @@ const defaultChatMessages: ChatMessage[] = [
 
     { id: 'msg4', matchId: 'match2', senderId: 'user3', text: 'Your bio is hilarious', timestamp: new Date('2024-07-18T18:01:00Z') },
     { id: 'msg5', matchId: 'match2', senderId: 'user1', text: 'Yours too! Finally, someone with good taste in memes', timestamp: new Date('2024-07-18T18:02:00Z') },
-    
-    { id: 'msg6', matchId: 'match3', senderId: 'user1', text: 'Your sarcasm is on point!', timestamp: new Date('2024-07-20T21:01:00Z') },
-    { id: 'msg7', matchId: 'match3', senderId: 'user5', text: 'I could say the same about your troll memes.', timestamp: new Date('2024-07-20T21:02:00Z') },
-
-    { id: 'msg8', matchId: 'match4', senderId: 'user2', text: 'Your SRK pose is better than the original!', timestamp: new Date('2024-07-21T21:01:00Z') },
-    { id: 'msg9', matchId: 'match4', senderId: 'user7', text: 'Haha, years of practice in front of the mirror.', timestamp: new Date('2024-07-21T21:02:00Z') },
-
-    { id: 'msg10', matchId: 'match5', senderId: 'user4', text: 'Did you see the latest news? Perfect meme material.', timestamp: new Date('2024-07-22T21:01:00Z') },
-    { id: 'msg11', matchId: 'match5', senderId: 'user10', text: 'Already on it. A new meme is cooking.', timestamp: new Date('2024-07-22T21:02:00Z') },
 ];
 
+const defaultNotifications: Notification[] = [
+    { id: 'notif1', recipientId: 'user1', actorId: 'user_hakkan', type: 'follow', read: false, timestamp: new Date('2024-07-31T11:00:00Z')},
+    { id: 'notif2', recipientId: 'user_hakkan', actorId: 'user1', type: 'reaction', memeId: 'meme_hakkan_1', read: false, timestamp: new Date('2024-07-31T10:05:00Z')},
+    { id: 'notif3', recipientId: 'user_hakkan', actorId: 'user1', type: 'comment', memeId: 'meme_hakkan_1', read: true, timestamp: new Date('2024-07-31T10:06:00Z')},
+];
 
 // --- Data Access and Mutation Functions ---
 
@@ -441,18 +252,23 @@ if (isBrowser) {
     if (!localStorage.getItem('dummyChatMessages')) {
         setStoredData('dummyChatMessages', defaultChatMessages);
     }
+    if (!localStorage.getItem('dummyNotifications')) {
+        setStoredData('dummyNotifications', defaultNotifications);
+    }
 }
 
-// Export getters that read from local storage
-export const dummyUsers: User[] = getStoredData('dummyUsers', defaultUsers);
-export const dummyMemes: Meme[] = getStoredData('dummyMemes', defaultMemes);
-export const dummyMatches: Match[] = getStoredData('dummyMatches', defaultMatches);
-export const dummyChatMessages: ChatMessage[] = getStoredData('dummyChatMessages', defaultChatMessages);
 
 export const getUserById = (id: string) => getStoredData<User[]>('dummyUsers', []).find(u => u.id === id);
 export const getMemesByAuthor = (authorId: string) => getStoredData<Meme[]>('dummyMemes', []).filter(m => m.authorId === authorId);
 export const getMatchById = (id: string) => getStoredData<Match[]>('dummyMatches', []).find(m => m.id === id);
 export const getMessagesByMatchId = (matchId: string) => getStoredData<ChatMessage[]>('dummyChatMessages', []).filter(m => m.matchId === matchId);
+export const getNotificationsByUserId = (userId: string) => {
+    const notifications = getStoredData<Notification[]>('dummyNotifications', []);
+    return notifications
+        .filter(n => n.recipientId === userId)
+        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+};
+
 
 // --- Functions to update data and persist to localStorage ---
 
@@ -481,4 +297,57 @@ export const addMessage = (message: ChatMessage) => {
 export const addMatch = (match: Match) => {
     const matches = getStoredData<Match[]>('dummyMatches', []);
     setStoredData('dummyMatches', [...matches, match]);
+};
+
+export const addNotification = (notification: Omit<Notification, 'id' | 'timestamp'>) => {
+    const notifications = getStoredData<Notification[]>('dummyNotifications', []);
+    const newNotification: Notification = {
+        ...notification,
+        id: `notif-${Date.now()}`,
+        timestamp: new Date(),
+    };
+    setStoredData('dummyNotifications', [newNotification, ...notifications]);
+};
+
+export const markNotificationsAsRead = (userId: string) => {
+    const notifications = getStoredData<Notification[]>('dummyNotifications', []);
+    const updatedNotifications = notifications.map(n => 
+        n.recipientId === userId ? { ...n, read: true } : n
+    );
+    setStoredData('dummyNotifications', updatedNotifications);
+};
+
+export const toggleFollow = (loggedInUserId: string, targetUserId: string) => {
+    const users = getStoredData<User[]>('dummyUsers', []);
+    const loggedInUser = users.find(u => u.id === loggedInUserId);
+    const targetUser = users.find(u => u.id === targetUserId);
+
+    if (!loggedInUser || !targetUser) return;
+
+    const isFollowing = loggedInUser.following?.includes(targetUserId);
+
+    if (isFollowing) {
+        // Unfollow
+        loggedInUser.following = loggedInUser.following?.filter(id => id !== targetUserId);
+        targetUser.followers = targetUser.followers?.filter(id => id !== loggedInUserId);
+    } else {
+        // Follow
+        loggedInUser.following = [...(loggedInUser.following || []), targetUserId];
+        targetUser.followers = [...(targetUser.followers || []), loggedInUserId];
+        // Add notification for the follow action
+        addNotification({
+            recipientId: targetUserId,
+            actorId: loggedInUserId,
+            type: 'follow',
+            read: false,
+        });
+    }
+
+    const updatedUsers = users.map(u => {
+        if (u.id === loggedInUserId) return loggedInUser;
+        if (u.id === targetUserId) return targetUser;
+        return u;
+    });
+
+    setStoredData('dummyUsers', updatedUsers);
 };

@@ -16,6 +16,8 @@ export interface User {
   isVerified?: boolean;
   githubUrl?: string;
   hasSeenTutorial?: boolean;
+  following?: string[];
+  followers?: string[];
 }
 
 export interface MemeComment {
@@ -53,5 +55,15 @@ export interface ChatMessage {
   matchId: string;
   senderId: string;
   text: string;
+  timestamp: Date;
+}
+
+export interface Notification {
+  id: string;
+  recipientId: string;
+  actorId: string;
+  type: 'follow' | 'reaction' | 'comment';
+  memeId?: string; // only for reaction/comment
+  read: boolean;
   timestamp: Date;
 }

@@ -1,11 +1,11 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useTransition } from "react";
 import { useParams, notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getUserById, getMemesByAuthor } from "@/lib/dummy-data";
+import { getUserById, getMemesByAuthor, toggleFollow } from "@/lib/dummy-data";
 import type { User, Meme } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,8 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { MemeCard } from "@/components/meme-card";
 import { HumorTagSuggestor } from "@/components/humor-tag-suggester";
 import { ProfileSettings } from "@/components/profile-settings";
-import { Users, Heart, CheckCircle, Github } from "lucide-react";
+import { Users, Heart, CheckCircle, Github, UserPlus, UserCheck } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
 
 export default function ProfilePage() {
@@ -25,6 +26,8 @@ export default function ProfilePage() {
   const [userMemes, setUserMemes] = useState<Meme[]>([]);
   const [loading, setLoading] = useState(true);
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
 
   const loadData = useCallback(() => {
@@ -39,19 +42,18 @@ export default function ProfilePage() {
       setUser(foundUser);
       const memes = getMemesByAuthor(foundUser.id);
       setUserMemes(memes);
+
+      const id = localStorage.getItem('loggedInUser');
+      if (id) {
+          setLoggedInUserId(id);
+          const loggedInUser = getUserById(id);
+          setIsFollowing(loggedInUser?.following?.includes(userId) || false);
+      }
     }
     setLoading(false);
   }, [userId]);
   
   useEffect(() => {
-    // This runs once on component mount in the browser
-    const id = localStorage.getItem('loggedInUser');
-    setLoggedInUserId(id);
-    // The rest of the logic depends on the userId from params, so it will be called in the next effect.
-  }, []);
-
-  useEffect(() => {
-    // This effect runs whenever the userId from params changes, or when we finally get the loggedInUserId
     loadData();
 
      const handleStorageChange = (e: StorageEvent) => {
@@ -63,6 +65,20 @@ export default function ProfilePage() {
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, [userId, loadData]);
+
+  const handleFollowToggle = () => {
+    if (!loggedInUserId || !user) return;
+    startTransition(() => {
+        toggleFollow(loggedInUserId, user.id);
+        // Manually update the state for immediate feedback
+        const updatedUser = getUserById(user.id);
+        const loggedInUser = getUserById(loggedInUserId);
+        if(updatedUser && loggedInUser) {
+            setUser(updatedUser);
+            setIsFollowing(loggedInUser.following?.includes(user.id) || false);
+        }
+    });
+  }
 
 
   if (loading) {
@@ -81,7 +97,15 @@ export default function ProfilePage() {
 
   return (
     <div className="p-2 sm:p-4 relative">
-      {isOwnProfile && <ProfileSettings user={user} />}
+      {isOwnProfile ? (
+        <ProfileSettings user={user} />
+      ) : (
+        <Button onClick={handleFollowToggle} disabled={isPending || !loggedInUserId} className="absolute top-4 right-4 z-10 comic-border !border-2">
+            {isFollowing ? <UserCheck /> : <UserPlus />}
+            <span className="ml-2">{isFollowing ? 'Following' : 'Follow'}</span>
+        </Button>
+      )}
+
       <Card className="comic-border bg-card/80 backdrop-blur-sm overflow-hidden mb-8">
         <div className="bg-primary p-4 pt-16 sm:pt-20">
              <div className="flex flex-wrap justify-center gap-2">
@@ -111,6 +135,15 @@ export default function ProfilePage() {
           
           <div className="mt-4">
             <Badge className="font-headline text-lg p-2 rounded-md comic-border !border-2 tracking-wider">{user.quizResult}</Badge>
+          </div>
+
+           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-base text-muted-foreground">
+             <span className="flex items-center gap-1">
+                <Users className="w-4 h-4 text-primary" /> {user.followers?.length || 0} Followers
+              </span>
+              <span className="flex items-center gap-1">
+                <Users className="w-4 h-4 text-primary" /> {user.following?.length || 0} Following
+              </span>
           </div>
 
            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-sm text-muted-foreground">

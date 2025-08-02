@@ -8,7 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import type { Meme, MemeComment } from "@/lib/types";
-import { getUserById, updateMeme } from "@/lib/dummy-data";
+import { getUserById, updateMeme, addNotification } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 import { MessageSquare, Send, ArrowUp, ArrowDown, CheckCircle } from "lucide-react";
 import { Input } from "./ui/input";
@@ -48,6 +48,17 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
     };
     setMeme(updatedMeme);
     updateMeme(updatedMeme);
+
+    // Send notification
+    if (loggedInUserId && loggedInUserId !== meme.authorId) {
+        addNotification({
+            recipientId: meme.authorId,
+            actorId: loggedInUserId,
+            type: 'reaction',
+            memeId: meme.id,
+            read: false
+        });
+    }
   };
   
   const handleCommentSubmit = (e: React.FormEvent) => {
@@ -70,6 +81,17 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
     setMeme(updatedMeme);
     updateMeme(updatedMeme);
     setNewComment("");
+
+     // Send notification
+    if (loggedInUserId !== meme.authorId) {
+        addNotification({
+            recipientId: meme.authorId,
+            actorId: loggedInUserId,
+            type: 'comment',
+            memeId: meme.id,
+            read: false
+        });
+    }
   }
 
   const handleVote = (commentIndex: number, voteType: 'up' | 'down') => {
@@ -129,7 +151,7 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
               {topReactions.map(([emoji, count]) => (
                 <ReactionButton key={emoji} emoji={emoji} count={count} onClick={() => handleReaction(emoji as keyof Meme['reactions'])} />
               ))}
-               <Button variant="ghost" className="flex items-center gap-2 text-lg" onClick={() => setShowAllComments(!showAllComments)}>
+               <Button variant="ghost" className="flex items-center gap-2 text-lg" onClick={() => document.getElementById(`comment-input-${meme.id}`)?.focus()}>
                   <MessageSquare />
                   <span className="text-sm font-bold">{meme.comments.length}</span>
               </Button>
@@ -160,6 +182,7 @@ export function MemeCard({ meme: initialMeme }: MemeCardProps) {
              )}
              <form onSubmit={handleCommentSubmit} className="flex items-center gap-2 w-full">
                 <Input 
+                    id={`comment-input-${meme.id}`}
                     placeholder="Add a comment..." 
                     className="h-9 comic-border !border-2"
                     value={newComment}
