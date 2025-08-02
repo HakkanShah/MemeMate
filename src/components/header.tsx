@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Heart, User, PlusSquare, Grip } from "lucide-react";
+import { Home, MessageCircle, Heart, User, PlusSquare, Grip, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useEffect, useState } from "react";
@@ -50,17 +50,18 @@ export function Header() {
                                (href === '/chat' && pathname.startsWith('/chat')) ||
                                (href !== '/chat' && !isProfileLink && pathname === href);
                 
-                // Correct angle calculation for a semicircle starting from left to right
-                const angle = -165 + (index * 37.5);
-                const x = 50 + 48 * Math.cos(angle * Math.PI / 180);
-                const y = 90 + 48 * Math.sin(angle * Math.PI / 180);
+                // Correct angle calculation for a semicircle starting from left to right (-180 to 0 degrees in radians)
+                const angle = -Math.PI + (index * (Math.PI / (navItems.length - 1)));
+                const radius = 110; // The radius of the circle
+                const x = 50 + (radius / 2.2) * Math.cos(angle);
+                const y = 90 + (radius / 2.2) * Math.sin(angle);
 
                 const linkContent = (
                    <Link
                       href={href}
                       className={cn(
                         "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300",
-                        "bg-card/90 border-4 border-foreground rounded-lg shadow-[8px_8px_0px_hsl(var(--accent))]",
+                        "bg-card/90 border-4 border-foreground rounded-lg shadow-[4px_4px_0px_hsl(var(--accent))]",
                         isActive
                           ? "bg-primary text-primary-foreground scale-110"
                           : "text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
@@ -99,13 +100,13 @@ export function Header() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     "relative h-14 w-14 rounded-full comic-border !border-4 !shadow-none z-10 transition-all duration-300",
-                    isOpen ? "bg-destructive text-destructive-foreground rotate-45 translate-y-4" : "bg-primary text-primary-foreground"
+                    isOpen ? "bg-destructive text-destructive-foreground translate-y-4" : "bg-primary text-primary-foreground"
                 )}
                 aria-expanded={isOpen}
                 aria-label="Toggle navigation menu"
             >
-                <Grip className={cn("h-7 w-7 transition-transform duration-300 absolute", isOpen ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100")}/>
-                <PlusSquare className={cn("h-7 w-7 transition-transform duration-300 absolute", isOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0")}/>
+                <Grip className={cn("h-7 w-7 transition-all duration-300 absolute", isOpen ? "scale-0 opacity-0" : "scale-100 opacity-100")}/>
+                <X className={cn("h-7 w-7 transition-all duration-300 absolute", isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0")}/>
             </Button>
         </nav>
       </header>
