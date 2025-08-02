@@ -13,11 +13,13 @@ export function Header() {
   const pathname = usePathname();
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     // This code runs only on the client, after the component has mounted
     const userId = localStorage.getItem('loggedInUser');
     setLoggedInUserId(userId);
+    setIsClient(true);
   }, []);
 
   const profileHref = loggedInUserId ? `/profile/${loggedInUserId}` : '#';
@@ -29,6 +31,8 @@ export function Header() {
     { href: "/chat", label: "Chats", icon: MessageCircle },
     { href: profileHref, label: "Profile", icon: User },
   ];
+
+  const isMobile = isClient && window.innerWidth < 640;
 
   return (
     <TooltipProvider>
@@ -52,7 +56,7 @@ export function Header() {
                 
                 const angle = -Math.PI + (index * (Math.PI / (navItems.length - 1)));
                 // Use a smaller radius for mobile, larger for sm screens and up
-                const radius = window.innerWidth < 640 ? 90 : 110; 
+                const radius = isMobile ? 90 : 110;
                 const x = 50 + (radius / 2.2) * Math.cos(angle);
                 const y = 90 + (radius / 2.2) * Math.sin(angle);
 
@@ -60,7 +64,7 @@ export function Header() {
                    <Link
                       href={href}
                       className={cn(
-                        "absolute flex flex-col items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-full transition-all duration-300 static-comic-border",
+                        "absolute flex flex-col items-center justify-center h-12 w-12 rounded-full transition-all duration-300 static-comic-border",
                         isActive
                           ? "bg-primary text-primary-foreground scale-110"
                           : "bg-card/90 text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
@@ -75,7 +79,7 @@ export function Header() {
                        }}
                        onClick={() => setIsOpen(false)}
                     >
-                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                      <Icon className="h-6 w-6" />
                       <span className="sr-only">{label}</span>
                     </Link>
                 );
