@@ -29,9 +29,9 @@ export function playSound(src: string, volume: number = 0.5) {
 }
 
 export const SOUNDS = {
-  SWIPE_RIGHT: 'https://pixabay.com/sound-effects/correct-6033/', // Magic wand
-  SWIPE_LEFT: 'https://pixabay.com/sound-effects/simple-whoosh-382724/', // Whoosh
-  REACTION: 'https://cdn.pixabay.com/audio/2022/03/10/audio_c3b9c03830.mp3', // Pop
-  POST_SUCCESS: 'https://cdn.pixabay.com/audio/2022/11/17/audio_84f9b846f3.mp3', // Success chime
-  MESSAGE_SENT: 'https://cdn.pixabay.com/audio/2022/03/15/audio_ad4cc3e280.mp3', // Swoosh
+  SWIPE_RIGHT: '/sounds/swipe_right.mp3', // Magic wand
+  SWIPE_LEFT: '/sounds/swipe_left.mp3', // Whoosh
+  REACTION: '/sounds/reaction.mp3', // Pop
+  POST_SUCCESS: '/sounds/post_success.mp3', // Success chime
+  MESSAGE_SENT: '/sounds/messege_sent.mp3', // Swoosh
 };
