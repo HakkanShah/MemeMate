@@ -16,7 +16,7 @@ Hosted on **Netlify**
 
 > ⚠️ This is a frontend-only dummy project.  
 > In the future, I will add a **backend**, **database**, and all the necessary features to make the app fully functional for real users. Stay tuned!
-
+ 
 ---
 
 ## 📂 File Structure
