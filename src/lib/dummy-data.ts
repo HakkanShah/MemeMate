@@ -192,7 +192,7 @@ const defaultMemes: Meme[] = [
     aiHint: 'distracted boyfriend',
     caption: 'Daya, pata lagao isne swipe right kyun nahi kiya!',
     authorId: 'user1',
-    reactions: { '😂': 102, '🙏': 12, '💀': 45, '😭': 5, '💘': 20 },
+    reactions: { '😂': 97, '🙏': 12, '💀': 45, '😭': 5, '💘': 20 },
     comments: [
         { userId: 'user2', text: 'So true!', timestamp: new Date(), votes: 5 },
         { userId: 'user3', text: 'Hahaha!', timestamp: new Date(), votes: 2 }
