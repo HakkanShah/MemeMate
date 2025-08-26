@@ -97,7 +97,7 @@ const defaultUsers: User[] = [
   },
   {
     id: 'user3',
-    username: 'JethalalOP',
+    username: 'Jethalal',
     profilePicUrl: 'https://placehold.co/200x200.png',
     humorTags: ['Desi', 'WhatsApp Aunty'],
     memeGenres: ['Cringe', 'Sanskari'],
