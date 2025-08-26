@@ -113,7 +113,7 @@ const defaultUsers: User[] = [
   },
   {
     id: 'user4',
-    username: 'BhaiKaMeme',
+    username: 'DhottarChor',
     profilePicUrl: 'https://placehold.co/200x200.png',
     humorTags: ['Troll', 'Roast'],
     memeGenres: ['Political', 'Roast'],
