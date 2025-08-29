@@ -260,7 +260,6 @@ if (isBrowser) {
     }
 }
 
-
 export const getUserById = (id: string) => getStoredData<User[]>('dummyUsers', []).find(u => u.id === id);
 export const getMemesByAuthor = (authorId: string) => getStoredData<Meme[]>('dummyMemes', []).filter(m => m.authorId === authorId);
 export const getMatchById = (id: string) => getStoredData<Match[]>('dummyMatches', []).find(m => m.id === id);
