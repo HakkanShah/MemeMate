@@ -25,6 +25,9 @@ export default function SwipePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const dragStartRef = useRef<{ x: number } | null>(null);
+  
+  const currentUser = users[currentIndex];
+  const nextUser = users[currentIndex + 1];
 
   useEffect(() => {
     const id = localStorage.getItem('loggedInUser');
@@ -33,11 +36,10 @@ export default function SwipePage() {
     setUsers(allUsers.filter(u => u.id !== id)); // Exclude self
   }, []);
   
-  const currentUser = users[currentIndex];
-  const nextUser = users[currentIndex + 1];
-
   const finishSwipe = useCallback((direction: 'left' | 'right', swipedUserId: string) => {
     if (isPending || !loggedInUserId) return;
+
+    setSwipeDirection(direction);
 
     if (direction === 'right') {
         playSound(SOUNDS.SWIPE_RIGHT);
@@ -57,8 +59,6 @@ export default function SwipePage() {
         playSound(SOUNDS.SWIPE_LEFT);
     }
     
-    setSwipeDirection(direction);
-
     // Wait for animation to finish before loading next card
     setTimeout(() => {
       startTransition(() => {
@@ -111,30 +111,33 @@ export default function SwipePage() {
         Find Your Meme-Mate
       </h1>
       <div className="relative w-full max-w-[22rem] h-[65vh] max-h-[550px]">
-        {currentUser ? (
+        {users.length > 0 && currentIndex < users.length ? (
           <>
             {nextUser && (
                 <div className="absolute top-0 left-0 w-full h-full transition-transform duration-300">
                     <SwipeCard user={nextUser} isNext={true} />
                 </div>
             )}
-            <div
-              className={cn(
-                "absolute inset-0 cursor-grab active:cursor-grabbing",
-                 swipeDirection === 'left' && "-translate-x-[150%] rotate-[-25deg] opacity-0",
-                 swipeDirection === 'right' && "translate-x-[150%] rotate-[25deg] opacity-0"
-              )}
-              style={cardStyle}
-              onMouseDown={handleDragStart}
-              onMouseMove={handleDragMove}
-              onMouseUp={handleDragEnd}
-              onMouseLeave={handleDragEnd}
-              onTouchStart={handleDragStart}
-              onTouchMove={handleDragMove}
-              onTouchEnd={handleDragEnd}
-            >
-              <SwipeCard user={currentUser} />
-            </div>
+            {currentUser && (
+              <div
+                className={cn(
+                  "absolute inset-0 cursor-grab active:cursor-grabbing",
+                  "transition-all duration-300 ease-in-out",
+                  swipeDirection === 'left' && "-translate-x-[150%] rotate-[-25deg] opacity-0",
+                  swipeDirection === 'right' && "translate-x-[150%] rotate-[25deg] opacity-0"
+                )}
+                style={cardStyle}
+                onMouseDown={handleDragStart}
+                onMouseMove={handleDragMove}
+                onMouseUp={handleDragEnd}
+                onMouseLeave={handleDragEnd}
+                onTouchStart={handleDragStart}
+                onTouchMove={handleDragMove}
+                onTouchEnd={handleDragEnd}
+              >
+                <SwipeCard user={currentUser} />
+              </div>
+            )}
           </>
         ) : users.length > 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center comic-border bg-card p-4">
