@@ -2,10 +2,17 @@
 "use client";
 
 import { Header } from "@/components/header";
-import { OnboardingTutorial } from "@/components/onboarding-tutorial";
 import { getUserById, updateUser } from "@/lib/dummy-data";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import type { User } from "@/lib/types";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const OnboardingTutorial = dynamic(() => import('@/components/onboarding-tutorial').then(mod => mod.OnboardingTutorial), {
+  ssr: false,
+  loading: () => <div className="fixed inset-0 bg-black/60 z-[100] backdrop-blur-sm" />,
+});
+
 
 export default function AppLayout({
   children,
@@ -13,8 +20,10 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const loggedInId = localStorage.getItem('loggedInUser');
     if (loggedInId) {
       const currentUser = getUserById(loggedInId);
@@ -34,8 +43,10 @@ export default function AppLayout({
     <div className="relative min-h-screen">
       <Header />
       <main className="pb-24">{children}</main>
-      {user && !user.hasSeenTutorial && (
-        <OnboardingTutorial onFinish={handleTutorialFinish} />
+      {isClient && user && !user.hasSeenTutorial && (
+        <Suspense fallback={<div className="fixed inset-0 bg-black/60 z-[100] backdrop-blur-sm" />}>
+          <OnboardingTutorial onFinish={handleTutorialFinish} />
+        </Suspense>
       )}
     </div>
   );
