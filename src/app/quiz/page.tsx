@@ -10,67 +10,71 @@ import { Label } from "@/components/ui/label";
 import { updateUser, getUserById } from '@/lib/dummy-data';
 import { toast } from '@/hooks/use-toast';
 import type { User } from '@/lib/types';
+import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
 const quizQuestions = [
     {
-        question: "Your go-to reaction meme?",
-        options: ["'Main kya karu? Job chhod doon?'", "'Mera to sab kuch lut gaya'", "'Oo bhai, maro mujhe maro'", "'Ye kya ho raha hai?'"],
+        question: "A friend sends a 'Good Morning' message with a flower on WhatsApp. You reply with:",
+        options: ["The same picture back to them", "A sarcastic meme about boomer humor", "Silence. You archive the chat.", "A 'Seen' and nothing more."],
         results: {
- "Main kya karu? Job chhod doon?": "Relatable Rant King",
- "Mera to sab kuch lut gaya": "Drama Queen/King",
- "Oo bhai, maro mujhe maro": "Self-Deprecating Humorist",
- "Ye kya ho raha hai?": "Confused Soul",
+            "The same picture back to them": "Wholesome Humorist",
+            "A sarcastic meme about boomer humor": "Savage Sarcastic",
+            "Silence. You archive the chat.": "Low-key Roaster",
+            "A 'Seen' and nothing more.": "Silent Shitposter"
         }
     },
     {
-        question: "When someone shares a cringe meme, you are:",
-        options: ["'Mummy, chappal kahan hai?'", "'Bas karo bhai, rulayega kya?'", "'Delete karde bhai, izzat ki maa behen ho rahi hai'", "'Aap chronology samajhiye'"],
+        question: "Your favorite Bollywood meme template involves:",
+        options: ["Hera Pheri (Raju, Shyam, Babu Bhaiya)", "3 Idiots (Rancho, Farhan, Raju)", "Gangs of Wasseypur (Sardar Khan)", "Munna Bhai M.B.B.S."],
         results: {
- "Mummy, chappal kahan hai?": "Aggressive Roaster",
- "Bas karo bhai, rulayega kya?": "Sympathetic Critic",
- "Delete karde bhai, izzat ki maa behen ho rahi hai": "Embarrassed Spectator",
- "Aap chronology samajhiye": "Analytical Critic",
+            "Hera Pheri (Raju, Shyam, Babu Bhaiya)": "Classic Comedy Connoisseur",
+            "3 Idiots (Rancho, Farhan, Raju)": "Relatable Rant King",
+            "Gangs of Wasseypur (Sardar Khan)": "Dark Humor Devotee",
+            "Munna Bhai M.B.B.S.": "Wholesome Humorist"
         }
     },
     {
-        question: "Your spirit animal meme?",
-        options: ["Sacred Games' Gaitonde", "Mirzapur's Munna Bhaiya", "Panchayat's Abhishek Tripathi", "Scam 1992's Harshad Mehta"],
+        question: "When a new viral trend takes over Instagram, you:",
+        options: ["Are the first to make a reel on it", "Wait for it to become cringe, then make memes about it", "Silently judge everyone who participates", "Have no idea what's happening"],
         results: {
- "Sacred Games' Gaitonde": "Philosophical Memer",
- "Mirzapur's Munna Bhaiya": "Aggressive & Bold Memer",
- "Panchayat's Abhishek Tripathi": "Relatable Everyday Memer",
- "Scam 1992's Harshad Mehta": "Master Strategist Memer",
+            "Are the first to make a reel on it": "Certified Trend-Setter",
+            "Wait for it to become cringe, then make memes about it": "Savage Sarcastic",
+            "Silently judge everyone who participates": "Low-key Roaster",
+            "Have no idea what's happening": "Silent Shitposter"
         }
     },
 ];
 
+
 export default function QuizPage() {
     const router = useRouter();
     const [answers, setAnswers] = useState<{[key: number]: string}>({});
+    const [currentQuestion, setCurrentQuestion] = useState(0);
 
     const handleAnswerChange = (questionIndex: number, value: string) => {
         setAnswers(prev => ({ ...prev, [questionIndex]: value }));
+        // Automatically move to the next question
+        setTimeout(() => {
+            if (currentQuestion < quizQuestions.length - 1) {
+                setCurrentQuestion(currentQuestion + 1);
+            }
+        }, 300);
     };
 
     const calculateResult = () => {
-        const resultCounts: {[key: string]: number} = {
- "Relatable Rant King": 0,
- "Drama Queen/King": 0,
- "Self-Deprecating Humorist": 0,
- "Confused Soul": 0,
-        };
-
+        const resultCounts: {[key: string]: number} = {};
+        
         quizQuestions.forEach((q, index) => {
             const answer = answers[index];
             if (answer) {
                 const result = q.results[answer as keyof typeof q.results];
                 if (result) {
-                    resultCounts[result]++;
+                    resultCounts[result] = (resultCounts[result] || 0) + 1;
                 }
             }
         });
-
-        // Find the result with the highest count
+        
         let finalResult = "Newbie Memer";
         let maxCount = 0;
         for (const [result, count] of Object.entries(resultCounts)) {
@@ -110,34 +114,51 @@ export default function QuizPage() {
         
         router.push('/feed');
     };
+    
+    const progress = (Object.keys(answers).length / quizQuestions.length) * 100;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
- <h1 className="font-headline text-4xl sm:text-5xl text-center mb-8 tracking-wider text-primary-foreground drop-shadow-lg" style={{ WebkitTextStroke: '2px black' }}>
+        <h1 className="font-headline text-4xl sm:text-5xl text-center mb-4 tracking-wider text-primary-foreground drop-shadow-lg" style={{ WebkitTextStroke: '2px black' }}>
           Meme Compatibility Quiz
         </h1>
-        <Card className="w-full max-w-lg comic-border bg-card/80 backdrop-blur-sm">
+        <Card className="w-full max-w-lg comic-border bg-card/80 backdrop-blur-sm overflow-hidden">
+            <Progress value={progress} className="h-3 rounded-none" />
             <CardHeader>
                 <CardTitle className="font-headline text-3xl">Apna Humor Pehchano!</CardTitle>
-                <CardDescription>Answer these top-secret questions to find your meme-mate.</CardDescription>
+                <CardDescription>Answer these questions to find your meme-mate.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
                 {quizQuestions.map((q, index) => (
-                    <div key={index}>
- <h3 className="font-bold text-lg mb-3 text-gray-800 drop-shadow-sm">{index+1}. {q.question}</h3>
- <RadioGroup onValueChange={(value) => handleAnswerChange(index, value)} className="space-y-3">
+                    <div key={index} className={cn(index === currentQuestion ? 'block' : 'hidden')}>
+                        <h3 className="font-bold text-lg mb-4 text-center">{index + 1}. {q.question}</h3>
+                        <RadioGroup 
+                            onValueChange={(value) => handleAnswerChange(index, value)} 
+                            className="space-y-3"
+                            value={answers[index] || ""}
+                        >
                             {q.options.map((opt) => (
- <div key={opt} className="flex items-center space-x-3 p-3 border rounded-md bg-white shadow-sm hover:bg-gray-50 transition-colors cursor-pointer">
- <RadioGroupItem value={opt} id={`q${index}-${opt}`} className="text-primary-foreground focus:ring-2 focus:ring-primary-foreground" />
-                                    <Label htmlFor={`q${index}-${opt}`}>{opt}</Label>
-
-                                </div>
+                                <Label 
+                                    htmlFor={`q${index}-${opt}`} 
+                                    key={opt} 
+                                    className={cn(
+                                        "flex items-center space-x-3 p-4 rounded-md transition-all cursor-pointer comic-border !border-2",
+                                        answers[index] === opt 
+                                            ? "bg-primary text-primary-foreground" 
+                                            : "bg-background hover:bg-muted"
+                                    )}
+                                >
+                                    <RadioGroupItem value={opt} id={`q${index}-${opt}`} />
+                                    <span>{opt}</span>
+                                </Label>
                             ))}
                         </RadioGroup>
                     </div>
                 ))}
 
-                <Button onClick={handleSubmit} className="w-full comic-border !border-2 !text-lg !py-6">Finish Quiz & Find Matches!</Button>
+                {Object.keys(answers).length === quizQuestions.length && (
+                    <Button onClick={handleSubmit} className="w-full comic-border !border-2 !text-lg !py-6">Finish Quiz & Find Matches!</Button>
+                )}
             </CardContent>
         </Card>
     </main>

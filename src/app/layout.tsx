@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: 'MemeMate',
   description: 'Find your meme-mate!',
-  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
