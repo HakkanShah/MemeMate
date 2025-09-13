@@ -33,6 +33,9 @@ export default function SwipePage() {
     setUsers(allUsers.filter(u => u.id !== id)); // Exclude self
   }, []);
   
+  const currentUser = users[currentIndex];
+  const nextUser = users[currentIndex + 1];
+
   const finishSwipe = useCallback((direction: 'left' | 'right', swipedUserId: string) => {
     if (isPending || !loggedInUserId) return;
 
@@ -95,10 +98,6 @@ export default function SwipePage() {
     }
     dragStartRef.current = null;
   }, [isDragging, position.x, currentUser, finishSwipe]);
-
-
-  const currentUser = users[currentIndex];
-  const nextUser = users[currentIndex + 1];
 
   const rotation = position.x / 20;
   const cardStyle = {
