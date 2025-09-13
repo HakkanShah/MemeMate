@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef, useTransition } from "react";
+import { useState, useEffect, useRef, useTransition, useCallback } from "react";
 import { getStoredData, addMatch, getUserById } from "@/lib/dummy-data";
 import { SwipeCard } from "@/components/swipe-card";
 import { Button } from "@/components/ui/button";
@@ -21,11 +21,10 @@ export default function SwipePage() {
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
 
   // State for gesture handling
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
-
-  const cardRef = useRef<HTMLDivElement>(null);
+  const dragStartRef = useRef<{ x: number } | null>(null);
 
   useEffect(() => {
     const id = localStorage.getItem('loggedInUser');
@@ -34,7 +33,7 @@ export default function SwipePage() {
     setUsers(allUsers.filter(u => u.id !== id)); // Exclude self
   }, []);
   
-  const finishSwipe = (direction: 'left' | 'right', swipedUserId: string) => {
+  const finishSwipe = useCallback((direction: 'left' | 'right', swipedUserId: string) => {
     if (isPending || !loggedInUserId) return;
 
     if (direction === 'right') {
@@ -61,26 +60,29 @@ export default function SwipePage() {
     setTimeout(() => {
       startTransition(() => {
         setCurrentIndex(prev => prev + 1);
-        setPosition({ x: 0, y: 0 }); // Reset position for the new card
+        setPosition({ x: 0 }); // Reset position for the new card
         setSwipeDirection(null);
       });
     }, 300);
-  };
+  }, [isPending, loggedInUserId]);
 
 
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault();
+    if (isPending) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    dragStartRef.current = { x: clientX };
     setIsDragging(true);
   };
 
-  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging) return;
+  const handleDragMove = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging || !dragStartRef.current) return;
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    setPosition({ x: clientX - window.innerWidth / 2, y: 0 });
-  };
+    const deltaX = clientX - dragStartRef.current.x;
+    setPosition({ x: deltaX });
+  }, [isDragging]);
 
-  const handleDragEnd = () => {
-    if (!isDragging) return;
+  const handleDragEnd = useCallback(() => {
+    if (!isDragging || !currentUser) return;
     setIsDragging(false);
 
     if (position.x > SWIPE_THRESHOLD) {
@@ -89,9 +91,10 @@ export default function SwipePage() {
       finishSwipe('left', currentUser.id);
     } else {
       // Snap back to center
-      setPosition({ x: 0, y: 0 });
+      setPosition({ x: 0 });
     }
-  };
+    dragStartRef.current = null;
+  }, [isDragging, position.x, currentUser, finishSwipe]);
 
 
   const currentUser = users[currentIndex];
@@ -117,7 +120,6 @@ export default function SwipePage() {
                 </div>
             )}
             <div
-              ref={cardRef}
               className={cn(
                 "absolute inset-0 cursor-grab active:cursor-grabbing",
                  swipeDirection === 'left' && "-translate-x-[150%] rotate-[-25deg] opacity-0",
