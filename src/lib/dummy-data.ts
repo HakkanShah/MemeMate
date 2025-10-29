@@ -65,7 +65,7 @@ const defaultUsers: User[] = [
   {
     id: 'user1',
     username: 'JJ Jhatu',
-    profilePicUrl: 'https://placehold.co/200x200.png',
+    profilePicUrl: 'https://github.com/janmenj0y.png',
     humorTags: ['Desi', 'Troll', 'Dark'],
     memeGenres: ['Political', 'Roast'],
     status: 'Single AF',
