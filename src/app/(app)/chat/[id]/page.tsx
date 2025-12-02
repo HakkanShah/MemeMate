@@ -7,7 +7,7 @@ import type { ChatMessage as ChatMessageType } from "@/lib/types";
 import { ChatBubble } from "@/components/chat-bubble";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Send, Phone, Video, MoreVertical, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { playSound, SOUNDS } from "@/lib/sounds";
@@ -16,7 +16,7 @@ export default function ChatPage() {
   const params = useParams();
   const matchId = params.id as string;
   const match = getMatchById(matchId);
-  
+
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -25,17 +25,17 @@ export default function ChatPage() {
   useEffect(() => {
     const loggedInId = localStorage.getItem('loggedInUser');
     if (loggedInId) {
-        setCurrentUserId(loggedInId);
+      setCurrentUserId(loggedInId);
     }
 
     const loadMessages = () => {
-    if (matchId) {
+      if (matchId) {
         const initialMessages = getMessagesByMatchId(matchId);
         setMessages(initialMessages);
-    }
+      }
     };
     loadMessages();
-    
+
     window.addEventListener('storage', loadMessages);
     return () => window.removeEventListener('storage', loadMessages);
 
@@ -49,7 +49,7 @@ export default function ChatPage() {
   if (!match) {
     notFound();
   }
-  
+
   const otherUserId = match.userIds.find(id => id !== currentUserId)!;
   const otherUser = getUserById(otherUserId)!;
 
@@ -72,35 +72,79 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen p-2 sm:p-4 pt-0">
-      <header className="sticky top-0 bg-background/80 backdrop-blur-sm z-10 py-3 text-center flex items-center justify-center gap-3">
-        <Link href={`/profile/${otherUser.id}`}>
-          <Avatar className="h-10 w-10 border-2 border-primary">
-            <AvatarImage src={otherUser.profilePicUrl} alt={otherUser.username} data-ai-hint="meme avatar" />
-            <AvatarFallback>{otherUser.username.charAt(0)}</AvatarFallback>
-          </Avatar>
-        </Link>
-        <h1 className="font-headline text-3xl">{otherUser.username}</h1>
+    <div className="flex flex-col h-screen lg:h-[calc(100vh-2rem)] lg:max-w-4xl lg:mx-auto">
+      {/* Enhanced Header */}
+      <header className="sticky top-0 bg-gradient-to-r from-card/95 to-background/95 backdrop-blur-xl z-10 border-b-3 border-foreground shadow-lg">
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center gap-3">
+            <Link href="/chat" className="lg:hidden">
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href={`/profile/${otherUser.id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+              <Avatar className="h-12 w-12 border-3 border-primary ring-2 ring-accent/50">
+                <AvatarImage src={otherUser.profilePicUrl} alt={otherUser.username} data-ai-hint="meme avatar" />
+                <AvatarFallback>{otherUser.username.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <h1 className="font-headline text-2xl">{otherUser.username}</h1>
+                <p className="text-xs text-muted-foreground">Online • Active now</p>
+              </div>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="hidden sm:flex rounded-full">
+              <Phone className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" className="hidden sm:flex rounded-full">
+              <Video className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <MoreVertical className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
       </header>
 
-      <div className="flex-grow overflow-y-auto space-y-4 p-2">
-        {messages.map((msg) => (
-          <ChatBubble key={msg.id} message={msg} isOwnMessage={msg.senderId === currentUserId} />
-        ))}
-        <div ref={messagesEndRef} />
+      {/* Messages Area */}
+      <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-background/50 to-muted/30">
+        {messages.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <div className="text-6xl mb-4">💬</div>
+            <h3 className="font-headline text-2xl mb-2">Start the conversation!</h3>
+            <p className="text-muted-foreground">Send your first meme-worthy message</p>
+          </div>
+        ) : (
+          <>
+            {messages.map((msg) => (
+              <ChatBubble key={msg.id} message={msg} isOwnMessage={msg.senderId === currentUserId} />
+            ))}
+            <div ref={messagesEndRef} />
+          </>
+        )}
       </div>
 
-      <form onSubmit={handleSendMessage} className="flex items-center gap-2 mt-4">
-        <Input
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Apna meme-worthy reply likho..."
-          className="comic-border !border-2"
-        />
-        <Button type="submit" size="icon" className="rounded-full comic-border !border-2 h-10 w-10 flex-shrink-0">
-          <Send className="h-5 w-5" />
-        </Button>
-      </form>
+      {/* Enhanced Input Area */}
+      <div className="sticky bottom-0 bg-gradient-to-r from-card/95 to-background/95 backdrop-blur-xl border-t-3 border-foreground p-4 shadow-2xl">
+        <form onSubmit={handleSendMessage} className="flex items-center gap-3 max-w-4xl mx-auto">
+          <Input
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your message..."
+            className="flex-1 comic-border !border-2 h-12 text-base"
+          />
+          <Button
+            type="submit"
+            size="icon"
+            className="rounded-full h-12 w-12 flex-shrink-0 shadow-lg hover:shadow-xl"
+            disabled={!newMessage.trim()}
+          >
+            <Send className="h-5 w-5" />
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }

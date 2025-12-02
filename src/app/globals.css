@@ -9,27 +9,27 @@ body {
 
 @layer base {
   :root {
-    --background: 45 69% 86%; /* Desaturated Yellow (#F2E7C6) */
+    --background: 45 69% 86%;
     --foreground: 20 14.3% 4.1%;
-    --card: 45 69% 92%; /* Lighter, more vibrant */
+    --card: 0 0% 100%; /* Pure white for cards - better readability */
     --card-foreground: 20 14.3% 4.1%;
-    --popover: 45 69% 89%;
+    --popover: 0 0% 100%;
     --popover-foreground: 20 14.3% 4.1%;
-    --primary: 48 100% 60%; /* More saturated yellow */
+    --primary: 48 100% 60%;
     --primary-foreground: 20 14.3% 4.1%;
-    --secondary: 280 60% 65%; /* Purple accent */
+    --secondary: 280 60% 65%;
     --secondary-foreground: 0 0% 98%;
     --muted: 45 40% 85%;
-    --muted-foreground: 215 20.2% 45%;
-    --accent: 198 93% 54%; /* Jio Blue */
+    --muted-foreground: 215 20.2% 35%; /* Darker for better contrast */
+    --accent: 198 93% 54%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 198 93% 54%;
-    --radius: 1rem; /* Increased border radius */
-    --success: 142 76% 36%; /* Green for success states */
+    --radius: 1rem;
+    --success: 142 76% 36%;
   }
 
   .dark {
@@ -63,7 +63,7 @@ body {
     @apply bg-background text-foreground;
   }
 
-  /* Modern gradient background */
+  /* Subtle gradient background - very muted for readability */
   body::before {
     content: '';
     position: fixed;
@@ -72,13 +72,11 @@ body {
     width: 100vw;
     height: 100vh;
     background: linear-gradient(135deg, 
-      hsl(45, 69%, 90%) 0%,
-      hsl(45, 69%, 86%) 25%,
-      hsl(198, 93%, 95%) 50%,
-      hsl(280, 60%, 95%) 75%,
-      hsl(45, 69%, 90%) 100%
+      hsl(45, 69%, 88%) 0%,
+      hsl(45, 69%, 86%) 50%,
+      hsl(45, 69%, 88%) 100%
     );
-    background-size: 400% 400%;
+    background-size: 200% 200%;
     animation: gradientShift 15s ease infinite;
     z-index: -1;
     pointer-events: none;
@@ -89,7 +87,7 @@ body {
     50% { background-position: 100% 50%; }
   }
 
-  /* Subtle pattern overlay */
+  /* Very subtle pattern overlay */
   body::after {
     content: '';
     position: fixed;
@@ -98,7 +96,7 @@ body {
     width: 100vw;
     height: 100vh;
     background-image:
-      radial-gradient(circle at center, hsla(0, 0%, 0%, 0.03) 1px, transparent 1px);
+      radial-gradient(circle at center, hsla(0, 0%, 0%, 0.015) 1px, transparent 1px);
     background-size: 20px 20px;
     opacity: 0.5;
     z-index: -1;
@@ -110,7 +108,7 @@ body {
     letter-spacing: 0.05em;
   }
 
-  /* Improved focus indicators for accessibility */
+  /* Improved focus indicators */
   *:focus-visible {
     outline: 3px solid hsl(var(--ring));
     outline-offset: 2px;
@@ -128,16 +126,11 @@ body {
   }
 }
 
-/* Modern comic border with gradient shadow */
+/* Solid white cards for maximum readability */
 .comic-border {
   border: 3px solid hsl(var(--foreground));
   border-radius: var(--radius);
-  background: linear-gradient(
-    135deg,
-    hsl(var(--card)) 0%,
-    hsla(var(--card), 0.95) 100%
-  );
-  backdrop-filter: blur(10px);
+  background: hsl(var(--card));
   box-shadow: 
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06),
@@ -158,7 +151,7 @@ body {
 .static-comic-border {
   border: 3px solid hsl(var(--foreground));
   border-radius: var(--radius);
-  backdrop-filter: blur(10px);
+  background: hsl(var(--card));
   box-shadow: 
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     6px 6px 0px hsl(var(--accent)),
@@ -175,7 +168,7 @@ body {
 
 /* Glassmorphic card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 
@@ -208,10 +201,10 @@ body {
   transform: translateY(0px);
 }
 
-/* Header bar with glassmorphism */
+/* Header bar with better opacity */
 .header-bar {
   @apply fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center gap-3 rounded-full p-2;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px) saturate(180%);
   border: 3px solid hsl(var(--foreground));
   box-shadow: 
@@ -259,16 +252,16 @@ body {
 
 /* Text selection */
 ::selection {
-  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-  color: white;
+  background: hsl(var(--primary));
+  color: hsl(var(--foreground));
 }
 
 ::-moz-selection {
-  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-  color: white;
+  background: hsl(var(--primary));
+  color: hsl(var(--foreground));
 }
 
-/* Floating animation for cards */
+/* Floating animation */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
