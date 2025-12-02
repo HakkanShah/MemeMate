@@ -58,7 +58,7 @@ export default function ChatPage() {
     if (newMessage.trim() === "") return;
 
     const message: ChatMessageType = {
-      id: `msg${Date.now()}`,
+      id: `msg${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       matchId,
       senderId: currentUserId,
       text: newMessage,
