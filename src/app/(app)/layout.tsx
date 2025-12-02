@@ -2,6 +2,7 @@
 "use client";
 
 import { Header } from "@/components/header";
+import { DesktopSidebar } from "@/components/desktop-sidebar";
 import { getUserById, updateUser } from "@/lib/dummy-data";
 import { useEffect, useState, Suspense } from "react";
 import type { User } from "@/lib/types";
@@ -41,8 +42,15 @@ export default function AppLayout({
 
   return (
     <div className="relative min-h-screen">
+      {/* Desktop Sidebar - Hidden on Mobile */}
+      <DesktopSidebar />
+
+      {/* Mobile Header - Hidden on Desktop */}
       <Header />
-      <main className="pb-24">{children}</main>
+
+      {/* Main Content - Adjust padding for desktop sidebar */}
+      <main className="pb-24 lg:pb-8 lg:pl-64">{children}</main>
+
       {isClient && user && !user.hasSeenTutorial && (
         <Suspense fallback={<div className="fixed inset-0 bg-black/60 z-[100] backdrop-blur-sm" />}>
           <OnboardingTutorial onFinish={handleTutorialFinish} />

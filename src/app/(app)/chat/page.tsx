@@ -20,20 +20,20 @@ export default function ChatListPage() {
 
   useEffect(() => {
     const loadMatches = () => {
-        if (!currentUserId) return;
-        const storedMatches = getStoredData<Match[]>('dummyMatches', []).filter(m => m.userIds.includes(currentUserId));
-        // Sort matches by timestamp, most recent first
-        storedMatches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-        setMatches(storedMatches);
-        setLoading(false);
+      if (!currentUserId) return;
+      const storedMatches = getStoredData<Match[]>('dummyMatches', []).filter(m => m.userIds.includes(currentUserId));
+      // Sort matches by timestamp, most recent first
+      storedMatches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      setMatches(storedMatches);
+      setLoading(false);
     }
-    
+
     loadMatches();
 
     const handleStorageChange = (e: StorageEvent) => {
-        if (e.key === 'dummyMatches') {
-          loadMatches();
-        }
+      if (e.key === 'dummyMatches') {
+        loadMatches();
+      }
     };
 
     window.addEventListener('storage', handleStorageChange);
@@ -41,23 +41,23 @@ export default function ChatListPage() {
   }, [currentUserId]);
 
   return (
-    <div className="p-2 sm:p-4">
-      <h1 className="font-headline text-4xl sm:text-5xl text-center my-8 tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
+    <div className="p-2 sm:p-4 lg:p-8">
+      <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl text-center my-8 lg:my-12 tracking-wider bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
         Your Matches
       </h1>
-      <div className="max-w-md mx-auto space-y-4">
+      <div className="max-w-2xl lg:max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
         {loading ? (
           [...Array(3)].map((_, i) => (
-             <Card key={i} className="p-4 flex items-center gap-4 comic-border">
-                <Skeleton className="h-16 w-16 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-6 w-32" />
-                  <Skeleton className="h-4 w-48" />
-                </div>
-              </Card>
+            <Card key={i} className="p-4 flex items-center gap-4 comic-border">
+              <Skeleton className="h-16 w-16 rounded-full" />
+              <div className="space-y-2">
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-4 w-48" />
+              </div>
+            </Card>
           ))
         ) : matches.length > 0 ? (
-           matches.map((match) => {
+          matches.map((match) => {
             const otherUserId = match.userIds.find(id => id !== currentUserId);
             if (!otherUserId) return null;
             const otherUser = getUserById(otherUserId);
@@ -79,10 +79,10 @@ export default function ChatListPage() {
             );
           })
         ) : (
-             <Card className="p-8 text-center comic-border">
-                <h2 className="font-headline text-2xl">No Matches Yet!</h2>
-                <p className="text-muted-foreground">Go to the Swipe page and find your meme-mate!</p>
-            </Card>
+          <Card className="p-8 text-center comic-border">
+            <h2 className="font-headline text-2xl">No Matches Yet!</h2>
+            <p className="text-muted-foreground">Go to the Swipe page and find your meme-mate!</p>
+          </Card>
         )}
       </div>
     </div>

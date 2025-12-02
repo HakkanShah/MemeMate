@@ -78,7 +78,8 @@ export function Header() {
         </div>
       )}
 
-      <header className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center">
+      {/* Mobile/Tablet Navigation - Hidden on Desktop */}
+      <header className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center">
         <nav className="relative flex items-center justify-center">
           <div
             className={cn(

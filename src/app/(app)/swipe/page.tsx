@@ -139,11 +139,26 @@ export default function SwipePage() {
   const showNopeOverlay = position.x < -50;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] pt-16 pb-28 px-2 overflow-hidden">
-      <h1 className="font-headline text-4xl sm:text-5xl text-center my-6 tracking-wider text-primary-foreground" style={{ WebkitTextStroke: '2px black' }}>
-        Find Your Meme-Mate
-      </h1>
-      <div className="relative w-full max-w-[22rem] h-[65vh] max-h-[550px]">
+    <div className="flex flex-col lg:flex-row items-center justify-center min-h-[calc(100vh-8rem)] pt-16 pb-28 lg:pb-8 px-2 lg:px-8 overflow-hidden lg:gap-8">
+      {/* Title */}
+      <div className="w-full lg:w-auto lg:flex-1">
+        <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl text-center lg:text-left my-6 lg:my-0 tracking-wider bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+          Find Your Meme-Mate
+        </h1>
+        {/* Desktop Stats */}
+        <div className="hidden lg:block mt-8 space-y-4">
+          <div className="comic-border p-6">
+            <h3 className="font-headline text-2xl mb-4">Quick Stats</h3>
+            <div className="space-y-2 text-lg">
+              <p>👤 Users available: <span className="font-bold text-primary">{users.length - currentIndex}</span></p>
+              <p>💘 You've swiped: <span className="font-bold text-accent">{currentIndex}</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Swipe Card Area */}
+      <div className="relative w-full max-w-[22rem] lg:max-w-md h-[65vh] max-h-[550px] lg:h-[70vh] lg:max-h-[700px]">
         {users.length > 0 && currentIndex < users.length ? (
           <>
             {nextUser && (
