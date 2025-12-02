@@ -20,15 +20,15 @@ export function setStoredData<T>(key: string, value: T): void {
   try {
     const oldValue = window.localStorage.getItem(key);
     const newValue = JSON.stringify(value);
-    
+
     window.localStorage.setItem(key, newValue);
 
     // Dispatch a storage event so other tabs can sync
     window.dispatchEvent(new StorageEvent('storage', {
-        key: key,
-        oldValue: oldValue,
-        newValue: newValue,
-        storageArea: window.localStorage
+      key: key,
+      oldValue: oldValue,
+      newValue: newValue,
+      storageArea: window.localStorage
     }));
 
   } catch (error) {
@@ -51,7 +51,7 @@ const defaultUsers: User[] = [
     bio: 'The developer of this platform. Bow down to your Meme King. I build, I break, I meme. Follow my coding adventures!',
     quizResult: 'Meme King',
     gender: 'Male',
-    relationshipStatus: 'Married to my keyboard',
+    relationshipStatus: "It's Complicated",
     lookingFor: 'A bug-free life',
     isVerified: true,
     githubUrl: 'https://github.com/HakkanShah',
@@ -60,7 +60,7 @@ const defaultUsers: User[] = [
     instagramUrl: 'https://www.instagram.com/hakkanshah',
     hasSeenTutorial: true,
     following: ['user1', 'user2', 'user5'],
-    followers: ['user1', 'uaer2', 'user3', 'user4', 'user6'],
+    followers: ['user1', 'user2', 'user3', 'user4', 'user6'],
   },
   {
     id: 'user1',
@@ -168,8 +168,8 @@ const defaultMemes: Meme[] = [
     authorId: 'user_hakkan',
     reactions: { '😂': 999, '🙏': 500, '💀': 250, '😭': 10, '💘': 300 },
     comments: [
-        { userId: 'user1', text: 'The ultimate truth!', timestamp: new Date(), votes: 25 },
-        { userId: 'user6', text: 'I felt this in my soul.', timestamp: new Date(), votes: 18 }
+      { userId: 'user1', text: 'The ultimate truth!', timestamp: new Date(), votes: 25 },
+      { userId: 'user6', text: 'I felt this in my soul.', timestamp: new Date(), votes: 18 }
     ],
     timestamp: new Date('2024-07-31T10:00:00Z'),
   },
@@ -181,7 +181,7 @@ const defaultMemes: Meme[] = [
     authorId: 'user_hakkan',
     reactions: { '😂': 850, '🙏': 100, '💀': 500, '😭': 50, '💘': 100 },
     comments: [
-        { userId: 'user4', text: 'The JS community is coming for you.', timestamp: new Date(), votes: 12 },
+      { userId: 'user4', text: 'The JS community is coming for you.', timestamp: new Date(), votes: 12 },
     ],
     timestamp: new Date('2024-07-30T10:00:00Z'),
   },
@@ -193,8 +193,8 @@ const defaultMemes: Meme[] = [
     authorId: 'user1',
     reactions: { '😂': 97, '🙏': 12, '💀': 45, '😭': 5, '💘': 20 },
     comments: [
-        { userId: 'user2', text: 'So true!', timestamp: new Date(), votes: 5 },
-        { userId: 'user3', text: 'Hahaha!', timestamp: new Date(), votes: 2 }
+      { userId: 'user2', text: 'So true!', timestamp: new Date(), votes: 5 },
+      { userId: 'user3', text: 'Hahaha!', timestamp: new Date(), votes: 2 }
     ],
     timestamp: new Date('2024-07-20T10:00:00Z'),
   },
@@ -224,39 +224,39 @@ const defaultMatches: Match[] = [
 ];
 
 const defaultChatMessages: ChatMessage[] = [
-    { id: 'msg1', matchId: 'match1', senderId: 'user1', text: 'Aree wah, tu bhi Taarak Mehta ka fan 😍', timestamp: new Date('2024-07-19T20:01:00Z') },
-    { id: 'msg2', matchId: 'match1', senderId: 'user2', text: 'Obviously! Your memes are better than Sharma ji ka beta\'s marks 😂', timestamp: new Date('2024-07-19T20:02:00Z') },
-    { id: 'msg3', matchId: 'match1', senderId: 'user1', text: 'Haha thanks! So, chai pe chalein?', timestamp: new Date('2024-07-19T20:03:00Z') },
+  { id: 'msg1', matchId: 'match1', senderId: 'user1', text: 'Aree wah, tu bhi Taarak Mehta ka fan 😍', timestamp: new Date('2024-07-19T20:01:00Z') },
+  { id: 'msg2', matchId: 'match1', senderId: 'user2', text: 'Obviously! Your memes are better than Sharma ji ka beta\'s marks 😂', timestamp: new Date('2024-07-19T20:02:00Z') },
+  { id: 'msg3', matchId: 'match1', senderId: 'user1', text: 'Haha thanks! So, chai pe chalein?', timestamp: new Date('2024-07-19T20:03:00Z') },
 
-    { id: 'msg4', matchId: 'match2', senderId: 'user3', text: 'Your bio is hilarious', timestamp: new Date('2024-07-18T18:01:00Z') },
-    { id: 'msg5', matchId: 'match2', senderId: 'user1', text: 'Yours too! Finally, someone with good taste in memes', timestamp: new Date('2024-07-18T18:02:00Z') },
+  { id: 'msg4', matchId: 'match2', senderId: 'user3', text: 'Your bio is hilarious', timestamp: new Date('2024-07-18T18:01:00Z') },
+  { id: 'msg5', matchId: 'match2', senderId: 'user1', text: 'Yours too! Finally, someone with good taste in memes', timestamp: new Date('2024-07-18T18:02:00Z') },
 ];
 
 const defaultNotifications: Notification[] = [
-    { id: 'notif1', recipientId: 'user1', actorId: 'user_hakkan', type: 'follow', read: false, timestamp: new Date('2024-07-31T11:00:00Z')},
-    { id: 'notif2', recipientId: 'user_hakkan', actorId: 'user1', type: 'reaction', memeId: 'meme_hakkan_1', read: false, timestamp: new Date('2024-07-31T10:05:00Z')},
-    { id: 'notif3', recipientId: 'user_hakkan', actorId: 'user1', type: 'comment', memeId: 'meme_hakkan_1', read: true, timestamp: new Date('2024-07-31T10:06:00Z')},
+  { id: 'notif1', recipientId: 'user1', actorId: 'user_hakkan', type: 'follow', read: false, timestamp: new Date('2024-07-31T11:00:00Z') },
+  { id: 'notif2', recipientId: 'user_hakkan', actorId: 'user1', type: 'reaction', memeId: 'meme_hakkan_1', read: false, timestamp: new Date('2024-07-31T10:05:00Z') },
+  { id: 'notif3', recipientId: 'user_hakkan', actorId: 'user1', type: 'comment', memeId: 'meme_hakkan_1', read: true, timestamp: new Date('2024-07-31T10:06:00Z') },
 ];
 
 // --- Data Access and Mutation Functions ---
 
 // Initialize data if it doesn't exist in local storage
 if (isBrowser) {
-    if (!localStorage.getItem('dummyUsers')) {
-        setStoredData('dummyUsers', defaultUsers);
-    }
-    if (!localStorage.getItem('dummyMemes')) {
-        setStoredData('dummyMemes', defaultMemes);
-    }
-    if (!localStorage.getItem('dummyMatches')) {
-        setStoredData('dummyMatches', defaultMatches);
-    }
-    if (!localStorage.getItem('dummyChatMessages')) {
-        setStoredData('dummyChatMessages', defaultChatMessages);
-    }
-    if (!localStorage.getItem('dummyNotifications')) {
-        setStoredData('dummyNotifications', defaultNotifications);
-    }
+  if (!localStorage.getItem('dummyUsers')) {
+    setStoredData('dummyUsers', defaultUsers);
+  }
+  if (!localStorage.getItem('dummyMemes')) {
+    setStoredData('dummyMemes', defaultMemes);
+  }
+  if (!localStorage.getItem('dummyMatches')) {
+    setStoredData('dummyMatches', defaultMatches);
+  }
+  if (!localStorage.getItem('dummyChatMessages')) {
+    setStoredData('dummyChatMessages', defaultChatMessages);
+  }
+  if (!localStorage.getItem('dummyNotifications')) {
+    setStoredData('dummyNotifications', defaultNotifications);
+  }
 }
 
 export const getUserById = (id: string) => getStoredData<User[]>('dummyUsers', []).find(u => u.id === id);
@@ -264,91 +264,91 @@ export const getMemesByAuthor = (authorId: string) => getStoredData<Meme[]>('dum
 export const getMatchById = (id: string) => getStoredData<Match[]>('dummyMatches', []).find(m => m.id === id);
 export const getMessagesByMatchId = (matchId: string) => getStoredData<ChatMessage[]>('dummyChatMessages', []).filter(m => m.matchId === matchId);
 export const getNotificationsByUserId = (userId: string) => {
-    const notifications = getStoredData<Notification[]>('dummyNotifications', []);
-    return notifications
-        .filter(n => n.recipientId === userId)
-        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  const notifications = getStoredData<Notification[]>('dummyNotifications', []);
+  return notifications
+    .filter(n => n.recipientId === userId)
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 };
 
 
 // --- Functions to update data and persist to localStorage ---
 
 export const addMeme = (meme: Meme) => {
-    const memes = getStoredData<Meme[]>('dummyMemes', []);
-    setStoredData('dummyMemes', [meme, ...memes]);
+  const memes = getStoredData<Meme[]>('dummyMemes', []);
+  setStoredData('dummyMemes', [meme, ...memes]);
 };
 
 export const updateMeme = (updatedMeme: Meme) => {
-    const memes = getStoredData<Meme[]>('dummyMemes', []);
-    const newMemes = memes.map(meme => meme.id === updatedMeme.id ? updatedMeme : meme);
-    setStoredData('dummyMemes', newMemes);
+  const memes = getStoredData<Meme[]>('dummyMemes', []);
+  const newMemes = memes.map(meme => meme.id === updatedMeme.id ? updatedMeme : meme);
+  setStoredData('dummyMemes', newMemes);
 };
 
 export const updateUser = (updatedUser: User) => {
-    const users = getStoredData<User[]>('dummyUsers', []);
-    const newUsers = users.map(user => user.id === updatedUser.id ? updatedUser : user);
-    setStoredData('dummyUsers', newUsers);
+  const users = getStoredData<User[]>('dummyUsers', []);
+  const newUsers = users.map(user => user.id === updatedUser.id ? updatedUser : user);
+  setStoredData('dummyUsers', newUsers);
 };
 
 export const addMessage = (message: ChatMessage) => {
-    const messages = getStoredData<ChatMessage[]>('dummyChatMessages', []);
-    setStoredData('dummyChatMessages', [...messages, message]);
+  const messages = getStoredData<ChatMessage[]>('dummyChatMessages', []);
+  setStoredData('dummyChatMessages', [...messages, message]);
 };
 
 export const addMatch = (match: Match) => {
-    const matches = getStoredData<Match[]>('dummyMatches', []);
-    setStoredData('dummyMatches', [...matches, match]);
+  const matches = getStoredData<Match[]>('dummyMatches', []);
+  setStoredData('dummyMatches', [...matches, match]);
 };
 
 export const addNotification = (notification: Omit<Notification, 'id' | 'timestamp'>) => {
-    const notifications = getStoredData<Notification[]>('dummyNotifications', []);
-    const newNotification: Notification = {
-        ...notification,
-        id: `notif-${Date.now()}`,
-        timestamp: new Date(),
-    };
-    setStoredData('dummyNotifications', [newNotification, ...notifications]);
+  const notifications = getStoredData<Notification[]>('dummyNotifications', []);
+  const newNotification: Notification = {
+    ...notification,
+    id: `notif-${Date.now()}`,
+    timestamp: new Date(),
+  };
+  setStoredData('dummyNotifications', [newNotification, ...notifications]);
 };
 
 export const markNotificationsAsRead = (userId: string) => {
-    const notifications = getStoredData<Notification[]>('dummyNotifications', []);
-    const updatedNotifications = notifications.map(n => 
-        n.recipientId === userId ? { ...n, read: true } : n
-    );
-    setStoredData('dummyNotifications', updatedNotifications);
+  const notifications = getStoredData<Notification[]>('dummyNotifications', []);
+  const updatedNotifications = notifications.map(n =>
+    n.recipientId === userId ? { ...n, read: true } : n
+  );
+  setStoredData('dummyNotifications', updatedNotifications);
 };
 
 export const toggleFollow = (loggedInUserId: string, targetUserId: string) => {
-    const users = getStoredData<User[]>('dummyUsers', []);
-    const loggedInUser = users.find(u => u.id === loggedInUserId);
-    const targetUser = users.find(u => u.id === targetUserId);
+  const users = getStoredData<User[]>('dummyUsers', []);
+  const loggedInUser = users.find(u => u.id === loggedInUserId);
+  const targetUser = users.find(u => u.id === targetUserId);
 
-    if (!loggedInUser || !targetUser) return;
+  if (!loggedInUser || !targetUser) return;
 
-    const isFollowing = loggedInUser.following?.includes(targetUserId);
+  const isFollowing = loggedInUser.following?.includes(targetUserId);
 
-    if (isFollowing) {
-        // Unfollow
-        loggedInUser.following = loggedInUser.following?.filter(id => id !== targetUserId);
-        targetUser.followers = targetUser.followers?.filter(id => id !== loggedInUserId);
-    } else {
-        // Follow
-        loggedInUser.following = [...(loggedInUser.following || []), targetUserId];
-        targetUser.followers = [...(targetUser.followers || []), loggedInUserId];
-        // Add notification for the follow action
-        addNotification({
-            recipientId: targetUserId,
-            actorId: loggedInUserId,
-            type: 'follow',
-            read: false,
-        });
-    }
-
-    const updatedUsers = users.map(u => {
-        if (u.id === loggedInUserId) return loggedInUser;
-        if (u.id === targetUserId) return targetUser;
-        return u;
+  if (isFollowing) {
+    // Unfollow
+    loggedInUser.following = loggedInUser.following?.filter(id => id !== targetUserId);
+    targetUser.followers = targetUser.followers?.filter(id => id !== loggedInUserId);
+  } else {
+    // Follow
+    loggedInUser.following = [...(loggedInUser.following || []), targetUserId];
+    targetUser.followers = [...(targetUser.followers || []), loggedInUserId];
+    // Add notification for the follow action
+    addNotification({
+      recipientId: targetUserId,
+      actorId: loggedInUserId,
+      type: 'follow',
+      read: false,
     });
+  }
 
-    setStoredData('dummyUsers', updatedUsers);
+  const updatedUsers = users.map(u => {
+    if (u.id === loggedInUserId) return loggedInUser;
+    if (u.id === targetUserId) return targetUser;
+    return u;
+  });
+
+  setStoredData('dummyUsers', updatedUsers);
 };
