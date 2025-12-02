@@ -36,32 +36,6 @@ export default function SwipePage() {
     setUsers(allUsers.filter(u => u.id !== id)); // Exclude self
   }, []);
 
-  // Cleanup function to prevent memory leaks
-  useEffect(() => {
-    const handleMouseUp = () => {
-      if (isDragging) {
-        handleDragEnd();
-      }
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging && dragStartRef.current) {
-        const deltaX = e.clientX - dragStartRef.current.x;
-        setPosition({ x: deltaX });
-      }
-    };
-
-    if (isDragging) {
-      window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('mousemove', handleMouseMove as any);
-    }
-
-    return () => {
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('mousemove', handleMouseMove as any);
-    };
-  }, [isDragging]);
-
   const finishSwipe = useCallback((direction: 'left' | 'right', swipedUserId: string) => {
     if (isPending || !loggedInUserId) return;
 
@@ -95,21 +69,6 @@ export default function SwipePage() {
     }, 300);
   }, [isPending, loggedInUserId]);
 
-
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    if (isPending) return;
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    dragStartRef.current = { x: clientX };
-    setIsDragging(true);
-  };
-
-  const handleDragMove = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging || !dragStartRef.current) return;
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const deltaX = clientX - dragStartRef.current.x;
-    setPosition({ x: deltaX });
-  }, [isDragging]);
-
   const handleDragEnd = useCallback(() => {
     if (!isDragging || !currentUser) return;
     setIsDragging(false);
@@ -124,6 +83,44 @@ export default function SwipePage() {
     }
     dragStartRef.current = null;
   }, [isDragging, position.x, currentUser, finishSwipe]);
+
+  // Cleanup function to prevent memory leaks
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleMouseUp = () => {
+      handleDragEnd();
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (dragStartRef.current) {
+        const deltaX = e.clientX - dragStartRef.current.x;
+        setPosition({ x: deltaX });
+      }
+    };
+
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isDragging, handleDragEnd]);
+
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    if (isPending) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    dragStartRef.current = { x: clientX };
+    setIsDragging(true);
+  };
+
+  const handleDragMove = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging || !dragStartRef.current) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const deltaX = clientX - dragStartRef.current.x;
+    setPosition({ x: deltaX });
+  }, [isDragging]);
 
   const rotation = position.x / 20;
   const opacity = Math.max(0.3, 1 - Math.abs(position.x) / 300);
