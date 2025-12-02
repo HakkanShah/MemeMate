@@ -136,10 +136,10 @@ export default function SwipePage() {
   const showNopeOverlay = position.x < -50;
 
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-center min-h-[calc(100vh-8rem)] pt-16 pb-28 lg:pb-8 px-2 lg:px-8 overflow-hidden lg:gap-8">
+    <div className="flex flex-col lg:flex-row items-center justify-center min-h-[calc(100vh-8rem)] pt-4 sm:pt-8 lg:pt-16 pb-32 lg:pb-8 px-2 lg:px-8 overflow-hidden lg:gap-8">
       {/* Title */}
       <div className="w-full lg:w-auto lg:flex-1">
-        <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl text-center lg:text-left my-6 lg:my-0 tracking-wider bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+        <h1 className="font-headline text-3xl sm:text-4xl lg:text-6xl text-center lg:text-left my-3 sm:my-4 lg:my-0 tracking-wider bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
           Find Your Meme-Mate
         </h1>
         {/* Desktop Stats */}
@@ -155,7 +155,7 @@ export default function SwipePage() {
       </div>
 
       {/* Swipe Card Area */}
-      <div className="relative w-full max-w-[22rem] lg:max-w-md h-[65vh] max-h-[550px] lg:h-[70vh] lg:max-h-[700px]">
+      <div className="relative w-full max-w-[22rem] lg:max-w-md h-[60vh] max-h-[500px] lg:h-[70vh] lg:max-h-[700px]">
         {users.length > 0 && currentIndex < users.length ? (
           <>
             {nextUser && (
