@@ -119,27 +119,27 @@ export const MemeCard = memo(function MemeCard({ meme: initialMeme }: MemeCardPr
   const commentsToShow = showAllComments ? sortedComments : sortedComments.slice(0, 2);
 
   return (
-    <div className="break-inside-avoid">
-      <Card className="comic-border bg-card/80 backdrop-blur-sm">
-        <CardHeader className="flex flex-row items-center gap-2 p-3">
+    <div className="break-inside-avoid w-full">
+      <Card className="comic-border bg-card/80 backdrop-blur-sm h-full flex flex-col">
+        <CardHeader className="flex flex-row items-center gap-2 p-2.5 sm:p-3">
           <Link href={`/profile/${author.id}`}>
-            <Avatar className="h-10 w-10 border-2 border-primary">
+            <Avatar className="h-9 w-9 sm:h-10 sm:w-10 border-2 border-primary flex-shrink-0">
               <AvatarImage src={author.profilePicUrl} alt={author.username} data-ai-hint="meme avatar" />
               <AvatarFallback>{author.username.charAt(0)}</AvatarFallback>
             </Avatar>
           </Link>
-          <div className="flex items-center gap-1">
-            <Link href={`/profile/${author.id}`}>
-              <CardTitle className="text-lg font-bold hover:underline">{author.username}</CardTitle>
+          <div className="flex items-center gap-1 min-w-0">
+            <Link href={`/profile/${author.id}`} className="min-w-0">
+              <CardTitle className="text-base sm:text-lg font-bold hover:underline truncate">{author.username}</CardTitle>
             </Link>
-            {author.isVerified && <CheckCircle className="w-4 h-4 text-white fill-blue-500" />}
+            {author.isVerified && <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fill-blue-500 flex-shrink-0" />}
           </div>
         </CardHeader>
-        <CardContent className="p-0">
+        <CardContent className="p-0 flex-grow">
           <div className="relative aspect-[4/5] w-full bg-muted">
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="animate-pulse text-muted-foreground">Loading...</div>
+                <div className="animate-pulse text-muted-foreground text-sm">Loading...</div>
               </div>
             )}
             <Image
@@ -155,53 +155,53 @@ export const MemeCard = memo(function MemeCard({ meme: initialMeme }: MemeCardPr
               loading="lazy"
             />
           </div>
-          <p className="p-3 text-base">{meme.caption}</p>
+          <p className="p-2.5 sm:p-3 text-sm sm:text-base leading-relaxed">{meme.caption}</p>
         </CardContent>
-        <CardFooter className="p-3 flex flex-col items-start gap-2">
+        <CardFooter className="p-2.5 sm:p-3 flex flex-col items-start gap-2">
           <div className="flex justify-around w-full">
             {topReactions.map(([emoji, count]) => (
               <ReactionButton key={emoji} emoji={emoji} count={count} onClick={() => handleReaction(emoji as keyof Meme['reactions'])} />
             ))}
-            <Button variant="ghost" className="flex items-center gap-2 text-lg" onClick={() => document.getElementById(`comment-input-${meme.id}`)?.focus()}>
-              <MessageSquare />
-              <span className="text-sm font-bold">{meme.comments.length}</span>
+            <Button variant="ghost" className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg px-2 sm:px-3" onClick={() => document.getElementById(`comment-input-${meme.id}`)?.focus()}>
+              <MessageSquare className="h-5 w-5 sm:h-6 sm:w-6" />
+              <span className="text-xs sm:text-sm font-bold">{meme.comments.length}</span>
             </Button>
           </div>
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-1.5 sm:space-y-2">
             {commentsToShow.map((comment, index) => {
               const commentAuthor = getUserById(comment.userId);
               const originalIndex = meme.comments.findIndex(c => c === comment);
               return (
-                <div key={index} className="text-sm flex justify-between items-center w-full">
-                  <div>
-                    <span className="font-bold">{commentAuthor?.username || 'User'}</span>: {comment.text}
+                <div key={index} className="text-xs sm:text-sm flex justify-between items-start gap-2 w-full">
+                  <div className="min-w-0 flex-1">
+                    <span className="font-bold">{commentAuthor?.username || 'User'}</span>: <span className="break-words">{comment.text}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => handleVote(originalIndex, 'up')}>
-                      <ArrowUp className="h-4 w-4" />
+                  <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
+                    <Button size="icon" variant="ghost" className="h-5 w-5 sm:h-6 sm:w-6" onClick={() => handleVote(originalIndex, 'up')}>
+                      <ArrowUp className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
-                    <span className="text-xs font-bold w-4 text-center">{comment.votes}</span>
-                    <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => handleVote(originalIndex, 'down')}>
-                      <ArrowDown className="h-4 w-4" />
+                    <span className="text-xs font-bold w-3 sm:w-4 text-center">{comment.votes}</span>
+                    <Button size="icon" variant="ghost" className="h-5 w-5 sm:h-6 sm:w-6" onClick={() => handleVote(originalIndex, 'down')}>
+                      <ArrowDown className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                   </div>
                 </div>
               )
             })}
             {!showAllComments && meme.comments.length > 2 && (
-              <Button variant="link" size="sm" onClick={() => setShowAllComments(true)}>View all {meme.comments.length} comments</Button>
+              <Button variant="link" size="sm" className="text-xs sm:text-sm h-auto py-1" onClick={() => setShowAllComments(true)}>View all {meme.comments.length} comments</Button>
             )}
-            <form onSubmit={handleCommentSubmit} className="flex items-center gap-2 w-full">
+            <form onSubmit={handleCommentSubmit} className="flex items-center gap-1.5 sm:gap-2 w-full pt-1">
               <Input
                 id={`comment-input-${meme.id}`}
                 placeholder="Add a comment..."
-                className="h-9 comic-border !border-2"
+                className="h-8 sm:h-9 comic-border !border-2 text-xs sm:text-sm"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 disabled={!loggedInUserId}
               />
-              <Button type="submit" size="icon" className="h-9 w-9 flex-shrink-0 comic-border !border-2 rounded-full" disabled={!loggedInUserId}>
-                <Send className="h-4 w-4" />
+              <Button type="submit" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0 comic-border !border-2 rounded-full" disabled={!loggedInUserId}>
+                <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </Button>
             </form>
           </div>

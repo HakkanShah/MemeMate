@@ -49,23 +49,23 @@ export function Header() {
   return (
     <TooltipProvider>
       {showNotificationIcon && (
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-3 right-3 sm:top-4 sm:right-4 z-50 lg:top-6 lg:right-6">
           <Tooltip>
             <TooltipTrigger asChild>
               <Link href="/notifications">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative h-14 w-14 rounded-full static-comic-border !shadow-none bg-card/80 backdrop-blur-sm hover:bg-accent/20 hover:scale-110 transition-all duration-200"
+                  className="relative h-12 w-12 sm:h-14 sm:w-14 rounded-full static-comic-border !shadow-none bg-card/80 backdrop-blur-sm hover:bg-accent/20 hover:scale-110 transition-all duration-200"
                 >
                   <Bell className={cn(
-                    "h-8 w-8 transition-all",
+                    "h-6 w-6 sm:h-8 sm:w-8 transition-all",
                     hasUnread && "animate-bounce"
                   )} />
                   {hasUnread && (
-                    <div className="absolute top-2 right-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full border-2 border-background animate-pulse" />
-                      <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+                    <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2">
+                      <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full border-2 border-background animate-pulse" />
+                      <div className="absolute inset-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-ping" />
                     </div>
                   )}
                 </Button>
